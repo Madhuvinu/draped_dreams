@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover maximum-scale=1.0, user-scalable=no"
+		/>
+    <title>Draped Dreams - Sari Store</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Draped Dreams" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="white" />
+
+    <!-- PWA -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="196x196"
+      href="/assets/draped_dreams/manifest/apple-icon-180.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/assets/draped_dreams/manifest/apple-icon-180.png"
+    />
+    <script type="module" crossorigin src="/assets/draped_dreams/frontend/assets/index-89fb04c6.js"></script>
+    <link rel="stylesheet" href="/assets/draped_dreams/frontend/assets/index-f18f0911.css">
+  <link rel="manifest" href="/assets/draped_dreams/frontend/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/assets/draped_dreams/frontend/registerSW.js"></script></head>
+  <body class="sm:overscroll-y-none no-scrollbar">
+    <div id="app" class="h-full"></div>
+    
+  
+            <script>
+                {% for key in boot %}
+                window["{{ key }}"] = {{ boot[key] | tojson }};
+                {% endfor %}
+            </script>
+            </body>
+            
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "draped-dreams-ui",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base=/assets/draped_dreams/frontend/ && yarn copy-html-entry && yarn copy-assets",
+    "copy-html-entry": "cp dist/index.html ../draped_dreams/www/draped_dreams.html",
+    "copy-assets": "mkdir -p ../draped_dreams/public/frontend/assets && cp -r dist/assets/* ../draped_dreams/public/frontend/assets/"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.3.0",
+    "@vueuse/integrations": "^10.3.0",
+    "feather-icons": "^4.28.0",
+    "lodash": "^4.17.21",
+    "pinia": "^2.0.33",
+    "socket.io-client": "^4.7.2",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.9",
+    "vue": "^3.4.12",
+    "vue-router": "^4.2.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.5",
+    "vite": "^4.4.9",
+    "vite-plugin-pwa": "^0.15.0"
+  }
+}
