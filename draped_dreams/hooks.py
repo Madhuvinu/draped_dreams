@@ -60,7 +60,7 @@ app_license = "MIT"
 # ------------
 
 # before_install = "draped_dreams.install.before_install"
-# after_install = "draped_dreams.install.after_install"
+after_install = "draped_dreams.install.after_install"
 
 # Uninstallation
 # ------------
@@ -178,6 +178,20 @@ user_data_fields = [
 # auth_hooks = [
 # 	"draped_dreams.auth.validate"
 # ]
+
+# CORS Configuration
+# ------------------
+# CORS is configured at the site level using bench commands or site_config.json
+# This is cleaner and more maintainable than adding headers to each API function
+#
+# To configure CORS, run these commands in your Frappe bench directory:
+# bench --site dreams.localhost set-config cors_allow_origins "*"
+# bench --site dreams.localhost set-config cors_allow_methods "GET,POST,PUT,DELETE,OPTIONS"
+# bench --site dreams.localhost set-config cors_allow_headers "Content-Type,Authorization,X-Requested-With,Accept,Origin"
+# bench --site dreams.localhost set-config cors_allow_credentials true
+# bench --site dreams.localhost set-config cors_max_age 86400
+#
+# For production, replace "*" with specific domains for security
 
 # Translation
 # --------------------------------
