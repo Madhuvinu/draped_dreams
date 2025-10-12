@@ -7,7 +7,7 @@ const getApiBaseUrl = () => {
 	if (import.meta.env.VITE_API_BASE_URL) {
 		return import.meta.env.VITE_API_BASE_URL;
 	}
-	
+
 	// Default to production URL
 	return "https://65.1.189.119/api/method/draped_dreams.api.auth";
 };

@@ -4,8 +4,8 @@
 import hashlib
 
 import frappe
-from frappe.utils import cint, today
 from frappe import _
+from frappe.utils import cint, today
 
 
 @frappe.whitelist(allow_guest=True)

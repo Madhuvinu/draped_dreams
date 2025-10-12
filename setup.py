@@ -296,8 +296,8 @@ def create_sample_data():
 
 if __name__ == "__main__":
 	# Get site name from environment variable or use default
-	site_name = os.getenv('DRAPED_DREAMS_SITE_NAME', 'dreams.localhost')
-	
+	site_name = os.getenv("DRAPED_DREAMS_SITE_NAME", "dreams.localhost")
+
 	# Initialize Frappe
 	frappe.init(site=site_name)
 	frappe.connect()
