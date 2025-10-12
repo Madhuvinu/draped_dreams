@@ -21,7 +21,13 @@ def install_register_doctype():
 						"reqd": 1,
 						"unique": 1,
 					},
-					{"fieldname": "phone", "fieldtype": "Data", "label": "Phone", "options": "Phone", "reqd": 1},
+					{
+						"fieldname": "phone",
+						"fieldtype": "Data",
+						"label": "Phone",
+						"options": "Phone",
+						"reqd": 1,
+					},
 					{"fieldname": "password", "fieldtype": "Password", "label": "Password", "reqd": 1},
 					{
 						"fieldname": "confirm_password",
@@ -100,8 +106,18 @@ def install_product_doctype():
 					{"fieldname": "category", "fieldtype": "Data", "label": "Category", "reqd": 1},
 					{"fieldname": "price", "fieldtype": "Currency", "label": "Price", "reqd": 1},
 					{"fieldname": "original_price", "fieldtype": "Currency", "label": "Original Price"},
-					{"fieldname": "stock_quantity", "fieldtype": "Int", "label": "Stock Quantity", "default": 0},
-					{"fieldname": "min_stock_level", "fieldtype": "Int", "label": "Minimum Stock Level", "default": 5},
+					{
+						"fieldname": "stock_quantity",
+						"fieldtype": "Int",
+						"label": "Stock Quantity",
+						"default": 0,
+					},
+					{
+						"fieldname": "min_stock_level",
+						"fieldtype": "Int",
+						"label": "Minimum Stock Level",
+						"default": 5,
+					},
 					{"fieldname": "weight", "fieldtype": "Float", "label": "Weight (kg)"},
 					{"fieldname": "dimensions", "fieldtype": "Data", "label": "Dimensions (LxWxH)"},
 					{"fieldname": "brand", "fieldtype": "Data", "label": "Brand"},
@@ -113,8 +129,18 @@ def install_product_doctype():
 					{"fieldname": "tags", "fieldtype": "Small Text", "label": "Tags"},
 					{"fieldname": "meta_title", "fieldtype": "Data", "label": "Meta Title"},
 					{"fieldname": "meta_description", "fieldtype": "Text", "label": "Meta Description"},
-					{"fieldname": "created_date", "fieldtype": "Date", "label": "Created Date", "default": "Today"},
-					{"fieldname": "modified_date", "fieldtype": "Date", "label": "Modified Date", "default": "Today"},
+					{
+						"fieldname": "created_date",
+						"fieldtype": "Date",
+						"label": "Created Date",
+						"default": "Today",
+					},
+					{
+						"fieldname": "modified_date",
+						"fieldtype": "Date",
+						"label": "Modified Date",
+						"default": "Today",
+					},
 				],
 				"permissions": [
 					{
@@ -161,7 +187,12 @@ def install_gallery_doctype():
 				"istable": 1,
 				"fields": [
 					{"fieldname": "image_name", "fieldtype": "Data", "label": "Image Name", "reqd": 1},
-					{"fieldname": "image_file", "fieldtype": "Attach Image", "label": "Image File", "reqd": 1},
+					{
+						"fieldname": "image_file",
+						"fieldtype": "Attach Image",
+						"label": "Image File",
+						"reqd": 1,
+					},
 					{"fieldname": "is_primary", "fieldtype": "Check", "label": "Primary Image"},
 					{"fieldname": "alt_text", "fieldtype": "Data", "label": "Alt Text"},
 				],
