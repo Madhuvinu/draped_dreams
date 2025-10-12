@@ -86,6 +86,9 @@ def login_user(email, password):
 		if len(password) < 8:
 			return {"success": False, "message": "Password must be at least 8 characters"}
 
+		# Debug logging
+		frappe.log_error(f"Login attempt for email: {email}", "Login Debug")
+
 		# Find user by email - try both password column names
 		try:
 			# Try with 'password' column first (server schema)
@@ -104,22 +107,28 @@ def login_user(email, password):
 				raise e
 
 		if not user:
+			frappe.log_error(f"User not found for email: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
 		if user.status != "Active":
+			frappe.log_error(f"User {email} is not active, status: {user.status}", "Login Debug")
 			return {"success": False, "message": "Account is not active"}
 
 		# Verify password
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
 		stored_password = user[password_field]
+		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {stored_password[:10]}...", "Login Debug")
 		
 		if hashed_password != stored_password:
+			frappe.log_error(f"Password mismatch for user: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
 		# Get user details
 		user_details = frappe.db.get_value(
 			"Register", {"email": email}, ["first_name", "last_name", "email", "phone"], as_dict=True
 		)
+
+		frappe.log_error(f"Login successful for user: {email}", "Login Debug")
 
 		return {
 			"success": True,
@@ -222,6 +231,43 @@ def get_products(category=None, search=None, price_range=None, sort_by="featured
 
 
 @frappe.whitelist(allow_guest=True)
+def get_product_details(product_name):
+	"""Get detailed product information"""
+	try:
+		product = frappe.get_doc("Product", product_name)
+
+		# Get gallery images
+		gallery_images = frappe.get_all(
+			"Product Image Gallery",
+			filters={"parent": product.name},
+			fields=["image_name", "image_file", "is_primary"],
+		)
+
+		return {
+			"success": True,
+			"data": {
+				"name": product.name,
+				"product_name": product.product_name,
+				"product_code": product.product_code,
+				"category": product.category,
+				"description": product.description,
+				"price": product.price,
+				"original_price": product.original_price,
+				"stock_quantity": product.stock_quantity,
+				"rating": product.rating,
+				"featured": product.featured,
+				"product_image": product.product_image,
+				"gallery_images": gallery_images,
+				"created_date": product.created_date,
+			},
+		}
+
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Get Product Details Error")
+		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
 def get_categories():
 	"""Get all product categories"""
 	try:
@@ -235,4 +281,66 @@ def get_categories():
 
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Get Categories Error")
+		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def update_register_doctype():
+	"""Update Register doctype to use correct field names"""
+	try:
+		# Get the Register doctype
+		register_doctype = frappe.get_doc("DocType", "Register")
+		
+		# Check if user_password field exists and rename it to password
+		user_password_field = None
+		for field in register_doctype.fields:
+			if field.fieldname == "user_password":
+				user_password_field = field
+				break
+		
+		if user_password_field:
+			# Rename the field
+			user_password_field.fieldname = "password"
+			user_password_field.label = "Password"
+			register_doctype.save()
+			frappe.db.commit()
+			
+			return {"success": True, "message": "Register doctype updated successfully"}
+		else:
+			return {"success": True, "message": "Register doctype already has correct field names"}
+			
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Update Register Doctype Error")
+		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def debug_user(email):
+	"""Debug function to check user data"""
+	try:
+		# Get user data
+		user = frappe.db.get_value(
+			"Register", {"email": email}, ["name", "user_password", "status", "first_name", "last_name"], as_dict=True
+		)
+		
+		if user:
+			return {
+				"success": True,
+				"data": {
+					"name": user.name,
+					"email": email,
+					"status": user.status,
+					"first_name": user.first_name,
+					"last_name": user.last_name,
+					"password_length": len(user.user_password) if user.user_password else 0,
+					"password_preview": user.user_password[:10] + "..." if user.user_password else None,
+					"password_hash": user.user_password,  # Show the actual hash for debugging
+					"password_start": user.user_password[:20] if user.user_password else None
+				}
+			}
+		else:
+			return {"success": False, "message": "User not found"}
+			
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Debug User Error")
 		return {"success": False, "message": str(e)}
