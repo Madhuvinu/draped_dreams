@@ -24,16 +24,16 @@ class Product(Document):
 	def generate_product_code(self):
 		# Generate a unique product code
 		category_prefix = self.category[:3].upper() if self.category else "PRD"
-		import random
-		import string
+	import secrets
+	import string
 
-		# Generate random suffix
-		suffix = "".join(random.choices(string.digits, k=4))
+	# Generate secure random suffix
+	suffix = "".join(secrets.choice(string.digits) for _ in range(4))
 		product_code = f"{category_prefix}-{suffix}"
 
 		# Ensure uniqueness
 		while frappe.db.exists("Product", {"product_code": product_code}):
-			suffix = "".join(random.choices(string.digits, k=4))
+			suffix = "".join(secrets.choice(string.digits) for _ in range(4))
 			product_code = f"{category_prefix}-{suffix}"
 
 		return product_code
