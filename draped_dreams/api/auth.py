@@ -40,12 +40,24 @@ def register_user(first_name, last_name, email, phone, password, confirm_passwor
 		# Hash password manually to ensure consistency
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
 		
-		# Insert directly into database to bypass any doctype hooks
-		frappe.db.sql("""
-			INSERT INTO `tabRegister` 
-			(name, first_name, last_name, email, phone, password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
-			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
-		""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
+		# Check which password column exists in the database
+		try:
+			# Try with 'password' column first (server schema)
+			frappe.db.sql("""
+				INSERT INTO `tabRegister` 
+				(name, first_name, last_name, email, phone, password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
+				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
+			""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
+		except Exception as e:
+			if "Unknown column 'password'" in str(e):
+				# Fallback to 'user_password' column (local schema)
+				frappe.db.sql("""
+					INSERT INTO `tabRegister` 
+					(name, first_name, last_name, email, phone, user_password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
+					VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
+				""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
+			else:
+				raise e
 
 		frappe.db.commit()
 
@@ -77,10 +89,22 @@ def login_user(email, password):
 		# Debug logging
 		frappe.log_error(f"Login attempt for email: {email}", "Login Debug")
 
-		# Find user by email
-		user = frappe.db.get_value(
-			"Register", {"email": email}, ["name", "password", "status"], as_dict=True
-		)
+		# Find user by email - try both password column names
+		try:
+			# Try with 'password' column first (server schema)
+			user = frappe.db.get_value(
+				"Register", {"email": email}, ["name", "password", "status"], as_dict=True
+			)
+			password_field = "password"
+		except Exception as e:
+			if "Unknown column 'password'" in str(e):
+				# Fallback to 'user_password' column (local schema)
+				user = frappe.db.get_value(
+					"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
+				)
+				password_field = "user_password"
+			else:
+				raise e
 
 		if not user:
 			frappe.log_error(f"User not found for email: {email}", "Login Debug")
@@ -92,9 +116,10 @@ def login_user(email, password):
 
 		# Verify password
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
-		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {user.password[:10]}...", "Login Debug")
+		stored_password = user[password_field]
+		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {stored_password[:10]}...", "Login Debug")
 		
-		if hashed_password != user.password:
+		if hashed_password != stored_password:
 			frappe.log_error(f"Password mismatch for user: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
