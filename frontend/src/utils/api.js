@@ -9,7 +9,7 @@ const getApiBaseUrl = () => {
 	}
 
 	// Default to production URL
-	return "https://65.1.189.119/api/method/draped_dreams.api.auth";
+	return "https://http://dreams.localhost:8002/api/method/draped_dreams.api.auth";
 };
 
 const API_BASE_URL = getApiBaseUrl();
