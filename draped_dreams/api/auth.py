@@ -9,11 +9,11 @@ from frappe.utils import cint, today
 
 
 @frappe.whitelist(allow_guest=True)
-def register_user(first_name, last_name, email, phone, user_password, confirm_password):
+def register_user(first_name, last_name, email, phone, password, confirm_password):
 	"""Register a new user"""
 	try:
 		# Validate input
-		if not all([first_name, last_name, email, phone, user_password, confirm_password]):
+		if not all([first_name, last_name, email, phone, password, confirm_password]):
 			return {"success": False, "message": "All fields are required"}
 
 		# Input validation
@@ -26,10 +26,10 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 		if len(phone.strip()) < 10:
 			return {"success": False, "message": "Phone number must be at least 10 digits"}
 
-		if len(user_password) < 8:
+		if len(password) < 8:
 			return {"success": False, "message": "Password must be at least 8 characters"}
 
-		if user_password != confirm_password:
+		if password != confirm_password:
 			return {"success": False, "message": "Passwords do not match"}
 
 		# Check if email already exists
@@ -37,7 +37,7 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 			return {"success": False, "message": "Email already registered"}
 
 		# Create new registration using Frappe's ORM
-		hashed_password = hashlib.sha256(user_password.encode()).hexdigest()
+		hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
 		# Create new document using Frappe's safe methods
 		new_user = frappe.get_doc(
@@ -48,7 +48,7 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 				"last_name": last_name,
 				"email": email,
 				"phone": phone,
-				"user_password": hashed_password,
+				"password": hashed_password,
 				"confirm_password": hashed_password,
 				"status": "Active",
 				"registration_date": today(),
