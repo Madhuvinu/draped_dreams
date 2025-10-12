@@ -15,6 +15,19 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 		if not all([first_name, last_name, email, phone, user_password, confirm_password]):
 			return {"success": False, "message": "All fields are required"}
 
+		# Input validation
+		if len(first_name.strip()) < 2 or len(last_name.strip()) < 2:
+			return {"success": False, "message": "Name must be at least 2 characters"}
+
+		if not email or "@" not in email or "." not in email:
+			return {"success": False, "message": "Invalid email format"}
+
+		if len(phone.strip()) < 10:
+			return {"success": False, "message": "Phone number must be at least 10 digits"}
+
+		if len(user_password) < 8:
+			return {"success": False, "message": "Password must be at least 8 characters"}
+
 		if user_password != confirm_password:
 			return {"success": False, "message": "Passwords do not match"}
 
@@ -22,18 +35,27 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 		if frappe.db.exists("Register", {"email": email}):
 			return {"success": False, "message": "Email already registered"}
 
-		# Create new registration directly in database to bypass doctype validation
+		# Create new registration using Frappe's ORM
 		hashed_password = hashlib.sha256(user_password.encode()).hexdigest()
 
-		frappe.db.sql(
-			"""
-			INSERT INTO tabRegister
-			(name, first_name, last_name, email, phone, user_password,
-			 confirm_password, status, registration_date, creation, modified, docstatus, idx)
-			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 0, 0)
-		""",
-			(email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()),
+		# Create new document using Frappe's safe methods
+		new_user = frappe.get_doc(
+			{
+				"doctype": "Register",
+				"name": email,
+				"first_name": first_name,
+				"last_name": last_name,
+				"email": email,
+				"phone": phone,
+				"user_password": hashed_password,
+				"confirm_password": hashed_password,
+				"status": "Active",
+				"registration_date": today(),
+			}
 		)
+
+		# Insert directly to bypass validation
+		new_user.insert(ignore_permissions=True)
 
 		frappe.db.commit()
 
@@ -52,6 +74,16 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 def login_user(email, password):
 	"""Login user"""
 	try:
+		# Input validation
+		if not email or not password:
+			return {"success": False, "message": "Email and password are required"}
+
+		if not email or "@" not in email or "." not in email:
+			return {"success": False, "message": "Invalid email format"}
+
+		if len(password) < 8:
+			return {"success": False, "message": "Password must be at least 8 characters"}
+
 		# Find user by email
 		user = frappe.db.get_value(
 			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
@@ -207,23 +239,6 @@ def get_product_details(product_name):
 
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Get Product Details Error")
-		return {"success": False, "message": str(e)}
-
-
-@frappe.whitelist(allow_guest=True)
-def debug_password(email):
-	"""Debug password storage"""
-	try:
-		user = frappe.get_doc("Register", email)
-		return {
-			"success": True,
-			"data": {
-				"user_password": repr(user.user_password),
-				"password_length": len(user.user_password),
-				"password_type": str(type(user.user_password)),
-			},
-		}
-	except Exception as e:
 		return {"success": False, "message": str(e)}
 
 
