@@ -23,8 +23,8 @@
  * (c) 2025 Eduardo San Martin Morote
  * @license MIT
  */const Ku=Symbol();var $r;(function(e){e.direct="direct",e.patchObject="patch object",e.patchFunction="patch function"})($r||($r={}));function Uu(){const e=vi(!0),t=e.run(()=>co({}));let n=[],s=[];const r=lo({install(o){r._a=o,o.provide(Ku,r),o.config.globalProperties.$pinia=r,s.forEach(i=>n.push(i)),s=[]},use(o){return!this._a&&!Bu?s.push(o):n.push(o),this},_p:n,_a:null,_e:e,_s:new Map,state:t});return r}const ku={name:"Button",props:{variant:{type:String,default:"primary"},size:{type:String,default:"md"},loading:{type:Boolean,default:!1}},template:`
-    <button 
-      :class="buttonClasses" 
+    <button
+      :class="buttonClasses"
       :disabled="loading"
       @click="$emit('click')"
     >
@@ -32,7 +32,7 @@
       <slot v-else></slot>
     </button>
   `,computed:{buttonClasses(){const e="px-4 py-2 rounded font-medium transition-colors",t={primary:"bg-purple-600 text-white hover:bg-purple-700",secondary:"bg-gray-200 text-gray-900 hover:bg-gray-300",ghost:"bg-transparent text-gray-600 hover:bg-gray-100",outline:"border border-gray-300 text-gray-700 hover:bg-gray-50"},n={sm:"px-3 py-1 text-sm",md:"px-4 py-2",lg:"px-6 py-3 text-lg"};return`${e} ${t[this.variant]} ${n[this.size]}`}}},Wu={name:"TextInput",props:{modelValue:String,type:{type:String,default:"text"},placeholder:String,required:Boolean},emits:["update:modelValue"],template:`
-    <input 
+    <input
       :type="type"
       :placeholder="placeholder"
       :required="required"

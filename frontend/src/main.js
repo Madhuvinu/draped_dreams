@@ -14,8 +14,8 @@ const Button = {
 		loading: { type: Boolean, default: false },
 	},
 	template: `
-    <button 
-      :class="buttonClasses" 
+    <button
+      :class="buttonClasses"
       :disabled="loading"
       @click="$emit('click')"
     >
@@ -52,7 +52,7 @@ const TextInput = {
 	},
 	emits: ["update:modelValue"],
 	template: `
-    <input 
+    <input
       :type="type"
       :placeholder="placeholder"
       :required="required"
