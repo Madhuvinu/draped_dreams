@@ -4,6 +4,7 @@
 
 import frappe
 from frappe.model.document import Document
+import hashlib
 
 
 class Register(Document):
@@ -11,10 +12,9 @@ class Register(Document):
 		# Check if email already exists
 		if frappe.db.exists("Register", {"email": self.email, "name": ["!=", self.name]}):
 			frappe.throw("Email already registered")
-	
+
 	def before_save(self):
 		# Hash password before saving
 		if self.user_password and not self.user_password.startswith('$'):
-			import hashlib
 			self.user_password = hashlib.sha256(self.user_password.encode()).hexdigest()
 			self.confirm_password = self.user_password
