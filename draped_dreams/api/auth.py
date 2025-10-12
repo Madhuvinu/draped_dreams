@@ -87,7 +87,7 @@ def login_user(email, password):
 
 		# Find user by email
 		user = frappe.db.get_value(
-			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
+			"Register", {"email": email}, ["name", "password", "status"], as_dict=True
 		)
 
 		if not user:
@@ -98,7 +98,7 @@ def login_user(email, password):
 
 		# Verify password
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
-		if hashed_password != user.user_password:
+		if hashed_password != user.password:
 			return {"success": False, "message": "Invalid email or password"}
 
 		# Get user details
@@ -257,4 +257,34 @@ def get_categories():
 
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Get Categories Error")
+		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def update_register_doctype():
+	"""Update Register doctype to use correct field names"""
+	try:
+		# Get the Register doctype
+		register_doctype = frappe.get_doc("DocType", "Register")
+		
+		# Check if user_password field exists and rename it to password
+		user_password_field = None
+		for field in register_doctype.fields:
+			if field.fieldname == "user_password":
+				user_password_field = field
+				break
+		
+		if user_password_field:
+			# Rename the field
+			user_password_field.fieldname = "password"
+			user_password_field.label = "Password"
+			register_doctype.save()
+			frappe.db.commit()
+			
+			return {"success": True, "message": "Register doctype updated successfully"}
+		else:
+			return {"success": True, "message": "Register doctype already has correct field names"}
+			
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Update Register Doctype Error")
 		return {"success": False, "message": str(e)}
