@@ -229,7 +229,7 @@ const handleRegister = async () => {
 			last_name: formData.value.lastName,
 			email: formData.value.email,
 			phone: formData.value.phone,
-			user_password: formData.value.password,
+			password: formData.value.password,
 			confirm_password: formData.value.confirmPassword,
 		});
 

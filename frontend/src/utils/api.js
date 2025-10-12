@@ -20,15 +20,21 @@ export const api = {
 		try {
 			console.log("Sending registration request:", userData);
 
-			// Frappe expects JSON data
-			console.log("Sending JSON data:", userData);
+			// Frappe expects form-encoded data, not JSON
+			const formData = new URLSearchParams();
+			Object.keys(userData).forEach(key => {
+				formData.append(key, userData[key]);
+				console.log(`Added to FormData: ${key} = ${userData[key]}`);
+			});
+			
+			console.log("FormData string:", formData.toString());
 
 			const response = await fetch(`${API_BASE_URL}.register_user`, {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
 				},
-				body: JSON.stringify(userData),
+				body: formData,
 			});
 
 			console.log("Response status:", response.status);
@@ -70,12 +76,17 @@ export const api = {
 	// Login
 	async login(email, password) {
 		try {
+			// Frappe expects form-encoded data
+			const formData = new URLSearchParams();
+			formData.append('email', email);
+			formData.append('password', password);
+
 			const response = await fetch(`${API_BASE_URL}.login_user`, {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json",
+					"Content-Type": "application/x-www-form-urlencoded",
 				},
-				body: JSON.stringify({ email, password }),
+				body: formData,
 			});
 
 			const result = await response.json();
