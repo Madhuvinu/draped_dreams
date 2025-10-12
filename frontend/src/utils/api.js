@@ -22,11 +22,11 @@ export const api = {
 
 			// Frappe expects form-encoded data, not JSON
 			const formData = new URLSearchParams();
-			Object.keys(userData).forEach(key => {
+			Object.keys(userData).forEach((key) => {
 				formData.append(key, userData[key]);
 				console.log(`Added to FormData: ${key} = ${userData[key]}`);
 			});
-			
+
 			console.log("FormData string:", formData.toString());
 
 			const response = await fetch(`${API_BASE_URL}.register_user`, {
@@ -78,8 +78,8 @@ export const api = {
 		try {
 			// Frappe expects form-encoded data
 			const formData = new URLSearchParams();
-			formData.append('email', email);
-			formData.append('password', password);
+			formData.append("email", email);
+			formData.append("password", password);
 
 			const response = await fetch(`${API_BASE_URL}.login_user`, {
 				method: "POST",

@@ -24,11 +24,11 @@ class Product(Document):
 	def generate_product_code(self):
 		# Generate a unique product code
 		category_prefix = self.category[:3].upper() if self.category else "PRD"
-	import secrets
-	import string
+		import secrets
+		import string
 
-	# Generate secure random suffix
-	suffix = "".join(secrets.choice(string.digits) for _ in range(4))
+		# Generate secure random suffix
+		suffix = "".join(secrets.choice(string.digits) for _ in range(4))
 		product_code = f"{category_prefix}-{suffix}"
 
 		# Ensure uniqueness
