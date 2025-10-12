@@ -1,3 +1,5 @@
+import frappe
+
 # Create sample products
 sample_products = [
 	{

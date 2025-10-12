@@ -17,7 +17,7 @@ def get_dashboard_stats():
 
 		return {"status": "success", "data": stats}
 	except Exception as e:
-		frappe.log_error(f"Error getting dashboard stats: {str(e)}")
+		frappe.log_error(f"Error getting dashboard stats: {e!s}")
 		return {"status": "error", "message": "Failed to fetch dashboard statistics"}
 
 
@@ -55,7 +55,7 @@ def get_products():
 
 		return {"status": "success", "data": products}
 	except Exception as e:
-		frappe.log_error(f"Error getting products: {str(e)}")
+		frappe.log_error(f"Error getting products: {e!s}")
 		return {"status": "error", "message": "Failed to fetch products"}
 
 
@@ -87,7 +87,7 @@ def get_customers():
 
 		return {"status": "success", "data": customers}
 	except Exception as e:
-		frappe.log_error(f"Error getting customers: {str(e)}")
+		frappe.log_error(f"Error getting customers: {e!s}")
 		return {"status": "error", "message": "Failed to fetch customers"}
 
 
@@ -119,7 +119,7 @@ def get_orders():
 
 		return {"status": "success", "data": orders}
 	except Exception as e:
-		frappe.log_error(f"Error getting orders: {str(e)}")
+		frappe.log_error(f"Error getting orders: {e!s}")
 		return {"status": "error", "message": "Failed to fetch orders"}
 
 
@@ -151,5 +151,5 @@ def get_inventory():
 
 		return {"status": "success", "data": inventory}
 	except Exception as e:
-		frappe.log_error(f"Error getting inventory: {str(e)}")
+		frappe.log_error(f"Error getting inventory: {e!s}")
 		return {"status": "error", "message": "Failed to fetch inventory"}

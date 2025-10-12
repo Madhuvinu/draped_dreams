@@ -1,1 +1,777 @@
-import{f as U,a as r,c as n,g as H,n as J,r as c,o as E,b as o,h as a,w as v,i as S,v as $,F as P,d as L,j as A,t as g,e as j,k as x,l as Q,m as B}from"./index-7e68fe30.js";import{_ as y,a as q,b as D,c as p}from"./FeatherIcon-f80f6860.js";const F={__name:"Badge",props:{variant:{type:String,default:"default"},size:{type:String,default:"sm"},class:String},setup(I){const m=I,f=U(()=>{const l="inline-flex items-center font-medium rounded-full",i={default:"bg-gray-100 text-gray-800",primary:"bg-purple-100 text-purple-800",secondary:"bg-blue-100 text-blue-800",success:"bg-green-100 text-green-800",warning:"bg-yellow-100 text-yellow-800",danger:"bg-red-100 text-red-800",info:"bg-blue-100 text-blue-800"},u={xs:"px-2 py-0.5 text-xs",sm:"px-2.5 py-0.5 text-xs",md:"px-3 py-1 text-sm",lg:"px-4 py-1.5 text-base"},d=i[m.variant]||i.default,b=u[m.size]||u.sm;return m.class?`${l} ${d} ${b} ${m.class}`:`${l} ${d} ${b}`});return(l,i)=>(r(),n("span",{class:J(f.value)},[H(l.$slots,"default")],2))}},G={class:"min-h-screen bg-gray-50"},K={class:"bg-white shadow-sm border-b"},X={class:"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"},Y={class:"flex justify-between items-center py-4"},Z={class:"flex items-center"},ee={class:"h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3"},te={class:"flex items-center space-x-4"},se={class:"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"},oe={class:"flex mb-8"},ae={class:"bg-white rounded-lg shadow p-6 mb-8"},le={class:"grid grid-cols-1 md:grid-cols-4 gap-4"},re=["value"],ne={key:0,class:"text-center py-12"},ie={key:1,class:"text-center py-12"},ue={class:"text-gray-600 mb-4"},de={key:2,class:"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"},ce=["onClick"],ge={class:"aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center relative"},pe=["src","alt"],me={class:"absolute top-2 right-2"},ve={class:"absolute top-2 left-2"},fe={class:"p-4"},xe={class:"font-semibold text-gray-900 mb-2"},ye={class:"text-sm text-gray-600 mb-3 line-clamp-2"},be={class:"flex items-center justify-between mb-3"},he={class:"text-lg font-bold text-purple-600"},we={key:0,class:"text-sm text-gray-500 line-through ml-2"},_e={class:"flex items-center"},ke={class:"flex text-yellow-400"},Ce={class:"text-xs text-gray-500 ml-1"},Se={class:"flex justify-between items-center"},$e={key:3,class:"text-center py-12"},Ie={__name:"Products",setup(I){const m=c([]),f=c([]),l=c(""),i=c(""),u=c(""),d=c("featured"),b=c(!1),h=c(""),C=c(["Silk","Cotton","Designer","Wedding","Casual","Party"]),w=c([]),z=U(()=>{let s=[...w.value];switch(l.value&&(s=s.filter(e=>e.product_name.toLowerCase().includes(l.value.toLowerCase())||e.description.toLowerCase().includes(l.value.toLowerCase()))),i.value&&(s=s.filter(e=>e.category===i.value)),u.value&&(s=s.filter(e=>{const t=e.price;switch(u.value){case"0-5000":return t<5e3;case"5000-15000":return t>=5e3&&t<=15e3;case"15000-30000":return t>=15e3&&t<=3e4;case"30000+":return t>3e4;default:return!0}})),d.value){case"price-low":s.sort((e,t)=>e.price-t.price);break;case"price-high":s.sort((e,t)=>t.price-e.price);break;case"newest":s.sort((e,t)=>new Date(t.created_date)-new Date(e.created_date));break;case"popular":s.sort((e,t)=>(t.rating||0)-(e.rating||0));break;case"featured":s.sort((e,t)=>e.featured&&!t.featured?-1:!e.featured&&t.featured?1:(t.rating||0)-(e.rating||0));break}return s}),M=s=>s===0?"danger":s<=5?"warning":"success",O=s=>{m.value.push(s),localStorage.setItem("cart",JSON.stringify(m.value)),console.log("Added to cart:",s.product_name)},R=s=>{const e=f.value.findIndex(t=>t.name===s.name);e>-1?f.value.splice(e,1):f.value.push(s),localStorage.setItem("wishlist",JSON.stringify(f.value))},V=s=>f.value.some(e=>e.name===s),T=()=>{l.value="",i.value="",u.value="",d.value="featured"},_=()=>{},N=async()=>{b.value=!0,h.value="";try{console.log("Loading products with filters:",{category:i.value,search:l.value,price_range:u.value,sort_by:d.value,limit:50});const s=await D.getProducts({category:i.value,search:l.value,price_range:u.value,sort_by:d.value,limit:50});console.log("API result:",s),s.success?(console.log("Raw products data:",s.data),w.value=s.data.map(e=>({id:e.name,name:e.product_name,product_name:e.product_name,description:e.description,price:e.price,originalPrice:e.original_price,category:e.category,stock:e.stock_quantity,rating:e.rating||0,featured:e.featured,image:e.product_image,gallery_images:e.gallery_images||[]})),console.log("Processed products:",w.value)):(h.value=s.message,console.error("API error:",s.message))}catch(s){h.value="Failed to load products",console.error("Load products error:",s)}finally{b.value=!1}},W=async()=>{try{console.log("Loading categories...");const s=await D.getCategories();console.log("Categories API result:",s),s.success&&(C.value=s.data,console.log("Loaded categories:",C.value))}catch(s){console.error("Load categories error:",s)}};return E(async()=>{console.log("Products page mounted, initializing...");const s=localStorage.getItem("cart");s&&(m.value=JSON.parse(s));const e=localStorage.getItem("wishlist");e&&(f.value=JSON.parse(e)),console.log("Initial state:",{selectedCategory:i.value,searchQuery:l.value,priceRange:u.value,sortBy:d.value}),await Promise.all([N(),W()]),console.log("Initialization complete. Products loaded:",w.value.length)}),(s,e)=>(r(),n("div",G,[o("header",K,[o("div",X,[o("div",Y,[o("div",Z,[o("div",ee,[a(p,{name:"shopping-bag",class:"text-white"})]),e[7]||(e[7]=o("h1",{class:"text-2xl font-bold text-gray-900"},"Draped Dreams",-1))]),o("div",te,[a(y,{variant:"ghost",size:"sm",onClick:e[0]||(e[0]=t=>s.$router.push("/cart"))},{default:v(()=>[a(p,{name:"shopping-cart",class:"w-5 h-5 mr-2"}),x(" Cart ("+g(m.value.length)+") ",1)]),_:1}),a(y,{variant:"ghost",size:"sm",onClick:e[1]||(e[1]=t=>s.$router.push("/login"))},{default:v(()=>[a(p,{name:"user",class:"w-5 h-5 mr-2"}),e[8]||(e[8]=x(" Login ",-1))]),_:1})])])])]),o("main",se,[o("nav",oe,[a(y,{variant:"ghost",size:"sm",onClick:e[2]||(e[2]=t=>s.$router.push("/"))},{default:v(()=>[a(p,{name:"home",class:"w-4 h-4 mr-2"}),e[9]||(e[9]=x(" Home ",-1))]),_:1}),e[10]||(e[10]=o("span",{class:"mx-2 text-gray-400"},"/",-1)),e[11]||(e[11]=o("span",{class:"text-gray-600"},"Products",-1))]),o("div",ae,[o("div",le,[o("div",null,[e[12]||(e[12]=o("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Search",-1)),a(q,{modelValue:l.value,"onUpdate:modelValue":e[3]||(e[3]=t=>l.value=t),placeholder:"Search sarees...",onInput:_},null,8,["modelValue"])]),o("div",null,[e[14]||(e[14]=o("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Category",-1)),S(o("select",{"onUpdate:modelValue":e[4]||(e[4]=t=>i.value=t),onChange:_,class:"w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"},[e[13]||(e[13]=o("option",{value:""},"All Categories",-1)),(r(!0),n(P,null,L(C.value,t=>(r(),n("option",{key:t,value:t},g(t),9,re))),128))],544),[[$,i.value]])]),o("div",null,[e[16]||(e[16]=o("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Price Range",-1)),S(o("select",{"onUpdate:modelValue":e[5]||(e[5]=t=>u.value=t),onChange:_,class:"w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"},[...e[15]||(e[15]=[A('<option value="">All Prices</option><option value="0-5000">Under ₹5,000</option><option value="5000-15000">₹5,000 - ₹15,000</option><option value="15000-30000">₹15,000 - ₹30,000</option><option value="30000+">Above ₹30,000</option>',5)])],544),[[$,u.value]])]),o("div",null,[e[18]||(e[18]=o("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Sort By",-1)),S(o("select",{"onUpdate:modelValue":e[6]||(e[6]=t=>d.value=t),onChange:_,class:"w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"},[...e[17]||(e[17]=[A('<option value="featured">Featured</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="newest">Newest First</option><option value="popular">Most Popular</option>',5)])],544),[[$,d.value]])])])]),b.value?(r(),n("div",ne,[...e[19]||(e[19]=[o("div",{class:"inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"},null,-1),o("p",{class:"mt-2 text-gray-600"},"Loading products...",-1)])])):h.value?(r(),n("div",ie,[a(p,{name:"alert-circle",class:"w-16 h-16 text-red-400 mx-auto mb-4"}),e[21]||(e[21]=o("h3",{class:"text-lg font-medium text-gray-900 mb-2"},"Error loading products",-1)),o("p",ue,g(h.value),1),a(y,{onClick:N},{default:v(()=>[...e[20]||(e[20]=[x("Try Again",-1)])]),_:1})])):(r(),n("div",de,[(r(!0),n(P,null,L(z.value,t=>(r(),n("div",{key:t.id,class:"bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer",onClick:k=>s.$router.push(`/product/${t.id}`)},[o("div",ge,[t.image?(r(),n("img",{key:0,src:t.image,alt:t.product_name,class:"w-full h-full object-cover"},null,8,pe)):(r(),Q(p,{key:1,name:"image",class:"w-16 h-16 text-purple-400"})),o("div",me,[a(F,{variant:M(t.stock)},{default:v(()=>[x(g(t.stock)+" left ",1)]),_:2},1032,["variant"])]),o("div",ve,[a(F,{variant:"secondary",class:"text-xs"},{default:v(()=>[x(g(t.category),1)]),_:2},1024)])]),o("div",fe,[o("h3",xe,g(t.name),1),o("p",ye,g(t.description),1),o("div",be,[o("div",null,[o("span",he,"₹"+g(t.price.toLocaleString()),1),t.originalPrice?(r(),n("span",we," ₹"+g(t.originalPrice.toLocaleString()),1)):j("",!0)]),o("div",_e,[o("div",ke,[(r(),n(P,null,L(5,k=>a(p,{key:k,name:"star",class:"w-3 h-3 fill-current"})),64))]),o("span",Ce,"("+g(t.rating)+")",1)])]),o("div",Se,[a(y,{variant:"outline",size:"sm",onClick:B(k=>O(t),["stop"]),disabled:t.stock===0},{default:v(()=>[a(p,{name:"plus",class:"w-4 h-4 mr-1"}),e[22]||(e[22]=x(" Add to Cart ",-1))]),_:1},8,["onClick","disabled"]),a(y,{variant:"ghost",size:"sm",onClick:B(k=>R(t),["stop"])},{default:v(()=>[a(p,{name:(V(t.id),"heart"),class:J(V(t.id)?"text-red-500 fill-current":"text-gray-400")},null,8,["name","class"])]),_:2},1032,["onClick"])])])],8,ce))),128))])),z.value.length===0?(r(),n("div",$e,[a(p,{name:"search",class:"w-16 h-16 text-gray-400 mx-auto mb-4"}),e[24]||(e[24]=o("h3",{class:"text-lg font-medium text-gray-900 mb-2"},"No sarees found",-1)),e[25]||(e[25]=o("p",{class:"text-gray-600 mb-4"},"Try adjusting your search or filter criteria",-1)),a(y,{onClick:T},{default:v(()=>[...e[23]||(e[23]=[x("Clear Filters",-1)])]),_:1})])):j("",!0)])]))}};export{Ie as default};
+import {
+	f as U,
+	a as r,
+	c as n,
+	g as H,
+	n as J,
+	r as c,
+	o as E,
+	b as o,
+	h as a,
+	w as v,
+	i as S,
+	v as $,
+	F as P,
+	d as L,
+	j as A,
+	t as g,
+	e as j,
+	k as x,
+	l as Q,
+	m as B,
+} from "./index-7e68fe30.js";
+import { _ as y, a as q, b as D, c as p } from "./FeatherIcon-f80f6860.js";
+const F = {
+		__name: "Badge",
+		props: {
+			variant: { type: String, default: "default" },
+			size: { type: String, default: "sm" },
+			class: String,
+		},
+		setup(I) {
+			const m = I,
+				f = U(() => {
+					const l = "inline-flex items-center font-medium rounded-full",
+						i = {
+							default: "bg-gray-100 text-gray-800",
+							primary: "bg-purple-100 text-purple-800",
+							secondary: "bg-blue-100 text-blue-800",
+							success: "bg-green-100 text-green-800",
+							warning: "bg-yellow-100 text-yellow-800",
+							danger: "bg-red-100 text-red-800",
+							info: "bg-blue-100 text-blue-800",
+						},
+						u = {
+							xs: "px-2 py-0.5 text-xs",
+							sm: "px-2.5 py-0.5 text-xs",
+							md: "px-3 py-1 text-sm",
+							lg: "px-4 py-1.5 text-base",
+						},
+						d = i[m.variant] || i.default,
+						b = u[m.size] || u.sm;
+					return m.class ? `${l} ${d} ${b} ${m.class}` : `${l} ${d} ${b}`;
+				});
+			return (l, i) => (r(), n("span", { class: J(f.value) }, [H(l.$slots, "default")], 2));
+		},
+	},
+	G = { class: "min-h-screen bg-gray-50" },
+	K = { class: "bg-white shadow-sm border-b" },
+	X = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	Y = { class: "flex justify-between items-center py-4" },
+	Z = { class: "flex items-center" },
+	ee = { class: "h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3" },
+	te = { class: "flex items-center space-x-4" },
+	se = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" },
+	oe = { class: "flex mb-8" },
+	ae = { class: "bg-white rounded-lg shadow p-6 mb-8" },
+	le = { class: "grid grid-cols-1 md:grid-cols-4 gap-4" },
+	re = ["value"],
+	ne = { key: 0, class: "text-center py-12" },
+	ie = { key: 1, class: "text-center py-12" },
+	ue = { class: "text-gray-600 mb-4" },
+	de = { key: 2, class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" },
+	ce = ["onClick"],
+	ge = {
+		class: "aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center relative",
+	},
+	pe = ["src", "alt"],
+	me = { class: "absolute top-2 right-2" },
+	ve = { class: "absolute top-2 left-2" },
+	fe = { class: "p-4" },
+	xe = { class: "font-semibold text-gray-900 mb-2" },
+	ye = { class: "text-sm text-gray-600 mb-3 line-clamp-2" },
+	be = { class: "flex items-center justify-between mb-3" },
+	he = { class: "text-lg font-bold text-purple-600" },
+	we = { key: 0, class: "text-sm text-gray-500 line-through ml-2" },
+	_e = { class: "flex items-center" },
+	ke = { class: "flex text-yellow-400" },
+	Ce = { class: "text-xs text-gray-500 ml-1" },
+	Se = { class: "flex justify-between items-center" },
+	$e = { key: 3, class: "text-center py-12" },
+	Ie = {
+		__name: "Products",
+		setup(I) {
+			const m = c([]),
+				f = c([]),
+				l = c(""),
+				i = c(""),
+				u = c(""),
+				d = c("featured"),
+				b = c(!1),
+				h = c(""),
+				C = c(["Silk", "Cotton", "Designer", "Wedding", "Casual", "Party"]),
+				w = c([]),
+				z = U(() => {
+					let s = [...w.value];
+					switch (
+						(l.value &&
+							(s = s.filter(
+								(e) =>
+									e.product_name.toLowerCase().includes(l.value.toLowerCase()) ||
+									e.description.toLowerCase().includes(l.value.toLowerCase())
+							)),
+						i.value && (s = s.filter((e) => e.category === i.value)),
+						u.value &&
+							(s = s.filter((e) => {
+								const t = e.price;
+								switch (u.value) {
+									case "0-5000":
+										return t < 5e3;
+									case "5000-15000":
+										return t >= 5e3 && t <= 15e3;
+									case "15000-30000":
+										return t >= 15e3 && t <= 3e4;
+									case "30000+":
+										return t > 3e4;
+									default:
+										return !0;
+								}
+							})),
+						d.value)
+					) {
+						case "price-low":
+							s.sort((e, t) => e.price - t.price);
+							break;
+						case "price-high":
+							s.sort((e, t) => t.price - e.price);
+							break;
+						case "newest":
+							s.sort((e, t) => new Date(t.created_date) - new Date(e.created_date));
+							break;
+						case "popular":
+							s.sort((e, t) => (t.rating || 0) - (e.rating || 0));
+							break;
+						case "featured":
+							s.sort((e, t) =>
+								e.featured && !t.featured
+									? -1
+									: !e.featured && t.featured
+									? 1
+									: (t.rating || 0) - (e.rating || 0)
+							);
+							break;
+					}
+					return s;
+				}),
+				M = (s) => (s === 0 ? "danger" : s <= 5 ? "warning" : "success"),
+				O = (s) => {
+					m.value.push(s),
+						localStorage.setItem("cart", JSON.stringify(m.value)),
+						console.log("Added to cart:", s.product_name);
+				},
+				R = (s) => {
+					const e = f.value.findIndex((t) => t.name === s.name);
+					e > -1 ? f.value.splice(e, 1) : f.value.push(s),
+						localStorage.setItem("wishlist", JSON.stringify(f.value));
+				},
+				V = (s) => f.value.some((e) => e.name === s),
+				T = () => {
+					(l.value = ""), (i.value = ""), (u.value = ""), (d.value = "featured");
+				},
+				_ = () => {},
+				N = async () => {
+					(b.value = !0), (h.value = "");
+					try {
+						console.log("Loading products with filters:", {
+							category: i.value,
+							search: l.value,
+							price_range: u.value,
+							sort_by: d.value,
+							limit: 50,
+						});
+						const s = await D.getProducts({
+							category: i.value,
+							search: l.value,
+							price_range: u.value,
+							sort_by: d.value,
+							limit: 50,
+						});
+						console.log("API result:", s),
+							s.success
+								? (console.log("Raw products data:", s.data),
+								  (w.value = s.data.map((e) => ({
+										id: e.name,
+										name: e.product_name,
+										product_name: e.product_name,
+										description: e.description,
+										price: e.price,
+										originalPrice: e.original_price,
+										category: e.category,
+										stock: e.stock_quantity,
+										rating: e.rating || 0,
+										featured: e.featured,
+										image: e.product_image,
+										gallery_images: e.gallery_images || [],
+								  }))),
+								  console.log("Processed products:", w.value))
+								: ((h.value = s.message), console.error("API error:", s.message));
+					} catch (s) {
+						(h.value = "Failed to load products"),
+							console.error("Load products error:", s);
+					} finally {
+						b.value = !1;
+					}
+				},
+				W = async () => {
+					try {
+						console.log("Loading categories...");
+						const s = await D.getCategories();
+						console.log("Categories API result:", s),
+							s.success &&
+								((C.value = s.data), console.log("Loaded categories:", C.value));
+					} catch (s) {
+						console.error("Load categories error:", s);
+					}
+				};
+			return (
+				E(async () => {
+					console.log("Products page mounted, initializing...");
+					const s = localStorage.getItem("cart");
+					s && (m.value = JSON.parse(s));
+					const e = localStorage.getItem("wishlist");
+					e && (f.value = JSON.parse(e)),
+						console.log("Initial state:", {
+							selectedCategory: i.value,
+							searchQuery: l.value,
+							priceRange: u.value,
+							sortBy: d.value,
+						}),
+						await Promise.all([N(), W()]),
+						console.log("Initialization complete. Products loaded:", w.value.length);
+				}),
+				(s, e) => (
+					r(),
+					n("div", G, [
+						o("header", K, [
+							o("div", X, [
+								o("div", Y, [
+									o("div", Z, [
+										o("div", ee, [
+											a(p, { name: "shopping-bag", class: "text-white" }),
+										]),
+										e[7] ||
+											(e[7] = o(
+												"h1",
+												{ class: "text-2xl font-bold text-gray-900" },
+												"Draped Dreams",
+												-1
+											)),
+									]),
+									o("div", te, [
+										a(
+											y,
+											{
+												variant: "ghost",
+												size: "sm",
+												onClick:
+													e[0] ||
+													(e[0] = (t) => s.$router.push("/cart")),
+											},
+											{
+												default: v(() => [
+													a(p, {
+														name: "shopping-cart",
+														class: "w-5 h-5 mr-2",
+													}),
+													x(" Cart (" + g(m.value.length) + ") ", 1),
+												]),
+												_: 1,
+											}
+										),
+										a(
+											y,
+											{
+												variant: "ghost",
+												size: "sm",
+												onClick:
+													e[1] ||
+													(e[1] = (t) => s.$router.push("/login")),
+											},
+											{
+												default: v(() => [
+													a(p, { name: "user", class: "w-5 h-5 mr-2" }),
+													e[8] || (e[8] = x(" Login ", -1)),
+												]),
+												_: 1,
+											}
+										),
+									]),
+								]),
+							]),
+						]),
+						o("main", se, [
+							o("nav", oe, [
+								a(
+									y,
+									{
+										variant: "ghost",
+										size: "sm",
+										onClick: e[2] || (e[2] = (t) => s.$router.push("/")),
+									},
+									{
+										default: v(() => [
+											a(p, { name: "home", class: "w-4 h-4 mr-2" }),
+											e[9] || (e[9] = x(" Home ", -1)),
+										]),
+										_: 1,
+									}
+								),
+								e[10] ||
+									(e[10] = o("span", { class: "mx-2 text-gray-400" }, "/", -1)),
+								e[11] ||
+									(e[11] = o(
+										"span",
+										{ class: "text-gray-600" },
+										"Products",
+										-1
+									)),
+							]),
+							o("div", ae, [
+								o("div", le, [
+									o("div", null, [
+										e[12] ||
+											(e[12] = o(
+												"label",
+												{
+													class: "block text-sm font-medium text-gray-700 mb-2",
+												},
+												"Search",
+												-1
+											)),
+										a(
+											q,
+											{
+												modelValue: l.value,
+												"onUpdate:modelValue":
+													e[3] || (e[3] = (t) => (l.value = t)),
+												placeholder: "Search sarees...",
+												onInput: _,
+											},
+											null,
+											8,
+											["modelValue"]
+										),
+									]),
+									o("div", null, [
+										e[14] ||
+											(e[14] = o(
+												"label",
+												{
+													class: "block text-sm font-medium text-gray-700 mb-2",
+												},
+												"Category",
+												-1
+											)),
+										S(
+											o(
+												"select",
+												{
+													"onUpdate:modelValue":
+														e[4] || (e[4] = (t) => (i.value = t)),
+													onChange: _,
+													class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+												},
+												[
+													e[13] ||
+														(e[13] = o(
+															"option",
+															{ value: "" },
+															"All Categories",
+															-1
+														)),
+													(r(!0),
+													n(
+														P,
+														null,
+														L(
+															C.value,
+															(t) => (
+																r(),
+																n(
+																	"option",
+																	{ key: t, value: t },
+																	g(t),
+																	9,
+																	re
+																)
+															)
+														),
+														128
+													)),
+												],
+												544
+											),
+											[[$, i.value]]
+										),
+									]),
+									o("div", null, [
+										e[16] ||
+											(e[16] = o(
+												"label",
+												{
+													class: "block text-sm font-medium text-gray-700 mb-2",
+												},
+												"Price Range",
+												-1
+											)),
+										S(
+											o(
+												"select",
+												{
+													"onUpdate:modelValue":
+														e[5] || (e[5] = (t) => (u.value = t)),
+													onChange: _,
+													class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+												},
+												[
+													...(e[15] ||
+														(e[15] = [
+															A(
+																'<option value="">All Prices</option><option value="0-5000">Under ₹5,000</option><option value="5000-15000">₹5,000 - ₹15,000</option><option value="15000-30000">₹15,000 - ₹30,000</option><option value="30000+">Above ₹30,000</option>',
+																5
+															),
+														])),
+												],
+												544
+											),
+											[[$, u.value]]
+										),
+									]),
+									o("div", null, [
+										e[18] ||
+											(e[18] = o(
+												"label",
+												{
+													class: "block text-sm font-medium text-gray-700 mb-2",
+												},
+												"Sort By",
+												-1
+											)),
+										S(
+											o(
+												"select",
+												{
+													"onUpdate:modelValue":
+														e[6] || (e[6] = (t) => (d.value = t)),
+													onChange: _,
+													class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+												},
+												[
+													...(e[17] ||
+														(e[17] = [
+															A(
+																'<option value="featured">Featured</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="newest">Newest First</option><option value="popular">Most Popular</option>',
+																5
+															),
+														])),
+												],
+												544
+											),
+											[[$, d.value]]
+										),
+									]),
+								]),
+							]),
+							b.value
+								? (r(),
+								  n("div", ne, [
+										...(e[19] ||
+											(e[19] = [
+												o(
+													"div",
+													{
+														class: "inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600",
+													},
+													null,
+													-1
+												),
+												o(
+													"p",
+													{ class: "mt-2 text-gray-600" },
+													"Loading products...",
+													-1
+												),
+											])),
+								  ]))
+								: h.value
+								? (r(),
+								  n("div", ie, [
+										a(p, {
+											name: "alert-circle",
+											class: "w-16 h-16 text-red-400 mx-auto mb-4",
+										}),
+										e[21] ||
+											(e[21] = o(
+												"h3",
+												{
+													class: "text-lg font-medium text-gray-900 mb-2",
+												},
+												"Error loading products",
+												-1
+											)),
+										o("p", ue, g(h.value), 1),
+										a(
+											y,
+											{ onClick: N },
+											{
+												default: v(() => [
+													...(e[20] || (e[20] = [x("Try Again", -1)])),
+												]),
+												_: 1,
+											}
+										),
+								  ]))
+								: (r(),
+								  n("div", de, [
+										(r(!0),
+										n(
+											P,
+											null,
+											L(
+												z.value,
+												(t) => (
+													r(),
+													n(
+														"div",
+														{
+															key: t.id,
+															class: "bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer",
+															onClick: (k) =>
+																s.$router.push(`/product/${t.id}`),
+														},
+														[
+															o("div", ge, [
+																t.image
+																	? (r(),
+																	  n(
+																			"img",
+																			{
+																				key: 0,
+																				src: t.image,
+																				alt: t.product_name,
+																				class: "w-full h-full object-cover",
+																			},
+																			null,
+																			8,
+																			pe
+																	  ))
+																	: (r(),
+																	  Q(p, {
+																			key: 1,
+																			name: "image",
+																			class: "w-16 h-16 text-purple-400",
+																	  })),
+																o("div", me, [
+																	a(
+																		F,
+																		{ variant: M(t.stock) },
+																		{
+																			default: v(() => [
+																				x(
+																					g(t.stock) +
+																						" left ",
+																					1
+																				),
+																			]),
+																			_: 2,
+																		},
+																		1032,
+																		["variant"]
+																	),
+																]),
+																o("div", ve, [
+																	a(
+																		F,
+																		{
+																			variant: "secondary",
+																			class: "text-xs",
+																		},
+																		{
+																			default: v(() => [
+																				x(
+																					g(t.category),
+																					1
+																				),
+																			]),
+																			_: 2,
+																		},
+																		1024
+																	),
+																]),
+															]),
+															o("div", fe, [
+																o("h3", xe, g(t.name), 1),
+																o("p", ye, g(t.description), 1),
+																o("div", be, [
+																	o("div", null, [
+																		o(
+																			"span",
+																			he,
+																			"₹" +
+																				g(
+																					t.price.toLocaleString()
+																				),
+																			1
+																		),
+																		t.originalPrice
+																			? (r(),
+																			  n(
+																					"span",
+																					we,
+																					" ₹" +
+																						g(
+																							t.originalPrice.toLocaleString()
+																						),
+																					1
+																			  ))
+																			: j("", !0),
+																	]),
+																	o("div", _e, [
+																		o("div", ke, [
+																			(r(),
+																			n(
+																				P,
+																				null,
+																				L(5, (k) =>
+																					a(p, {
+																						key: k,
+																						name: "star",
+																						class: "w-3 h-3 fill-current",
+																					})
+																				),
+																				64
+																			)),
+																		]),
+																		o(
+																			"span",
+																			Ce,
+																			"(" +
+																				g(t.rating) +
+																				")",
+																			1
+																		),
+																	]),
+																]),
+																o("div", Se, [
+																	a(
+																		y,
+																		{
+																			variant: "outline",
+																			size: "sm",
+																			onClick: B(
+																				(k) => O(t),
+																				["stop"]
+																			),
+																			disabled:
+																				t.stock === 0,
+																		},
+																		{
+																			default: v(() => [
+																				a(p, {
+																					name: "plus",
+																					class: "w-4 h-4 mr-1",
+																				}),
+																				e[22] ||
+																					(e[22] = x(
+																						" Add to Cart ",
+																						-1
+																					)),
+																			]),
+																			_: 1,
+																		},
+																		8,
+																		["onClick", "disabled"]
+																	),
+																	a(
+																		y,
+																		{
+																			variant: "ghost",
+																			size: "sm",
+																			onClick: B(
+																				(k) => R(t),
+																				["stop"]
+																			),
+																		},
+																		{
+																			default: v(() => [
+																				a(
+																					p,
+																					{
+																						name:
+																							(V(
+																								t.id
+																							),
+																							"heart"),
+																						class: J(
+																							V(t.id)
+																								? "text-red-500 fill-current"
+																								: "text-gray-400"
+																						),
+																					},
+																					null,
+																					8,
+																					[
+																						"name",
+																						"class",
+																					]
+																				),
+																			]),
+																			_: 2,
+																		},
+																		1032,
+																		["onClick"]
+																	),
+																]),
+															]),
+														],
+														8,
+														ce
+													)
+												)
+											),
+											128
+										)),
+								  ])),
+							z.value.length === 0
+								? (r(),
+								  n("div", $e, [
+										a(p, {
+											name: "search",
+											class: "w-16 h-16 text-gray-400 mx-auto mb-4",
+										}),
+										e[24] ||
+											(e[24] = o(
+												"h3",
+												{
+													class: "text-lg font-medium text-gray-900 mb-2",
+												},
+												"No sarees found",
+												-1
+											)),
+										e[25] ||
+											(e[25] = o(
+												"p",
+												{ class: "text-gray-600 mb-4" },
+												"Try adjusting your search or filter criteria",
+												-1
+											)),
+										a(
+											y,
+											{ onClick: T },
+											{
+												default: v(() => [
+													...(e[23] ||
+														(e[23] = [x("Clear Filters", -1)])),
+												]),
+												_: 1,
+											}
+										),
+								  ]))
+								: j("", !0),
+						]),
+					])
+				)
+			);
+		},
+	};
+export { Ie as default };

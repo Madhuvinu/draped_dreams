@@ -1,1 +1,359 @@
-import{f as g,a as c,c as l,n as d,p as h,e as p,l as f,g as y}from"./index-175c700f.js";const i="http://dreams.localhost:8002/api/method/draped_dreams.api.auth",z={async register(e){var o;try{console.log("Sending registration request:",e);const s=new URLSearchParams;Object.keys(e).forEach(r=>{s.append(r,e[r]),console.log(`Added to FormData: ${r} = ${e[r]}`)}),console.log("FormData string:",s.toString());const a=await fetch(`${i}.register_user`,{method:"POST",body:s});if(console.log("Response status:",a.status),console.log("Response headers:",a.headers),!a.ok)return console.error("HTTP error:",a.status,a.statusText),{success:!1,message:`HTTP ${a.status}: ${a.statusText}`};let t;try{t=await a.json(),console.log("Response data:",t)}catch(r){console.error("Failed to parse JSON response:",r);const n=await a.text();return console.log("Raw response:",n),{success:!1,message:"Invalid response format from server"}}return t.message&&t.message.success?{success:!0,message:t.message.message}:{success:!1,message:((o=t.message)==null?void 0:o.message)||"Registration failed"}}catch(s){return console.error("Registration error:",s),{success:!1,message:"Network error. Please try again."}}},async login(e,o){var s;try{const a=new URLSearchParams;a.append("email",e),a.append("password",o);const r=await(await fetch(`${i}.login_user`,{method:"POST",body:a})).json();return r.message&&r.message.success?{success:!0,message:r.message.message,data:r.message.data}:{success:!1,message:((s=r.message)==null?void 0:s.message)||"Login failed"}}catch(a){return console.error("Login error:",a),{success:!1,message:"Network error. Please try again."}}},async getProducts(e={}){var o;try{const s=new URLSearchParams;e.category&&s.append("category",e.category),e.search&&s.append("search",e.search),e.price_range&&s.append("price_range",e.price_range),e.sort_by&&s.append("sort_by",e.sort_by),e.limit&&s.append("limit",e.limit),e.offset&&s.append("offset",e.offset);const t=await(await fetch(`${i}.get_products?${s}`)).json();return t.message&&t.message.success?{success:!0,data:t.message.data}:{success:!1,message:((o=t.message)==null?void 0:o.message)||"Failed to fetch products"}}catch(s){return console.error("Get products error:",s),{success:!1,message:"Network error. Please try again."}}},async getProductDetails(e){var o;try{const s=new URLSearchParams;s.append("product_name",e);const t=await(await fetch(`${i}.get_product_details`,{method:"POST",body:s})).json();return t.message&&t.message.success?{success:!0,data:t.message.data}:{success:!1,message:((o=t.message)==null?void 0:o.message)||"Failed to fetch product details"}}catch(s){return console.error("Get product details error:",s),{success:!1,message:"Network error. Please try again."}}},async getCategories(){var e;try{const s=await(await fetch(`${i}.get_categories`)).json();return s.message&&s.message.success?{success:!0,data:s.message.data}:{success:!1,message:((e=s.message)==null?void 0:e.message)||"Failed to fetch categories"}}catch(o){return console.error("Get categories error:",o),{success:!1,message:"Network error. Please try again."}}}},b=["id","name","type","value","placeholder","required","autocomplete"],L={__name:"TextInput",props:{id:String,name:String,type:{type:String,default:"text"},modelValue:{type:[String,Number],default:""},placeholder:String,required:Boolean,autocomplete:String,class:String},emits:["update:modelValue","blur","focus"],setup(e,{emit:o}){const s=e,a=g(()=>{const t="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm";return s.class?`${t} ${s.class}`:t});return(t,r)=>(c(),l("input",{id:e.id,name:e.name,type:e.type,value:e.modelValue,placeholder:e.placeholder,required:e.required,autocomplete:e.autocomplete,class:d(a.value),onInput:r[0]||(r[0]=n=>t.$emit("update:modelValue",n.target.value)),onBlur:r[1]||(r[1]=n=>t.$emit("blur",n)),onFocus:r[2]||(r[2]=n=>t.$emit("focus",n))},null,42,b))}},w=["type","disabled"],v={key:0,class:"inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"},M={__name:"Button",props:{type:{type:String,default:"button"},variant:{type:String,default:"primary"},size:{type:String,default:"md"},disabled:Boolean,loading:Boolean,icon:String,class:String},emits:["click"],setup(e,{emit:o}){const s=e,a=g(()=>{const t="inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200",r={primary:"bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500 disabled:bg-purple-300",secondary:"bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 disabled:bg-gray-300",outline:"border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-purple-500 disabled:bg-gray-50",ghost:"text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-purple-500 disabled:text-gray-400",danger:"bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 disabled:bg-red-300",success:"bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 disabled:bg-green-300",warning:"bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-yellow-500 disabled:bg-yellow-300"},n={sm:"px-3 py-1.5 text-sm",md:"px-4 py-2 text-sm",lg:"px-6 py-3 text-base"},u=r[s.variant]||r.primary,m=n[s.size]||n.md;return s.class?`${t} ${u} ${m} ${s.class}`:`${t} ${u} ${m}`});return(t,r)=>{const n=h("FeatherIcon");return c(),l("button",{type:e.type,disabled:e.disabled||e.loading,class:d(a.value),onClick:r[0]||(r[0]=u=>t.$emit("click",u))},[e.loading?(c(),l("div",v)):p("",!0),e.icon&&!e.loading?(c(),f(n,{key:1,name:e.icon,class:"w-4 h-4 mr-2"},null,8,["name"])):p("",!0),y(t.$slots,"default")],10,w)}}},k=["width","height"],$=["d","stroke-width"],S=["stroke-width"],P={__name:"FeatherIcon",props:{name:{type:String,required:!0},size:{type:[String,Number],default:24},strokeWidth:{type:[String,Number],default:2},class:String},setup(e){const o=e,s=g(()=>o.class||""),a={"user-plus":"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2",user:"M20 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2",mail:"M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z",phone:"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",lock:"M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z","check-circle":"M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z","alert-circle":"M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",home:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z","shopping-bag":"M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z","shopping-cart":"M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8",plus:"M12 5v14m7-7H5",heart:"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",search:"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",star:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",image:"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"};return a[o.name]||console.warn(`FeatherIcon: Icon "${o.name}" not found. Available icons:`,Object.keys(a)),(t,r)=>(c(),l("svg",{class:d(s.value),width:e.size,height:e.size,fill:"none",stroke:"currentColor",viewBox:"0 0 24 24",xmlns:"http://www.w3.org/2000/svg"},[a[e.name]?(c(),l("path",{key:0,d:a[e.name],"stroke-linecap":"round","stroke-linejoin":"round","stroke-width":e.strokeWidth},null,8,$)):(c(),l("path",{key:1,d:"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z","stroke-linecap":"round","stroke-linejoin":"round","stroke-width":e.strokeWidth,opacity:"0.3"},null,8,S))],10,k))}};export{M as _,L as a,z as b,P as c};
+import {
+	f as g,
+	a as c,
+	c as l,
+	n as d,
+	p as h,
+	e as p,
+	l as f,
+	g as y,
+} from "./index-175c700f.js";
+const i = "http://dreams.localhost:8002/api/method/draped_dreams.api.auth",
+	z = {
+		async register(e) {
+			var o;
+			try {
+				console.log("Sending registration request:", e);
+				const s = new URLSearchParams();
+				Object.keys(e).forEach((r) => {
+					s.append(r, e[r]), console.log(`Added to FormData: ${r} = ${e[r]}`);
+				}),
+					console.log("FormData string:", s.toString());
+				const a = await fetch(`${i}.register_user`, { method: "POST", body: s });
+				if (
+					(console.log("Response status:", a.status),
+					console.log("Response headers:", a.headers),
+					!a.ok)
+				)
+					return (
+						console.error("HTTP error:", a.status, a.statusText),
+						{ success: !1, message: `HTTP ${a.status}: ${a.statusText}` }
+					);
+				let t;
+				try {
+					(t = await a.json()), console.log("Response data:", t);
+				} catch (r) {
+					console.error("Failed to parse JSON response:", r);
+					const n = await a.text();
+					return (
+						console.log("Raw response:", n),
+						{ success: !1, message: "Invalid response format from server" }
+					);
+				}
+				return t.message && t.message.success
+					? { success: !0, message: t.message.message }
+					: {
+							success: !1,
+							message:
+								((o = t.message) == null ? void 0 : o.message) ||
+								"Registration failed",
+					  };
+			} catch (s) {
+				return (
+					console.error("Registration error:", s),
+					{ success: !1, message: "Network error. Please try again." }
+				);
+			}
+		},
+		async login(e, o) {
+			var s;
+			try {
+				const a = new URLSearchParams();
+				a.append("email", e), a.append("password", o);
+				const r = await (
+					await fetch(`${i}.login_user`, { method: "POST", body: a })
+				).json();
+				return r.message && r.message.success
+					? { success: !0, message: r.message.message, data: r.message.data }
+					: {
+							success: !1,
+							message:
+								((s = r.message) == null ? void 0 : s.message) || "Login failed",
+					  };
+			} catch (a) {
+				return (
+					console.error("Login error:", a),
+					{ success: !1, message: "Network error. Please try again." }
+				);
+			}
+		},
+		async getProducts(e = {}) {
+			var o;
+			try {
+				const s = new URLSearchParams();
+				e.category && s.append("category", e.category),
+					e.search && s.append("search", e.search),
+					e.price_range && s.append("price_range", e.price_range),
+					e.sort_by && s.append("sort_by", e.sort_by),
+					e.limit && s.append("limit", e.limit),
+					e.offset && s.append("offset", e.offset);
+				const t = await (await fetch(`${i}.get_products?${s}`)).json();
+				return t.message && t.message.success
+					? { success: !0, data: t.message.data }
+					: {
+							success: !1,
+							message:
+								((o = t.message) == null ? void 0 : o.message) ||
+								"Failed to fetch products",
+					  };
+			} catch (s) {
+				return (
+					console.error("Get products error:", s),
+					{ success: !1, message: "Network error. Please try again." }
+				);
+			}
+		},
+		async getProductDetails(e) {
+			var o;
+			try {
+				const s = new URLSearchParams();
+				s.append("product_name", e);
+				const t = await (
+					await fetch(`${i}.get_product_details`, { method: "POST", body: s })
+				).json();
+				return t.message && t.message.success
+					? { success: !0, data: t.message.data }
+					: {
+							success: !1,
+							message:
+								((o = t.message) == null ? void 0 : o.message) ||
+								"Failed to fetch product details",
+					  };
+			} catch (s) {
+				return (
+					console.error("Get product details error:", s),
+					{ success: !1, message: "Network error. Please try again." }
+				);
+			}
+		},
+		async getCategories() {
+			var e;
+			try {
+				const s = await (await fetch(`${i}.get_categories`)).json();
+				return s.message && s.message.success
+					? { success: !0, data: s.message.data }
+					: {
+							success: !1,
+							message:
+								((e = s.message) == null ? void 0 : e.message) ||
+								"Failed to fetch categories",
+					  };
+			} catch (o) {
+				return (
+					console.error("Get categories error:", o),
+					{ success: !1, message: "Network error. Please try again." }
+				);
+			}
+		},
+	},
+	b = ["id", "name", "type", "value", "placeholder", "required", "autocomplete"],
+	L = {
+		__name: "TextInput",
+		props: {
+			id: String,
+			name: String,
+			type: { type: String, default: "text" },
+			modelValue: { type: [String, Number], default: "" },
+			placeholder: String,
+			required: Boolean,
+			autocomplete: String,
+			class: String,
+		},
+		emits: ["update:modelValue", "blur", "focus"],
+		setup(e, { emit: o }) {
+			const s = e,
+				a = g(() => {
+					const t =
+						"appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm";
+					return s.class ? `${t} ${s.class}` : t;
+				});
+			return (t, r) => (
+				c(),
+				l(
+					"input",
+					{
+						id: e.id,
+						name: e.name,
+						type: e.type,
+						value: e.modelValue,
+						placeholder: e.placeholder,
+						required: e.required,
+						autocomplete: e.autocomplete,
+						class: d(a.value),
+						onInput:
+							r[0] || (r[0] = (n) => t.$emit("update:modelValue", n.target.value)),
+						onBlur: r[1] || (r[1] = (n) => t.$emit("blur", n)),
+						onFocus: r[2] || (r[2] = (n) => t.$emit("focus", n)),
+					},
+					null,
+					42,
+					b
+				)
+			);
+		},
+	},
+	w = ["type", "disabled"],
+	v = {
+		key: 0,
+		class: "inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2",
+	},
+	M = {
+		__name: "Button",
+		props: {
+			type: { type: String, default: "button" },
+			variant: { type: String, default: "primary" },
+			size: { type: String, default: "md" },
+			disabled: Boolean,
+			loading: Boolean,
+			icon: String,
+			class: String,
+		},
+		emits: ["click"],
+		setup(e, { emit: o }) {
+			const s = e,
+				a = g(() => {
+					const t =
+							"inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200",
+						r = {
+							primary:
+								"bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500 disabled:bg-purple-300",
+							secondary:
+								"bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 disabled:bg-gray-300",
+							outline:
+								"border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-purple-500 disabled:bg-gray-50",
+							ghost: "text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-purple-500 disabled:text-gray-400",
+							danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 disabled:bg-red-300",
+							success:
+								"bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 disabled:bg-green-300",
+							warning:
+								"bg-yellow-600 text-white hover:bg-yellow-700 focus:ring-yellow-500 disabled:bg-yellow-300",
+						},
+						n = {
+							sm: "px-3 py-1.5 text-sm",
+							md: "px-4 py-2 text-sm",
+							lg: "px-6 py-3 text-base",
+						},
+						u = r[s.variant] || r.primary,
+						m = n[s.size] || n.md;
+					return s.class ? `${t} ${u} ${m} ${s.class}` : `${t} ${u} ${m}`;
+				});
+			return (t, r) => {
+				const n = h("FeatherIcon");
+				return (
+					c(),
+					l(
+						"button",
+						{
+							type: e.type,
+							disabled: e.disabled || e.loading,
+							class: d(a.value),
+							onClick: r[0] || (r[0] = (u) => t.$emit("click", u)),
+						},
+						[
+							e.loading ? (c(), l("div", v)) : p("", !0),
+							e.icon && !e.loading
+								? (c(),
+								  f(n, { key: 1, name: e.icon, class: "w-4 h-4 mr-2" }, null, 8, [
+										"name",
+								  ]))
+								: p("", !0),
+							y(t.$slots, "default"),
+						],
+						10,
+						w
+					)
+				);
+			};
+		},
+	},
+	k = ["width", "height"],
+	$ = ["d", "stroke-width"],
+	S = ["stroke-width"],
+	P = {
+		__name: "FeatherIcon",
+		props: {
+			name: { type: String, required: !0 },
+			size: { type: [String, Number], default: 24 },
+			strokeWidth: { type: [String, Number], default: 2 },
+			class: String,
+		},
+		setup(e) {
+			const o = e,
+				s = g(() => o.class || ""),
+				a = {
+					"user-plus": "M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2",
+					user: "M20 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2",
+					mail: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z",
+					phone: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+					lock: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z",
+					"check-circle": "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+					"alert-circle": "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+					home: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+					"shopping-bag": "M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z",
+					"shopping-cart":
+						"M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h8",
+					plus: "M12 5v14m7-7H5",
+					heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z",
+					search: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+					star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+					image: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
+				};
+			return (
+				a[o.name] ||
+					console.warn(
+						`FeatherIcon: Icon "${o.name}" not found. Available icons:`,
+						Object.keys(a)
+					),
+				(t, r) => (
+					c(),
+					l(
+						"svg",
+						{
+							class: d(s.value),
+							width: e.size,
+							height: e.size,
+							fill: "none",
+							stroke: "currentColor",
+							viewBox: "0 0 24 24",
+							xmlns: "http://www.w3.org/2000/svg",
+						},
+						[
+							a[e.name]
+								? (c(),
+								  l(
+										"path",
+										{
+											key: 0,
+											d: a[e.name],
+											"stroke-linecap": "round",
+											"stroke-linejoin": "round",
+											"stroke-width": e.strokeWidth,
+										},
+										null,
+										8,
+										$
+								  ))
+								: (c(),
+								  l(
+										"path",
+										{
+											key: 1,
+											d: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+											"stroke-linecap": "round",
+											"stroke-linejoin": "round",
+											"stroke-width": e.strokeWidth,
+											opacity: "0.3",
+										},
+										null,
+										8,
+										S
+								  )),
+						],
+						10,
+						k
+					)
+				)
+			);
+		},
+	};
+export { M as _, L as a, z as b, P as c };

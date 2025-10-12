@@ -1,1 +1,130 @@
-import{u as b,s as f,a as t,b as l,c,d as e,e as o,w as i,F as g,f as x,g as y,t as v,n as w,k}from"./index-cc0b157d.js";const C={class:"min-h-screen bg-gray-50"},B={class:"flex flex-col h-screen"},D={class:"bg-white shadow-sm border-b"},F={class:"flex items-center justify-between px-4 py-3"},I={class:"bg-white border-b"},S={class:"flex overflow-x-auto"},N={class:"flex-1 overflow-auto p-4"},z={__name:"MobileLayout",setup(R){const d=b(),h=f(),m=[{name:"Dashboard",href:"/dashboard",icon:"home",label:"Dashboard"},{name:"Products",href:"/products",icon:"shopping-bag",label:"Saree Collection"},{name:"Customers",href:"/customers",icon:"users",label:"Customers"},{name:"Orders",href:"/orders",icon:"shopping-cart",label:"Orders"},{name:"Inventory",href:"/inventory",icon:"archive",label:"Inventory"},{name:"Reports",href:"/reports",icon:"bar-chart-2",label:"Reports"}],u=async()=>{await h.logout(),d.push("/login")};return(r,a)=>{const n=t("FeatherIcon"),p=t("Button"),_=t("router-link");return l(),c("div",C,[e("div",B,[e("header",D,[e("div",F,[a[0]||(a[0]=e("h1",{class:"text-lg font-bold text-primary-600"},"Draped Dreams",-1)),o(p,{variant:"ghost",size:"sm",onClick:u,class:"text-gray-600 hover:text-gray-900"},{default:i(()=>[o(n,{name:"log-out",class:"w-4 h-4"})]),_:1})])]),e("nav",I,[e("div",S,[(l(),c(g,null,x(m,s=>o(_,{key:s.name,to:s.href,class:w(["flex-shrink-0 px-4 py-3 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors",{"text-primary-600 border-b-2 border-primary-600":r.$route.name===s.name}])},{default:i(()=>[o(n,{name:s.icon,class:"w-4 h-4 mr-2"},null,8,["name"]),y(" "+v(s.label),1)]),_:2},1032,["to","class"])),64))])]),e("main",N,[k(r.$slots,"default")])])])}}};export{z as default};
+import {
+	u as b,
+	s as f,
+	a as t,
+	b as l,
+	c,
+	d as e,
+	e as o,
+	w as i,
+	F as g,
+	f as x,
+	g as y,
+	t as v,
+	n as w,
+	k,
+} from "./index-cc0b157d.js";
+const C = { class: "min-h-screen bg-gray-50" },
+	B = { class: "flex flex-col h-screen" },
+	D = { class: "bg-white shadow-sm border-b" },
+	F = { class: "flex items-center justify-between px-4 py-3" },
+	I = { class: "bg-white border-b" },
+	S = { class: "flex overflow-x-auto" },
+	N = { class: "flex-1 overflow-auto p-4" },
+	z = {
+		__name: "MobileLayout",
+		setup(R) {
+			const d = b(),
+				h = f(),
+				m = [
+					{ name: "Dashboard", href: "/dashboard", icon: "home", label: "Dashboard" },
+					{
+						name: "Products",
+						href: "/products",
+						icon: "shopping-bag",
+						label: "Saree Collection",
+					},
+					{ name: "Customers", href: "/customers", icon: "users", label: "Customers" },
+					{ name: "Orders", href: "/orders", icon: "shopping-cart", label: "Orders" },
+					{ name: "Inventory", href: "/inventory", icon: "archive", label: "Inventory" },
+					{ name: "Reports", href: "/reports", icon: "bar-chart-2", label: "Reports" },
+				],
+				u = async () => {
+					await h.logout(), d.push("/login");
+				};
+			return (r, a) => {
+				const n = t("FeatherIcon"),
+					p = t("Button"),
+					_ = t("router-link");
+				return (
+					l(),
+					c("div", C, [
+						e("div", B, [
+							e("header", D, [
+								e("div", F, [
+									a[0] ||
+										(a[0] = e(
+											"h1",
+											{ class: "text-lg font-bold text-primary-600" },
+											"Draped Dreams",
+											-1
+										)),
+									o(
+										p,
+										{
+											variant: "ghost",
+											size: "sm",
+											onClick: u,
+											class: "text-gray-600 hover:text-gray-900",
+										},
+										{
+											default: i(() => [
+												o(n, { name: "log-out", class: "w-4 h-4" }),
+											]),
+											_: 1,
+										}
+									),
+								]),
+							]),
+							e("nav", I, [
+								e("div", S, [
+									(l(),
+									c(
+										g,
+										null,
+										x(m, (s) =>
+											o(
+												_,
+												{
+													key: s.name,
+													to: s.href,
+													class: w([
+														"flex-shrink-0 px-4 py-3 text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors",
+														{
+															"text-primary-600 border-b-2 border-primary-600":
+																r.$route.name === s.name,
+														},
+													]),
+												},
+												{
+													default: i(() => [
+														o(
+															n,
+															{
+																name: s.icon,
+																class: "w-4 h-4 mr-2",
+															},
+															null,
+															8,
+															["name"]
+														),
+														y(" " + v(s.label), 1),
+													]),
+													_: 2,
+												},
+												1032,
+												["to", "class"]
+											)
+										),
+										64
+									)),
+								]),
+							]),
+							e("main", N, [k(r.$slots, "default")]),
+						]),
+					])
+				);
+			};
+		},
+	};
+export { z as default };

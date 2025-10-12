@@ -1,1 +1,410 @@
-import{u as V,r as u,g as p,a as c,c as f,b as s,h as a,m as N,t as v,e as w,w as y,k as x}from"./index-1ed802c2.js";import{a as _}from"./api-b634d5e6.js";const k={class:"min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"},P={class:"max-w-md w-full space-y-8"},C={class:"mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-purple-100"},q={class:"space-y-4"},A={class:"grid grid-cols-2 gap-4"},U={key:0,class:"rounded-md bg-red-50 p-4"},B={class:"flex"},R={class:"flex-shrink-0"},D={class:"ml-3"},F={class:"text-sm font-medium text-red-800"},I={key:1,class:"rounded-md bg-green-50 p-4"},T={class:"flex"},j={class:"flex-shrink-0"},E={class:"ml-3"},S={class:"text-sm font-medium text-green-800"},L={class:"absolute left-0 inset-y-0 flex items-center pl-3"},$={class:"text-center"},z={class:"text-sm text-gray-600"},H={__name:"Register",setup(J){const h=V(),t=u({firstName:"",lastName:"",email:"",phone:"",password:"",confirmPassword:""}),d=u(!1),o=u(""),i=u(""),b=async()=>{d.value=!0,o.value="",i.value="";try{if(t.value.password!==t.value.confirmPassword){o.value="Passwords do not match";return}if(!t.value.firstName||!t.value.lastName||!t.value.email||!t.value.phone||!t.value.password){o.value="All fields are required";return}const r=await _.register({first_name:t.value.firstName,last_name:t.value.lastName,email:t.value.email,phone:t.value.phone,password:t.value.password,confirm_password:t.value.confirmPassword});r.success?(i.value=r.message,t.value={firstName:"",lastName:"",email:"",phone:"",password:"",confirmPassword:""},setTimeout(()=>{h.push("/login")},2e3)):o.value=r.message}catch(r){o.value="Registration failed. Please try again.",console.error("Registration error:",r)}finally{d.value=!1}};return(r,e)=>{const m=p("FeatherIcon"),n=p("TextInput"),g=p("Button");return c(),f("div",k,[s("div",P,[s("div",null,[s("div",C,[a(m,{name:"user-plus",class:"h-6 w-6 text-purple-600"})]),e[7]||(e[7]=s("h2",{class:"mt-6 text-center text-3xl font-extrabold text-gray-900"}," Create Account ",-1)),e[8]||(e[8]=s("p",{class:"mt-2 text-center text-sm text-gray-600"}," Join Draped Dreams today ",-1))]),s("form",{class:"mt-8 space-y-6",onSubmit:N(b,["prevent"])},[s("div",q,[s("div",A,[s("div",null,[e[9]||(e[9]=s("label",{for:"first-name",class:"block text-sm font-medium text-gray-700"},"First Name",-1)),a(n,{id:"first-name",name:"firstName",type:"text",required:"",class:"mt-1",placeholder:"First name",modelValue:t.value.firstName,"onUpdate:modelValue":e[0]||(e[0]=l=>t.value.firstName=l)},null,8,["modelValue"])]),s("div",null,[e[10]||(e[10]=s("label",{for:"last-name",class:"block text-sm font-medium text-gray-700"},"Last Name",-1)),a(n,{id:"last-name",name:"lastName",type:"text",required:"",class:"mt-1",placeholder:"Last name",modelValue:t.value.lastName,"onUpdate:modelValue":e[1]||(e[1]=l=>t.value.lastName=l)},null,8,["modelValue"])])]),s("div",null,[e[11]||(e[11]=s("label",{for:"email",class:"block text-sm font-medium text-gray-700"},"Email Address",-1)),a(n,{id:"email",name:"email",type:"email",autocomplete:"email",required:"",class:"mt-1",placeholder:"Email address",modelValue:t.value.email,"onUpdate:modelValue":e[2]||(e[2]=l=>t.value.email=l)},null,8,["modelValue"])]),s("div",null,[e[12]||(e[12]=s("label",{for:"phone",class:"block text-sm font-medium text-gray-700"},"Phone Number",-1)),a(n,{id:"phone",name:"phone",type:"tel",required:"",class:"mt-1",placeholder:"Phone number",modelValue:t.value.phone,"onUpdate:modelValue":e[3]||(e[3]=l=>t.value.phone=l)},null,8,["modelValue"])]),s("div",null,[e[13]||(e[13]=s("label",{for:"password",class:"block text-sm font-medium text-gray-700"},"Password",-1)),a(n,{id:"password",name:"password",type:"password",autocomplete:"new-password",required:"",class:"mt-1",placeholder:"Password",modelValue:t.value.password,"onUpdate:modelValue":e[4]||(e[4]=l=>t.value.password=l)},null,8,["modelValue"])]),s("div",null,[e[14]||(e[14]=s("label",{for:"confirm-password",class:"block text-sm font-medium text-gray-700"},"Confirm Password",-1)),a(n,{id:"confirm-password",name:"confirmPassword",type:"password",required:"",class:"mt-1",placeholder:"Confirm password",modelValue:t.value.confirmPassword,"onUpdate:modelValue":e[5]||(e[5]=l=>t.value.confirmPassword=l)},null,8,["modelValue"])])]),o.value?(c(),f("div",U,[s("div",B,[s("div",R,[a(m,{name:"alert-circle",class:"h-5 w-5 text-red-400"})]),s("div",D,[s("h3",F,v(o.value),1)])])])):w("",!0),i.value?(c(),f("div",I,[s("div",T,[s("div",j,[a(m,{name:"check-circle",class:"h-5 w-5 text-green-400"})]),s("div",E,[s("h3",S,v(i.value),1)])])])):w("",!0),s("div",null,[a(g,{type:"submit",class:"group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",loading:d.value},{default:y(()=>[s("span",L,[a(m,{name:"user-plus",class:"h-5 w-5 text-purple-500 group-hover:text-purple-400"})]),x(" "+v(d.value?"Creating Account...":"Create Account"),1)]),_:1},8,["loading"])]),s("div",$,[s("p",z,[e[16]||(e[16]=x(" Already have an account? ",-1)),a(g,{variant:"ghost",size:"sm",onClick:e[6]||(e[6]=l=>r.$router.push("/login")),class:"text-purple-600 hover:text-purple-500"},{default:y(()=>[...e[15]||(e[15]=[x(" Sign in here ",-1)])]),_:1})])])],32)])])}}};export{H as default};
+import {
+	u as V,
+	r as u,
+	g as p,
+	a as c,
+	c as f,
+	b as s,
+	h as a,
+	m as N,
+	t as v,
+	e as w,
+	w as y,
+	k as x,
+} from "./index-1ed802c2.js";
+import { a as _ } from "./api-b634d5e6.js";
+const k = {
+		class: "min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8",
+	},
+	P = { class: "max-w-md w-full space-y-8" },
+	C = { class: "mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-purple-100" },
+	q = { class: "space-y-4" },
+	A = { class: "grid grid-cols-2 gap-4" },
+	U = { key: 0, class: "rounded-md bg-red-50 p-4" },
+	B = { class: "flex" },
+	R = { class: "flex-shrink-0" },
+	D = { class: "ml-3" },
+	F = { class: "text-sm font-medium text-red-800" },
+	I = { key: 1, class: "rounded-md bg-green-50 p-4" },
+	T = { class: "flex" },
+	j = { class: "flex-shrink-0" },
+	E = { class: "ml-3" },
+	S = { class: "text-sm font-medium text-green-800" },
+	L = { class: "absolute left-0 inset-y-0 flex items-center pl-3" },
+	$ = { class: "text-center" },
+	z = { class: "text-sm text-gray-600" },
+	H = {
+		__name: "Register",
+		setup(J) {
+			const h = V(),
+				t = u({
+					firstName: "",
+					lastName: "",
+					email: "",
+					phone: "",
+					password: "",
+					confirmPassword: "",
+				}),
+				d = u(!1),
+				o = u(""),
+				i = u(""),
+				b = async () => {
+					(d.value = !0), (o.value = ""), (i.value = "");
+					try {
+						if (t.value.password !== t.value.confirmPassword) {
+							o.value = "Passwords do not match";
+							return;
+						}
+						if (
+							!t.value.firstName ||
+							!t.value.lastName ||
+							!t.value.email ||
+							!t.value.phone ||
+							!t.value.password
+						) {
+							o.value = "All fields are required";
+							return;
+						}
+						const r = await _.register({
+							first_name: t.value.firstName,
+							last_name: t.value.lastName,
+							email: t.value.email,
+							phone: t.value.phone,
+							password: t.value.password,
+							confirm_password: t.value.confirmPassword,
+						});
+						r.success
+							? ((i.value = r.message),
+							  (t.value = {
+									firstName: "",
+									lastName: "",
+									email: "",
+									phone: "",
+									password: "",
+									confirmPassword: "",
+							  }),
+							  setTimeout(() => {
+									h.push("/login");
+							  }, 2e3))
+							: (o.value = r.message);
+					} catch (r) {
+						(o.value = "Registration failed. Please try again."),
+							console.error("Registration error:", r);
+					} finally {
+						d.value = !1;
+					}
+				};
+			return (r, e) => {
+				const m = p("FeatherIcon"),
+					n = p("TextInput"),
+					g = p("Button");
+				return (
+					c(),
+					f("div", k, [
+						s("div", P, [
+							s("div", null, [
+								s("div", C, [
+									a(m, { name: "user-plus", class: "h-6 w-6 text-purple-600" }),
+								]),
+								e[7] ||
+									(e[7] = s(
+										"h2",
+										{
+											class: "mt-6 text-center text-3xl font-extrabold text-gray-900",
+										},
+										" Create Account ",
+										-1
+									)),
+								e[8] ||
+									(e[8] = s(
+										"p",
+										{ class: "mt-2 text-center text-sm text-gray-600" },
+										" Join Draped Dreams today ",
+										-1
+									)),
+							]),
+							s(
+								"form",
+								{ class: "mt-8 space-y-6", onSubmit: N(b, ["prevent"]) },
+								[
+									s("div", q, [
+										s("div", A, [
+											s("div", null, [
+												e[9] ||
+													(e[9] = s(
+														"label",
+														{
+															for: "first-name",
+															class: "block text-sm font-medium text-gray-700",
+														},
+														"First Name",
+														-1
+													)),
+												a(
+													n,
+													{
+														id: "first-name",
+														name: "firstName",
+														type: "text",
+														required: "",
+														class: "mt-1",
+														placeholder: "First name",
+														modelValue: t.value.firstName,
+														"onUpdate:modelValue":
+															e[0] ||
+															(e[0] = (l) =>
+																(t.value.firstName = l)),
+													},
+													null,
+													8,
+													["modelValue"]
+												),
+											]),
+											s("div", null, [
+												e[10] ||
+													(e[10] = s(
+														"label",
+														{
+															for: "last-name",
+															class: "block text-sm font-medium text-gray-700",
+														},
+														"Last Name",
+														-1
+													)),
+												a(
+													n,
+													{
+														id: "last-name",
+														name: "lastName",
+														type: "text",
+														required: "",
+														class: "mt-1",
+														placeholder: "Last name",
+														modelValue: t.value.lastName,
+														"onUpdate:modelValue":
+															e[1] ||
+															(e[1] = (l) => (t.value.lastName = l)),
+													},
+													null,
+													8,
+													["modelValue"]
+												),
+											]),
+										]),
+										s("div", null, [
+											e[11] ||
+												(e[11] = s(
+													"label",
+													{
+														for: "email",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Email Address",
+													-1
+												)),
+											a(
+												n,
+												{
+													id: "email",
+													name: "email",
+													type: "email",
+													autocomplete: "email",
+													required: "",
+													class: "mt-1",
+													placeholder: "Email address",
+													modelValue: t.value.email,
+													"onUpdate:modelValue":
+														e[2] ||
+														(e[2] = (l) => (t.value.email = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										s("div", null, [
+											e[12] ||
+												(e[12] = s(
+													"label",
+													{
+														for: "phone",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Phone Number",
+													-1
+												)),
+											a(
+												n,
+												{
+													id: "phone",
+													name: "phone",
+													type: "tel",
+													required: "",
+													class: "mt-1",
+													placeholder: "Phone number",
+													modelValue: t.value.phone,
+													"onUpdate:modelValue":
+														e[3] ||
+														(e[3] = (l) => (t.value.phone = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										s("div", null, [
+											e[13] ||
+												(e[13] = s(
+													"label",
+													{
+														for: "password",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Password",
+													-1
+												)),
+											a(
+												n,
+												{
+													id: "password",
+													name: "password",
+													type: "password",
+													autocomplete: "new-password",
+													required: "",
+													class: "mt-1",
+													placeholder: "Password",
+													modelValue: t.value.password,
+													"onUpdate:modelValue":
+														e[4] ||
+														(e[4] = (l) => (t.value.password = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										s("div", null, [
+											e[14] ||
+												(e[14] = s(
+													"label",
+													{
+														for: "confirm-password",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Confirm Password",
+													-1
+												)),
+											a(
+												n,
+												{
+													id: "confirm-password",
+													name: "confirmPassword",
+													type: "password",
+													required: "",
+													class: "mt-1",
+													placeholder: "Confirm password",
+													modelValue: t.value.confirmPassword,
+													"onUpdate:modelValue":
+														e[5] ||
+														(e[5] = (l) =>
+															(t.value.confirmPassword = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+									]),
+									o.value
+										? (c(),
+										  f("div", U, [
+												s("div", B, [
+													s("div", R, [
+														a(m, {
+															name: "alert-circle",
+															class: "h-5 w-5 text-red-400",
+														}),
+													]),
+													s("div", D, [s("h3", F, v(o.value), 1)]),
+												]),
+										  ]))
+										: w("", !0),
+									i.value
+										? (c(),
+										  f("div", I, [
+												s("div", T, [
+													s("div", j, [
+														a(m, {
+															name: "check-circle",
+															class: "h-5 w-5 text-green-400",
+														}),
+													]),
+													s("div", E, [s("h3", S, v(i.value), 1)]),
+												]),
+										  ]))
+										: w("", !0),
+									s("div", null, [
+										a(
+											g,
+											{
+												type: "submit",
+												class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",
+												loading: d.value,
+											},
+											{
+												default: y(() => [
+													s("span", L, [
+														a(m, {
+															name: "user-plus",
+															class: "h-5 w-5 text-purple-500 group-hover:text-purple-400",
+														}),
+													]),
+													x(
+														" " +
+															v(
+																d.value
+																	? "Creating Account..."
+																	: "Create Account"
+															),
+														1
+													),
+												]),
+												_: 1,
+											},
+											8,
+											["loading"]
+										),
+									]),
+									s("div", $, [
+										s("p", z, [
+											e[16] || (e[16] = x(" Already have an account? ", -1)),
+											a(
+												g,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														e[6] ||
+														(e[6] = (l) => r.$router.push("/login")),
+													class: "text-purple-600 hover:text-purple-500",
+												},
+												{
+													default: y(() => [
+														...(e[15] ||
+															(e[15] = [x(" Sign in here ", -1)])),
+													]),
+													_: 1,
+												}
+											),
+										]),
+									]),
+								],
+								32
+							),
+						]),
+					])
+				);
+			};
+		},
+	};
+export { H as default };

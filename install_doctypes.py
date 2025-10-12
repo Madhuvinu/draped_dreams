@@ -1,3 +1,5 @@
+import frappe
+
 # Run this in Frappe console: bench --site dreams.localhost console
 
 # Install Register doctype
