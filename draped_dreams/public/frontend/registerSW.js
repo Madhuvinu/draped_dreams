@@ -1,1 +1,7 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/assets/draped_dreams/frontend/sw.js', { scope: '/assets/draped_dreams/frontend/' })})}
+if ("serviceWorker" in navigator) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker.register("/assets/draped_dreams/frontend/sw.js", {
+			scope: "/assets/draped_dreams/frontend/",
+		});
+	});
+}

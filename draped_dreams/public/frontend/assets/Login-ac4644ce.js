@@ -1,1 +1,194 @@
-import{u as b,r as a,a as p,b as m,c as f,d as e,e as t,j as h,t as x,i as w,w as _,h as V}from"./index-8a0f47ce.js";const k={class:"min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"},B={class:"max-w-md w-full space-y-8"},P={class:"mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-purple-100"},S={class:"rounded-md shadow-sm -space-y-px"},j={key:0,class:"rounded-md bg-red-50 p-4"},I={class:"flex"},N={class:"flex-shrink-0"},T={class:"ml-3"},C={class:"text-sm font-medium text-red-800"},D={class:"absolute left-0 inset-y-0 flex items-center pl-3"},q={__name:"Login",setup(E){const g=b(),r=a(""),n=a(""),l=a(!1),o=a(""),v=async()=>{l.value=!0,o.value="";try{r.value&&n.value?(await new Promise(d=>setTimeout(d,1e3)),g.push("/dashboard")):o.value="Please enter email and password"}catch{o.value="Login failed. Please try again."}finally{l.value=!1}};return(d,s)=>{const u=p("FeatherIcon"),c=p("TextInput"),y=p("Button");return m(),f("div",k,[e("div",B,[e("div",null,[e("div",P,[t(u,{name:"shopping-bag",class:"h-6 w-6 text-purple-600"})]),s[2]||(s[2]=e("h2",{class:"mt-6 text-center text-3xl font-extrabold text-gray-900"}," Draped Dreams ",-1)),s[3]||(s[3]=e("p",{class:"mt-2 text-center text-sm text-gray-600"}," Sign in to your account ",-1))]),e("form",{class:"mt-8 space-y-6",onSubmit:h(v,["prevent"])},[e("div",S,[e("div",null,[s[4]||(s[4]=e("label",{for:"email-address",class:"sr-only"},"Email address",-1)),t(c,{id:"email-address",name:"email",type:"email",autocomplete:"email",required:"",class:"appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm",placeholder:"Email address",modelValue:r.value,"onUpdate:modelValue":s[0]||(s[0]=i=>r.value=i)},null,8,["modelValue"])]),e("div",null,[s[5]||(s[5]=e("label",{for:"password",class:"sr-only"},"Password",-1)),t(c,{id:"password",name:"password",type:"password",autocomplete:"current-password",required:"",class:"appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm",placeholder:"Password",modelValue:n.value,"onUpdate:modelValue":s[1]||(s[1]=i=>n.value=i)},null,8,["modelValue"])])]),o.value?(m(),f("div",j,[e("div",I,[e("div",N,[t(u,{name:"alert-circle",class:"h-5 w-5 text-red-400"})]),e("div",T,[e("h3",C,x(o.value),1)])])])):w("",!0),e("div",null,[t(y,{type:"submit",class:"group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",loading:l.value},{default:_(()=>[e("span",D,[t(u,{name:"lock",class:"h-5 w-5 text-purple-500 group-hover:text-purple-400"})]),V(" "+x(l.value?"Signing in...":"Sign in"),1)]),_:1},8,["loading"])])],32)])])}}};export{q as default};
+import {
+	u as b,
+	r as a,
+	a as p,
+	b as m,
+	c as f,
+	d as e,
+	e as t,
+	j as h,
+	t as x,
+	i as w,
+	w as _,
+	h as V,
+} from "./index-8a0f47ce.js";
+const k = {
+		class: "min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8",
+	},
+	B = { class: "max-w-md w-full space-y-8" },
+	P = { class: "mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-purple-100" },
+	S = { class: "rounded-md shadow-sm -space-y-px" },
+	j = { key: 0, class: "rounded-md bg-red-50 p-4" },
+	I = { class: "flex" },
+	N = { class: "flex-shrink-0" },
+	T = { class: "ml-3" },
+	C = { class: "text-sm font-medium text-red-800" },
+	D = { class: "absolute left-0 inset-y-0 flex items-center pl-3" },
+	q = {
+		__name: "Login",
+		setup(E) {
+			const g = b(),
+				r = a(""),
+				n = a(""),
+				l = a(!1),
+				o = a(""),
+				v = async () => {
+					(l.value = !0), (o.value = "");
+					try {
+						r.value && n.value
+							? (await new Promise((d) => setTimeout(d, 1e3)), g.push("/dashboard"))
+							: (o.value = "Please enter email and password");
+					} catch {
+						o.value = "Login failed. Please try again.";
+					} finally {
+						l.value = !1;
+					}
+				};
+			return (d, s) => {
+				const u = p("FeatherIcon"),
+					c = p("TextInput"),
+					y = p("Button");
+				return (
+					m(),
+					f("div", k, [
+						e("div", B, [
+							e("div", null, [
+								e("div", P, [
+									t(u, {
+										name: "shopping-bag",
+										class: "h-6 w-6 text-purple-600",
+									}),
+								]),
+								s[2] ||
+									(s[2] = e(
+										"h2",
+										{
+											class: "mt-6 text-center text-3xl font-extrabold text-gray-900",
+										},
+										" Draped Dreams ",
+										-1
+									)),
+								s[3] ||
+									(s[3] = e(
+										"p",
+										{ class: "mt-2 text-center text-sm text-gray-600" },
+										" Sign in to your account ",
+										-1
+									)),
+							]),
+							e(
+								"form",
+								{ class: "mt-8 space-y-6", onSubmit: h(v, ["prevent"]) },
+								[
+									e("div", S, [
+										e("div", null, [
+											s[4] ||
+												(s[4] = e(
+													"label",
+													{ for: "email-address", class: "sr-only" },
+													"Email address",
+													-1
+												)),
+											t(
+												c,
+												{
+													id: "email-address",
+													name: "email",
+													type: "email",
+													autocomplete: "email",
+													required: "",
+													class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm",
+													placeholder: "Email address",
+													modelValue: r.value,
+													"onUpdate:modelValue":
+														s[0] || (s[0] = (i) => (r.value = i)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										e("div", null, [
+											s[5] ||
+												(s[5] = e(
+													"label",
+													{ for: "password", class: "sr-only" },
+													"Password",
+													-1
+												)),
+											t(
+												c,
+												{
+													id: "password",
+													name: "password",
+													type: "password",
+													autocomplete: "current-password",
+													required: "",
+													class: "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm",
+													placeholder: "Password",
+													modelValue: n.value,
+													"onUpdate:modelValue":
+														s[1] || (s[1] = (i) => (n.value = i)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+									]),
+									o.value
+										? (m(),
+										  f("div", j, [
+												e("div", I, [
+													e("div", N, [
+														t(u, {
+															name: "alert-circle",
+															class: "h-5 w-5 text-red-400",
+														}),
+													]),
+													e("div", T, [e("h3", C, x(o.value), 1)]),
+												]),
+										  ]))
+										: w("", !0),
+									e("div", null, [
+										t(
+											y,
+											{
+												type: "submit",
+												class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",
+												loading: l.value,
+											},
+											{
+												default: _(() => [
+													e("span", D, [
+														t(u, {
+															name: "lock",
+															class: "h-5 w-5 text-purple-500 group-hover:text-purple-400",
+														}),
+													]),
+													V(
+														" " +
+															x(
+																l.value
+																	? "Signing in..."
+																	: "Sign in"
+															),
+														1
+													),
+												]),
+												_: 1,
+											},
+											8,
+											["loading"]
+										),
+									]),
+								],
+								32
+							),
+						]),
+					])
+				);
+			};
+		},
+	};
+export { q as default };

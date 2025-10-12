@@ -1,1 +1,35 @@
-import{o as a,c as s,a as e}from"./index-096ef497.js";const o={class:"min-h-screen bg-gray-50 p-8"},l={__name:"Inventory",setup(n){return(r,t)=>(a(),s("div",o,[...t[0]||(t[0]=[e("div",{class:"max-w-7xl mx-auto"},[e("h1",{class:"text-3xl font-bold text-gray-900 mb-8"},"Inventory"),e("div",{class:"bg-white rounded-lg shadow p-6"},[e("p",{class:"text-gray-600"},"Inventory management page - Coming soon!")])],-1)])]))}};export{l as default};
+import { o as a, c as s, a as e } from "./index-096ef497.js";
+const o = { class: "min-h-screen bg-gray-50 p-8" },
+	l = {
+		__name: "Inventory",
+		setup(n) {
+			return (r, t) => (
+				a(),
+				s("div", o, [
+					...(t[0] ||
+						(t[0] = [
+							e(
+								"div",
+								{ class: "max-w-7xl mx-auto" },
+								[
+									e(
+										"h1",
+										{ class: "text-3xl font-bold text-gray-900 mb-8" },
+										"Inventory"
+									),
+									e("div", { class: "bg-white rounded-lg shadow p-6" }, [
+										e(
+											"p",
+											{ class: "text-gray-600" },
+											"Inventory management page - Coming soon!"
+										),
+									]),
+								],
+								-1
+							),
+						])),
+				])
+			);
+		},
+	};
+export { l as default };

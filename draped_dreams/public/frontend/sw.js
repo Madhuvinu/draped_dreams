@@ -1,2 +1,54 @@
-if(!self.define){let s,e={};const i=(i,r)=>(i=new URL(i+".js",r).href,e[i]||new Promise(e=>{if("document"in self){const s=document.createElement("script");s.src=i,s.onload=e,document.head.appendChild(s)}else s=i,importScripts(i),e()}).then(()=>{let s=e[i];if(!s)throw new Error(`Module ${i} didn’t register its module`);return s}));self.define=(r,n)=>{const l=s||("document"in self?document.currentScript.src:"")||location.href;if(e[l])return;let t={};const o=s=>i(s,l),u={module:{uri:l},exports:t,require:o};e[l]=Promise.all(r.map(s=>u[s]||o(s))).then(s=>(n(...s),t))}}define(["./workbox-06233651"],function(s){"use strict";self.skipWaiting(),s.clientsClaim(),s.precacheAndRoute([{url:"assets/Customers-8982e1e7.js",revision:null},{url:"assets/Dashboard-5160f566.js",revision:null},{url:"assets/DesktopLayout-1bff78da.js",revision:null},{url:"assets/index-89fb04c6.js",revision:null},{url:"assets/index-f18f0911.css",revision:null},{url:"assets/InvalidPage-b6f3379e.js",revision:null},{url:"assets/Inventory-a1f8a8a7.js",revision:null},{url:"assets/Login-d03ca58c.js",revision:null},{url:"assets/MobileLayout-0ec1a45a.js",revision:null},{url:"assets/Orders-7b1ae235.js",revision:null},{url:"assets/Products-80ef154c.js",revision:null},{url:"assets/Reports-24c4787b.js",revision:null},{url:"index.html",revision:"63e438b3d1308b7c277da474d2aea27c"},{url:"registerSW.js",revision:"6b7fe9987215613ea6d596a95b93b3dd"},{url:"manifest.webmanifest",revision:"816d9e8c959b9b645a5eeb177ce25ea1"}],{}),s.cleanupOutdatedCaches(),s.registerRoute(new s.NavigationRoute(s.createHandlerBoundToURL("index.html")))});
+if (!self.define) {
+	let s,
+		e = {};
+	const i = (i, r) => (
+		(i = new URL(i + ".js", r).href),
+		e[i] ||
+			new Promise((e) => {
+				if ("document" in self) {
+					const s = document.createElement("script");
+					(s.src = i), (s.onload = e), document.head.appendChild(s);
+				} else (s = i), importScripts(i), e();
+			}).then(() => {
+				let s = e[i];
+				if (!s) throw new Error(`Module ${i} didn’t register its module`);
+				return s;
+			})
+	);
+	self.define = (r, n) => {
+		const l = s || ("document" in self ? document.currentScript.src : "") || location.href;
+		if (e[l]) return;
+		let t = {};
+		const o = (s) => i(s, l),
+			u = { module: { uri: l }, exports: t, require: o };
+		e[l] = Promise.all(r.map((s) => u[s] || o(s))).then((s) => (n(...s), t));
+	};
+}
+define(["./workbox-06233651"], function (s) {
+	"use strict";
+	self.skipWaiting(),
+		s.clientsClaim(),
+		s.precacheAndRoute(
+			[
+				{ url: "assets/Customers-8982e1e7.js", revision: null },
+				{ url: "assets/Dashboard-5160f566.js", revision: null },
+				{ url: "assets/DesktopLayout-1bff78da.js", revision: null },
+				{ url: "assets/index-89fb04c6.js", revision: null },
+				{ url: "assets/index-f18f0911.css", revision: null },
+				{ url: "assets/InvalidPage-b6f3379e.js", revision: null },
+				{ url: "assets/Inventory-a1f8a8a7.js", revision: null },
+				{ url: "assets/Login-d03ca58c.js", revision: null },
+				{ url: "assets/MobileLayout-0ec1a45a.js", revision: null },
+				{ url: "assets/Orders-7b1ae235.js", revision: null },
+				{ url: "assets/Products-80ef154c.js", revision: null },
+				{ url: "assets/Reports-24c4787b.js", revision: null },
+				{ url: "index.html", revision: "63e438b3d1308b7c277da474d2aea27c" },
+				{ url: "registerSW.js", revision: "6b7fe9987215613ea6d596a95b93b3dd" },
+				{ url: "manifest.webmanifest", revision: "816d9e8c959b9b645a5eeb177ce25ea1" },
+			],
+			{}
+		),
+		s.cleanupOutdatedCaches(),
+		s.registerRoute(new s.NavigationRoute(s.createHandlerBoundToURL("index.html")));
+});
 //# sourceMappingURL=sw.js.map

@@ -39,6 +39,9 @@ repos:
         exclude: |
             (?x)^(
                 draped_dreams/public/dist/.*|
+                draped_dreams/public/frontend/assets/.*|
+                draped_dreams/public/frontend/workbox-.*\.js$|
+                draped_dreams/public/frontend/sw\.js$|
                 .*node_modules.*|
                 .*boilerplate.*|
                 draped_dreams/templates/includes/.*|
@@ -56,6 +59,9 @@ repos:
         exclude: |
             (?x)^(
                 draped_dreams/public/dist/.*|
+                draped_dreams/public/frontend/assets/.*|
+                draped_dreams/public/frontend/workbox-.*\.js$|
+                draped_dreams/public/frontend/sw\.js$|
                 cypress/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
