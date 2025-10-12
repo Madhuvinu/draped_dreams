@@ -14,6 +14,18 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
+// Get CSRF token from cookies
+const getCSRFToken = () => {
+	const cookies = document.cookie.split(';');
+	for (let cookie of cookies) {
+		const [name, value] = cookie.trim().split('=');
+		if (name === 'csrf_token') {
+			return value;
+		}
+	}
+	return null;
+};
+
 export const api = {
 	// Registration
 	async register(userData) {
@@ -29,12 +41,24 @@ export const api = {
 
 			console.log("FormData string:", formData.toString());
 
+			// Get CSRF token
+			const csrfToken = getCSRFToken();
+			console.log("CSRF Token:", csrfToken);
+
+			const headers = {
+				"Content-Type": "application/x-www-form-urlencoded",
+			};
+
+			// Add CSRF token if available
+			if (csrfToken) {
+				headers["X-Frappe-CSRF-Token"] = csrfToken;
+			}
+
 			const response = await fetch(`${API_BASE_URL}.register_user`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-				},
+				headers,
 				body: formData,
+				credentials: "include", // Include cookies for CSRF token
 			});
 
 			console.log("Response status:", response.status);
@@ -81,12 +105,23 @@ export const api = {
 			formData.append("email", email);
 			formData.append("password", password);
 
+			// Get CSRF token
+			const csrfToken = getCSRFToken();
+
+			const headers = {
+				"Content-Type": "application/x-www-form-urlencoded",
+			};
+
+			// Add CSRF token if available
+			if (csrfToken) {
+				headers["X-Frappe-CSRF-Token"] = csrfToken;
+			}
+
 			const response = await fetch(`${API_BASE_URL}.login_user`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-				},
+				headers,
 				body: formData,
+				credentials: "include", // Include cookies for CSRF token
 			});
 
 			const result = await response.json();
