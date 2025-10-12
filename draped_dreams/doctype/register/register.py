@@ -15,6 +15,6 @@ class Register(Document):
 
 	def before_save(self):
 		# Hash password before saving
-		if self.user_password and not self.user_password.startswith('$'):
+		if self.user_password and not self.user_password.startswith("$"):
 			self.user_password = hashlib.sha256(self.user_password.encode()).hexdigest()
 			self.confirm_password = self.user_password
