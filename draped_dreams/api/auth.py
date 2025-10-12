@@ -36,27 +36,16 @@ def register_user(first_name, last_name, email, phone, password, confirm_passwor
 		if frappe.db.exists("Register", {"email": email}):
 			return {"success": False, "message": "Email already registered"}
 
-		# Create new registration using Frappe's ORM
+		# Create new registration using direct database insert
+		# Hash password manually to ensure consistency
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
-
-		# Create new document using Frappe's safe methods
-		new_user = frappe.get_doc(
-			{
-				"doctype": "Register",
-				"name": email,
-				"first_name": first_name,
-				"last_name": last_name,
-				"email": email,
-				"phone": phone,
-				"password": hashed_password,
-				"confirm_password": hashed_password,
-				"status": "Active",
-				"registration_date": today(),
-			}
-		)
-
-		# Insert directly to bypass validation
-		new_user.insert(ignore_permissions=True)
+		
+		# Insert directly into database to bypass any doctype hooks
+		frappe.db.sql("""
+			INSERT INTO `tabRegister` 
+			(name, first_name, last_name, email, phone, user_password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
+			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
+		""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
 
 		frappe.db.commit()
 
@@ -85,26 +74,36 @@ def login_user(email, password):
 		if len(password) < 8:
 			return {"success": False, "message": "Password must be at least 8 characters"}
 
+		# Debug logging
+		frappe.log_error(f"Login attempt for email: {email}", "Login Debug")
+
 		# Find user by email
 		user = frappe.db.get_value(
-			"Register", {"email": email}, ["name", "password", "status"], as_dict=True
+			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
 		)
 
 		if not user:
+			frappe.log_error(f"User not found for email: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
 		if user.status != "Active":
+			frappe.log_error(f"User {email} is not active, status: {user.status}", "Login Debug")
 			return {"success": False, "message": "Account is not active"}
 
 		# Verify password
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
-		if hashed_password != user.password:
+		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {user.user_password[:10]}...", "Login Debug")
+		
+		if hashed_password != user.user_password:
+			frappe.log_error(f"Password mismatch for user: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
 		# Get user details
 		user_details = frappe.db.get_value(
 			"Register", {"email": email}, ["first_name", "last_name", "email", "phone"], as_dict=True
 		)
+
+		frappe.log_error(f"Login successful for user: {email}", "Login Debug")
 
 		return {
 			"success": True,
@@ -287,4 +286,36 @@ def update_register_doctype():
 			
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Update Register Doctype Error")
+		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def debug_user(email):
+	"""Debug function to check user data"""
+	try:
+		# Get user data
+		user = frappe.db.get_value(
+			"Register", {"email": email}, ["name", "user_password", "status", "first_name", "last_name"], as_dict=True
+		)
+		
+		if user:
+			return {
+				"success": True,
+				"data": {
+					"name": user.name,
+					"email": email,
+					"status": user.status,
+					"first_name": user.first_name,
+					"last_name": user.last_name,
+					"password_length": len(user.user_password) if user.user_password else 0,
+					"password_preview": user.user_password[:10] + "..." if user.user_password else None,
+					"password_hash": user.user_password,  # Show the actual hash for debugging
+					"password_start": user.user_password[:20] if user.user_password else None
+				}
+			}
+		else:
+			return {"success": False, "message": "User not found"}
+			
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Debug User Error")
 		return {"success": False, "message": str(e)}

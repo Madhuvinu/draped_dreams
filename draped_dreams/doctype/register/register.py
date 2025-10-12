@@ -12,7 +12,6 @@ class Register(Document):
 			frappe.throw(_("Email already registered"))
 
 	def before_save(self):
-		# Hash password before saving
-		if self.password and not self.password.startswith("$"):
-			self.password = hashlib.sha256(self.password.encode()).hexdigest()
-			self.confirm_password = self.password
+		# Password hashing is handled in the auth API
+		# Do not hash here to avoid double hashing
+		pass
