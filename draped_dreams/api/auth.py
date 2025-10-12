@@ -43,7 +43,7 @@ def register_user(first_name, last_name, email, phone, password, confirm_passwor
 		# Insert directly into database to bypass any doctype hooks
 		frappe.db.sql("""
 			INSERT INTO `tabRegister` 
-			(name, first_name, last_name, email, phone, user_password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
+			(name, first_name, last_name, email, phone, password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
 			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
 		""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
 
@@ -79,7 +79,7 @@ def login_user(email, password):
 
 		# Find user by email
 		user = frappe.db.get_value(
-			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
+			"Register", {"email": email}, ["name", "password", "status"], as_dict=True
 		)
 
 		if not user:
@@ -92,9 +92,9 @@ def login_user(email, password):
 
 		# Verify password
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
-		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {user.user_password[:10]}...", "Login Debug")
+		frappe.log_error(f"Password hash comparison - Input: {hashed_password[:10]}..., Stored: {user.password[:10]}...", "Login Debug")
 		
-		if hashed_password != user.user_password:
+		if hashed_password != user.password:
 			frappe.log_error(f"Password mismatch for user: {email}", "Login Debug")
 			return {"success": False, "message": "Invalid email or password"}
 
