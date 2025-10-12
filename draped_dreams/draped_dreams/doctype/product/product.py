@@ -1,7 +1,5 @@
-# Copyright (c) 2024, Draped Dreams and contributors
-# For license information, please see license.txt
-
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -13,11 +11,11 @@ class Product(Document):
 
 		# Validate stock levels
 		if self.stock_quantity < 0:
-			frappe.throw("Stock quantity cannot be negative")
+			frappe.throw(_("Stock quantity cannot be negative"))
 
 		# Validate pricing
 		if self.original_price and self.original_price <= self.price:
-			frappe.throw("Original price should be greater than current price")
+			frappe.throw(_("Original price should be greater than current price"))
 
 	def before_save(self):
 		# Update modified date

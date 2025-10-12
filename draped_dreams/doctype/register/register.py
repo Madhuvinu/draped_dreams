@@ -1,9 +1,7 @@
-# Copyright (c) 2024, Draped Dreams and contributors
-# For license information, please see license.txt
-
 import hashlib
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 
@@ -11,7 +9,7 @@ class Register(Document):
 	def validate(self):
 		# Check if email already exists
 		if frappe.db.exists("Register", {"email": self.email, "name": ["!=", self.name]}):
-			frappe.throw("Email already registered")
+			frappe.throw(_("Email already registered"))
 
 	def before_save(self):
 		# Hash password before saving
