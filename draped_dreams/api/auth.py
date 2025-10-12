@@ -2,9 +2,10 @@
 # Copyright (c) 2024, Draped Dreams and contributors
 # For license information, please see license.txt
 
-import frappe
-from frappe.utils import today, cint
 import hashlib
+
+import frappe
+from frappe.utils import cint, today
 
 
 @frappe.whitelist(allow_guest=True)
@@ -25,23 +26,22 @@ def register_user(first_name, last_name, email, phone, user_password, confirm_pa
 		# Create new registration directly in database to bypass doctype validation
 		hashed_password = hashlib.sha256(user_password.encode()).hexdigest()
 
-		frappe.db.sql("""
+		frappe.db.sql(
+			"""
 			INSERT INTO tabRegister
 			(name, first_name, last_name, email, phone, user_password,
 			 confirm_password, status, registration_date, creation, modified, docstatus, idx)
 			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 0, 0)
-		""", (email, first_name, last_name, email, phone, hashed_password,
-			  hashed_password, "Active", today()))
+		""",
+			(email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()),
+		)
 
 		frappe.db.commit()
 
 		return {
 			"success": True,
 			"message": "Registration successful! Please login.",
-			"data": {
-				"name": email,
-				"email": email
-			}
+			"data": {"name": email, "email": email},
 		}
 
 	except Exception as e:
@@ -55,8 +55,7 @@ def login_user(email, password):
 	try:
 		# Find user by email
 		user = frappe.db.get_value(
-			"Register", {"email": email},
-			["name", "user_password", "status"], as_dict=True
+			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
 		)
 
 		if not user:
@@ -72,8 +71,7 @@ def login_user(email, password):
 
 		# Get user details
 		user_details = frappe.db.get_value(
-			"Register", {"email": email},
-			["first_name", "last_name", "email", "phone"], as_dict=True
+			"Register", {"email": email}, ["first_name", "last_name", "email", "phone"], as_dict=True
 		)
 
 		return {
@@ -85,8 +83,8 @@ def login_user(email, password):
 				"first_name": user_details.first_name,
 				"last_name": user_details.last_name,
 				"email": user_details.email,
-				"phone": user_details.phone
-			}
+				"phone": user_details.phone,
+			},
 		}
 
 	except Exception as e:
@@ -95,9 +93,7 @@ def login_user(email, password):
 
 
 @frappe.whitelist(allow_guest=True)
-def get_products(
-	category=None, search=None, price_range=None, sort_by="featured", limit=20, offset=0
-):
+def get_products(category=None, search=None, price_range=None, sort_by="featured", limit=20, offset=0):
 	"""Get products with filters"""
 	try:
 		filters = {"status": "Active"}
@@ -115,12 +111,21 @@ def get_products(
 			"Product",
 			filters=filters,
 			fields=[
-				"name", "product_name", "product_code", "category", "description",
-				"price", "original_price", "stock_quantity", "rating", "featured",
-				"product_image", "created_date"
+				"name",
+				"product_name",
+				"product_code",
+				"category",
+				"description",
+				"price",
+				"original_price",
+				"stock_quantity",
+				"rating",
+				"featured",
+				"product_image",
+				"created_date",
 			],
 			limit=limit,
-			start=offset
+			start=offset,
 		)
 
 		# Apply price range filter
@@ -156,17 +161,13 @@ def get_products(
 				gallery_images = frappe.get_all(
 					"Product Image Gallery",
 					filters={"parent": product.name},
-					fields=["image_name", "image_file", "is_primary"]
+					fields=["image_name", "image_file", "is_primary"],
 				)
 				product.gallery_images = gallery_images
 			except Exception:
 				product.gallery_images = []
 
-		return {
-			"success": True,
-			"data": products,
-			"total": len(products)
-		}
+		return {"success": True, "data": products, "total": len(products)}
 
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Get Products Error")
@@ -183,7 +184,7 @@ def get_product_details(product_name):
 		gallery_images = frappe.get_all(
 			"Product Image Gallery",
 			filters={"parent": product.name},
-			fields=["image_name", "image_file", "is_primary"]
+			fields=["image_name", "image_file", "is_primary"],
 		)
 
 		return {
@@ -201,8 +202,8 @@ def get_product_details(product_name):
 				"featured": product.featured,
 				"product_image": product.product_image,
 				"gallery_images": gallery_images,
-				"created_date": product.created_date
-			}
+				"created_date": product.created_date,
+			},
 		}
 
 	except Exception as e:
@@ -220,8 +221,8 @@ def debug_password(email):
 			"data": {
 				"user_password": repr(user.user_password),
 				"password_length": len(user.user_password),
-				"password_type": str(type(user.user_password))
-			}
+				"password_type": str(type(user.user_password)),
+			},
 		}
 	except Exception as e:
 		return {"success": False, "message": str(e)}
@@ -231,18 +232,13 @@ def debug_password(email):
 def get_categories():
 	"""Get all product categories"""
 	try:
-		categories = frappe.get_all("Product",
-			filters={"status": "Active"},
-			fields=["category"],
-			distinct=True
+		categories = frappe.get_all(
+			"Product", filters={"status": "Active"}, fields=["category"], distinct=True
 		)
 
 		category_list = [cat.category for cat in categories if cat.category]
 
-		return {
-			"success": True,
-			"data": category_list
-		}
+		return {"success": True, "data": category_list}
 
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Get Categories Error")

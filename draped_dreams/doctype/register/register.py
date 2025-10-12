@@ -2,9 +2,10 @@
 # Copyright (c) 2024, Draped Dreams and contributors
 # For license information, please see license.txt
 
+import hashlib
+
 import frappe
 from frappe.model.document import Document
-import hashlib
 
 
 class Register(Document):

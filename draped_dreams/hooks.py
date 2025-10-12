@@ -48,7 +48,7 @@ app_license = "MIT"
 
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+# "Role": "home_page"
 # }
 
 # Generators
@@ -104,7 +104,7 @@ app_license = "MIT"
 # 		"on_update": "method",
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
-#	}
+# }
 # }
 
 # Scheduled Tasks
@@ -170,9 +170,7 @@ user_data_fields = [
 		"doctype": "{doctype_3}",
 		"strict": False,
 	},
-	{
-		"doctype": "{doctype_4}"
-	}
+	{"doctype": "{doctype_4}"},
 ]
 
 # Authentication and authorization
