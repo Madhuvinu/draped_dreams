@@ -77,8 +77,22 @@
         </div>
       </div>
 
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+        <p class="mt-2 text-gray-600">Loading products...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center py-12">
+        <FeatherIcon name="alert-circle" class="w-16 h-16 text-red-400 mx-auto mb-4" />
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Error loading products</h3>
+        <p class="text-gray-600 mb-4">{{ error }}</p>
+        <Button @click="loadProducts">Try Again</Button>
+      </div>
+
       <!-- Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <div 
           v-for="saree in filteredSarees" 
           :key="saree.id"
@@ -86,7 +100,16 @@
           @click="$router.push(`/product/${saree.id}`)"
         >
           <div class="aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center relative">
-            <FeatherIcon name="image" class="w-16 h-16 text-purple-400" />
+            <!-- Product Image -->
+            <img 
+              v-if="saree.image" 
+              :src="saree.image" 
+              :alt="saree.product_name"
+              class="w-full h-full object-cover"
+            />
+            <!-- Placeholder if no image -->
+            <FeatherIcon v-else name="image" class="w-16 h-16 text-purple-400" />
+            
             <div class="absolute top-2 right-2">
               <Badge :variant="getStockVariant(saree.stock)">
                 {{ saree.stock }} left
@@ -104,9 +127,9 @@
             
             <div class="flex items-center justify-between mb-3">
               <div>
-                <span class="text-lg font-bold text-purple-600">₹{{ saree.price }}</span>
+                <span class="text-lg font-bold text-purple-600">₹{{ saree.price.toLocaleString() }}</span>
                 <span v-if="saree.originalPrice" class="text-sm text-gray-500 line-through ml-2">
-                  ₹{{ saree.originalPrice }}
+                  ₹{{ saree.originalPrice.toLocaleString() }}
                 </span>
               </div>
               <div class="flex items-center">
@@ -154,6 +177,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { api } from '../utils/api'
+import TextInput from '../components/TextInput.vue'
+import Button from '../components/Button.vue'
+import FeatherIcon from '../components/FeatherIcon.vue'
+import Badge from '../components/Badge.vue'
 
 const cartItems = ref([])
 const wishlistItems = ref([])
@@ -161,67 +189,11 @@ const searchQuery = ref('')
 const selectedCategory = ref('')
 const priceRange = ref('')
 const sortBy = ref('featured')
+const loading = ref(false)
+const error = ref('')
 
 const categories = ref(['Silk', 'Cotton', 'Designer', 'Wedding', 'Casual', 'Party'])
-
-const allSarees = ref([
-  {
-    id: 1,
-    name: 'Elegant Silk Banarasi Saree',
-    description: 'Beautiful silk saree with intricate Banarasi work and golden zari borders',
-    price: '25,000',
-    originalPrice: '30,000',
-    category: 'Silk',
-    stock: 8,
-    rating: 4.8
-  },
-  {
-    id: 2,
-    name: 'Comfortable Cotton Handloom Saree',
-    description: 'Light and breathable cotton saree perfect for daily wear',
-    price: '3,500',
-    category: 'Cotton',
-    stock: 25,
-    rating: 4.5
-  },
-  {
-    id: 3,
-    name: 'Modern Designer Party Saree',
-    description: 'Contemporary designer saree with unique patterns',
-    price: '18,000',
-    originalPrice: '22,000',
-    category: 'Designer',
-    stock: 4,
-    rating: 4.9
-  },
-  {
-    id: 4,
-    name: 'Wedding Silk Saree',
-    description: 'Heavy silk saree with extensive embroidery perfect for weddings',
-    price: '45,000',
-    category: 'Wedding',
-    stock: 3,
-    rating: 4.7
-  },
-  {
-    id: 5,
-    name: 'Casual Cotton Saree',
-    description: 'Light and comfortable cotton saree for casual occasions',
-    price: '2,500',
-    category: 'Casual',
-    stock: 60,
-    rating: 4.3
-  },
-  {
-    id: 6,
-    name: 'Printed Silk Saree',
-    description: 'Beautiful printed silk saree with floral patterns',
-    price: '12,000',
-    category: 'Silk',
-    stock: 0,
-    rating: 4.6
-  }
-])
+const allSarees = ref([])
 
 const filteredSarees = computed(() => {
   let filtered = [...allSarees.value]
@@ -229,7 +201,7 @@ const filteredSarees = computed(() => {
   // Search filter
   if (searchQuery.value) {
     filtered = filtered.filter(saree => 
-      saree.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      saree.product_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       saree.description.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
   }
@@ -242,7 +214,7 @@ const filteredSarees = computed(() => {
   // Price filter
   if (priceRange.value) {
     filtered = filtered.filter(saree => {
-      const price = parseInt(saree.price.replace(/,/g, ''))
+      const price = saree.price
       switch (priceRange.value) {
         case '0-5000': return price < 5000
         case '5000-15000': return price >= 5000 && price <= 15000
@@ -256,16 +228,23 @@ const filteredSarees = computed(() => {
   // Sort
   switch (sortBy.value) {
     case 'price-low':
-      filtered.sort((a, b) => parseInt(a.price.replace(/,/g, '')) - parseInt(b.price.replace(/,/g, '')))
+      filtered.sort((a, b) => a.price - b.price)
       break
     case 'price-high':
-      filtered.sort((a, b) => parseInt(b.price.replace(/,/g, '')) - parseInt(a.price.replace(/,/g, '')))
+      filtered.sort((a, b) => b.price - a.price)
       break
     case 'newest':
-      filtered.sort((a, b) => b.id - a.id)
+      filtered.sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
       break
     case 'popular':
-      filtered.sort((a, b) => b.rating - a.rating)
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      break
+    case 'featured':
+      filtered.sort((a, b) => {
+        if (a.featured && !b.featured) return -1
+        if (!a.featured && b.featured) return 1
+        return (b.rating || 0) - (a.rating || 0)
+      })
       break
   }
 
@@ -281,11 +260,11 @@ const getStockVariant = (stock) => {
 const addToCart = (saree) => {
   cartItems.value.push(saree)
   localStorage.setItem('cart', JSON.stringify(cartItems.value))
-  console.log('Added to cart:', saree.name)
+  console.log('Added to cart:', saree.product_name)
 }
 
 const toggleWishlist = (saree) => {
-  const index = wishlistItems.value.findIndex(item => item.id === saree.id)
+  const index = wishlistItems.value.findIndex(item => item.name === saree.name)
   if (index > -1) {
     wishlistItems.value.splice(index, 1)
   } else {
@@ -294,8 +273,8 @@ const toggleWishlist = (saree) => {
   localStorage.setItem('wishlist', JSON.stringify(wishlistItems.value))
 }
 
-const isInWishlist = (sareeId) => {
-  return wishlistItems.value.some(item => item.id === sareeId)
+const isInWishlist = (sareeName) => {
+  return wishlistItems.value.some(item => item.name === sareeName)
 }
 
 const clearFilters = () => {
@@ -309,7 +288,75 @@ const filterProducts = () => {
   // This will trigger the computed property
 }
 
-onMounted(() => {
+const loadProducts = async () => {
+  loading.value = true
+  error.value = ''
+  
+  try {
+    console.log('Loading products with filters:', {
+      category: selectedCategory.value,
+      search: searchQuery.value,
+      price_range: priceRange.value,
+      sort_by: sortBy.value,
+      limit: 50
+    })
+    
+    const result = await api.getProducts({
+      category: selectedCategory.value,
+      search: searchQuery.value,
+      price_range: priceRange.value,
+      sort_by: sortBy.value,
+      limit: 50
+    })
+    
+    console.log('API result:', result)
+    
+    if (result.success) {
+      console.log('Raw products data:', result.data)
+      allSarees.value = result.data.map(product => ({
+        id: product.name,
+        name: product.product_name,
+        product_name: product.product_name,
+        description: product.description,
+        price: product.price,
+        originalPrice: product.original_price,
+        category: product.category,
+        stock: product.stock_quantity,
+        rating: product.rating || 0,
+        featured: product.featured,
+        image: product.product_image,
+        gallery_images: product.gallery_images || []
+      }))
+      console.log('Processed products:', allSarees.value)
+    } else {
+      error.value = result.message
+      console.error('API error:', result.message)
+    }
+  } catch (err) {
+    error.value = 'Failed to load products'
+    console.error('Load products error:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const loadCategories = async () => {
+  try {
+    console.log('Loading categories...')
+    const result = await api.getCategories()
+    console.log('Categories API result:', result)
+    if (result.success) {
+      categories.value = result.data
+      console.log('Loaded categories:', categories.value)
+    }
+  } catch (err) {
+    console.error('Load categories error:', err)
+  }
+}
+
+onMounted(async () => {
+  console.log('Products page mounted, initializing...')
+  
   // Load cart and wishlist from localStorage
   const savedCart = localStorage.getItem('cart')
   if (savedCart) {
@@ -320,5 +367,20 @@ onMounted(() => {
   if (savedWishlist) {
     wishlistItems.value = JSON.parse(savedWishlist)
   }
+  
+  console.log('Initial state:', {
+    selectedCategory: selectedCategory.value,
+    searchQuery: searchQuery.value,
+    priceRange: priceRange.value,
+    sortBy: sortBy.value
+  })
+  
+  // Load products and categories from backend
+  await Promise.all([
+    loadProducts(),
+    loadCategories()
+  ])
+  
+  console.log('Initialization complete. Products loaded:', allSarees.value.length)
 })
 </script>

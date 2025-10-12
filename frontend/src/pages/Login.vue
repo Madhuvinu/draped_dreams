@@ -75,6 +75,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { api } from '../utils/api'
+import TextInput from '../components/TextInput.vue'
+import Button from '../components/Button.vue'
+import FeatherIcon from '../components/FeatherIcon.vue'
 
 const router = useRouter()
 
@@ -88,16 +92,29 @@ const handleLogin = async () => {
   error.value = ''
   
   try {
-    // Mock login - accept any email/password
-    if (email.value && password.value) {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+    // Validate required fields
+    if (!email.value || !password.value) {
+      error.value = 'Please enter email and password'
+      return
+    }
+
+    // Call backend API
+    const result = await api.login(email.value, password.value)
+    
+    if (result.success) {
+      // Store user session
+      localStorage.setItem('user', JSON.stringify(result.data))
+      localStorage.setItem('isLoggedIn', 'true')
+      
+      // Redirect to dashboard
       router.push('/dashboard')
     } else {
-      error.value = 'Please enter email and password'
+      error.value = result.message
     }
+    
   } catch (err) {
     error.value = 'Login failed. Please try again.'
+    console.error('Login error:', err)
   } finally {
     loading.value = false
   }

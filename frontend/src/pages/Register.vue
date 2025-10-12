@@ -21,6 +21,7 @@
                 id="first-name"
                 name="firstName"
                 type="text"
+                autocomplete="given-name"
                 required
                 class="mt-1"
                 placeholder="First name"
@@ -33,6 +34,7 @@
                 id="last-name"
                 name="lastName"
                 type="text"
+                autocomplete="family-name"
                 required
                 class="mt-1"
                 placeholder="Last name"
@@ -61,6 +63,7 @@
               id="phone"
               name="phone"
               type="tel"
+              autocomplete="tel"
               required
               class="mt-1"
               placeholder="Phone number"
@@ -88,6 +91,7 @@
               id="confirm-password"
               name="confirmPassword"
               type="password"
+              autocomplete="new-password"
               required
               class="mt-1"
               placeholder="Confirm password"
@@ -104,6 +108,19 @@
             <div class="ml-3">
               <h3 class="text-sm font-medium text-red-800">
                 {{ error }}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="success" class="rounded-md bg-green-50 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <FeatherIcon name="check-circle" class="h-5 w-5 text-green-400" />
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-green-800">
+                {{ success }}
               </h3>
             </div>
           </div>
@@ -138,6 +155,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { api } from '../utils/api'
+import TextInput from '../components/TextInput.vue'
+import Button from '../components/Button.vue'
+import FeatherIcon from '../components/FeatherIcon.vue'
 
 const router = useRouter()
 
@@ -152,10 +173,12 @@ const formData = ref({
 
 const loading = ref(false)
 const error = ref('')
+const success = ref('')
 
 const handleRegister = async () => {
   loading.value = true
   error.value = ''
+  success.value = ''
   
   try {
     // Validate passwords match
@@ -164,15 +187,46 @@ const handleRegister = async () => {
       return
     }
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    // Validate required fields
+    if (!formData.value.firstName || !formData.value.lastName || 
+        !formData.value.email || !formData.value.phone || 
+        !formData.value.password) {
+      error.value = 'All fields are required'
+      return
+    }
+
+    // Call backend API
+    const result = await api.register({
+      first_name: formData.value.firstName,
+      last_name: formData.value.lastName,
+      email: formData.value.email,
+      phone: formData.value.phone,
+      user_password: formData.value.password,
+      confirm_password: formData.value.confirmPassword
+    })
     
-    // For now, just redirect to login
-    alert('Account created successfully! Please login.')
-    router.push('/login')
+    if (result.success) {
+      success.value = result.message
+      // Clear form
+      formData.value = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: '',
+        confirmPassword: ''
+      }
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        router.push('/login')
+      }, 2000)
+    } else {
+      error.value = result.message
+    }
     
   } catch (err) {
     error.value = 'Registration failed. Please try again.'
+    console.error('Registration error:', err)
   } finally {
     loading.value = false
   }

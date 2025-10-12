@@ -1,25 +1,17 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2024, Draped Dreams and contributors
+# For license information, please see license.txt
+
+from . import __version__ as app_version
+
 app_name = "draped_dreams"
 app_title = "Draped Dreams"
-app_publisher = "harsha"
-app_description = "Sari store"
-app_email = "madhuvinutha912@gmail.com"
-app_license = "mit"
-
-# Apps
-# ------------------
-
-# required_apps = []
-
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "draped_dreams",
-# 		"logo": "/assets/draped_dreams/logo.png",
-# 		"title": "Draped Dreams",
-# 		"route": "/draped_dreams",
-# 		"has_permission": "draped_dreams.api.permission.has_app_permission"
-# 	}
-# ]
+app_publisher = "Draped Dreams"
+app_description = "E-commerce platform for sarees and traditional wear"
+app_icon = "octicon octicon-file-directory"
+app_color = "grey"
+app_email = "admin@drapeddreams.com"
+app_license = "MIT"
 
 # Includes in <head>
 # ------------------
@@ -48,11 +40,6 @@ app_license = "mit"
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
-# Svg Icons
-# ------------------
-# include app icons in desk
-# app_include_icons = "draped_dreams/public/icons.svg"
-
 # Home Pages
 # ----------
 
@@ -61,7 +48,7 @@ app_license = "mit"
 
 # website user home page (by Role)
 # role_home_page = {
-# 	"Role": "home_page"
+#	"Role": "home_page"
 # }
 
 # Generators
@@ -69,18 +56,6 @@ app_license = "mit"
 
 # automatically create page for each record of this doctype
 # website_generators = ["Web Page"]
-
-# automatically load and sync documents of this doctype from downstream apps
-# importable_doctypes = [doctype_1]
-
-# Jinja
-# ----------
-
-# add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "draped_dreams.utils.jinja_methods",
-# 	"filters": "draped_dreams.utils.jinja_filters"
-# }
 
 # Installation
 # ------------
@@ -94,22 +69,6 @@ app_license = "mit"
 # before_uninstall = "draped_dreams.uninstall.before_uninstall"
 # after_uninstall = "draped_dreams.uninstall.after_uninstall"
 
-# Integration Setup
-# ------------------
-# To set up dependencies/integrations with other apps
-# Name of the app being installed is passed as an argument
-
-# before_app_install = "draped_dreams.utils.before_app_install"
-# after_app_install = "draped_dreams.utils.after_app_install"
-
-# Integration Cleanup
-# -------------------
-# To clean up dependencies/integrations with other apps
-# Name of the app being uninstalled is passed as an argument
-
-# before_app_uninstall = "draped_dreams.utils.before_app_uninstall"
-# after_app_uninstall = "draped_dreams.utils.after_app_uninstall"
-
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
@@ -118,7 +77,7 @@ app_license = "mit"
 
 # Permissions
 # -----------
-# Permissions evaluated in scripted ways
+# Permissions evaluated in script files and in Python standard way
 
 # permission_query_conditions = {
 # 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
@@ -126,6 +85,14 @@ app_license = "mit"
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# }
+
+# DocType Class
+# ---------------
+# Override standard doctype classes (or any other class)
+
+# override_doctype_class = {
+# 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
 # Document Events
@@ -137,7 +104,7 @@ app_license = "mit"
 # 		"on_update": "method",
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
-# 	}
+#	}
 # }
 
 # Scheduled Tasks
@@ -155,10 +122,10 @@ app_license = "mit"
 # 	],
 # 	"weekly": [
 # 		"draped_dreams.tasks.weekly"
-# 	],
+# 	]
 # 	"monthly": [
 # 		"draped_dreams.tasks.monthly"
-# 	],
+# 	]
 # }
 
 # Testing
@@ -175,53 +142,38 @@ app_license = "mit"
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
-# along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "draped_dreams.task.get_dashboard_data"
-# }
+# along with any modifications made in the Frappe Query Builder. See
+# the override_whitelisted_methods and override_doctype_class variables
+# above for the usage of the `data` variable.
 
 # exempt linked doctypes from being automatically cancelled
 #
 # auto_cancel_exempted_doctypes = ["Auto Repeat"]
 
-# Ignore links to specified DocTypes when deleting documents
-# -----------------------------------------------------------
-
-# ignore_links_on_delete = ["Communication", "ToDo"]
-
-# Request Events
-# ----------------
-# before_request = ["draped_dreams.utils.before_request"]
-# after_request = ["draped_dreams.utils.after_request"]
-
-# Job Events
-# ----------
-# before_job = ["draped_dreams.utils.before_job"]
-# after_job = ["draped_dreams.utils.after_job"]
 
 # User Data Protection
 # --------------------
 
-# user_data_fields = [
-# 	{
-# 		"doctype": "{doctype_1}",
-# 		"filter_by": "{filter_by}",
-# 		"redact_fields": ["{field_1}", "{field_2}"],
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_2}",
-# 		"filter_by": "{filter_by}",
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_3}",
-# 		"strict": False,
-# 	},
-# 	{
-# 		"doctype": "{doctype_4}"
-# 	}
-# ]
+user_data_fields = [
+	{
+		"doctype": "{doctype_1}",
+		"filter_by": "{filter_by}",
+		"redact_fields": ["{field_1}", "{field_2}"],
+		"partial": 1,
+	},
+	{
+		"doctype": "{doctype_2}",
+		"filter_by": "{filter_by}",
+		"partial": 1,
+	},
+	{
+		"doctype": "{doctype_3}",
+		"strict": False,
+	},
+	{
+		"doctype": "{doctype_4}"
+	}
+]
 
 # Authentication and authorization
 # --------------------------------
@@ -230,10 +182,10 @@ app_license = "mit"
 # 	"draped_dreams.auth.validate"
 # ]
 
-# Automatically update python controller files with type annotations for this app.
-# export_python_type_annotations = True
+# Translation
+# --------------------------------
 
-# default_log_clearing_doctypes = {
-# 	"Logging DocType Name": 30  # days to retain logs
-# }
-
+# Make link fields search translated document names for these DocTypes
+# Recommended only for DocTypes which have limited documents with untranslated names
+# For example: Role, Gender, etc.
+# translated_search_doctypes = []
