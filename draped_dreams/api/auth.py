@@ -5,6 +5,7 @@ import hashlib
 
 import frappe
 from frappe.utils import cint, today
+from frappe import _
 
 
 @frappe.whitelist(allow_guest=True)

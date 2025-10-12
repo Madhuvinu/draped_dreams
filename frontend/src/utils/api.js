@@ -1,5 +1,18 @@
 // API utility functions for connecting to Frappe backend
-const API_BASE_URL = "http://dreams.localhost:8002/api/method/draped_dreams.api.auth";
+// Configuration is now environment-aware
+
+// Get API base URL from environment or use default
+const getApiBaseUrl = () => {
+	// Check for environment-specific configuration
+	if (import.meta.env.VITE_API_BASE_URL) {
+		return import.meta.env.VITE_API_BASE_URL;
+	}
+	
+	// Default to production URL
+	return "https://65.1.189.119/api/method/draped_dreams.api.auth";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export const api = {
 	// Registration

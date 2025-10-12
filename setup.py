@@ -295,8 +295,11 @@ def create_sample_data():
 
 
 if __name__ == "__main__":
+	# Get site name from environment variable or use default
+	site_name = os.getenv('DRAPED_DREAMS_SITE_NAME', 'dreams.localhost')
+	
 	# Initialize Frappe
-	frappe.init(site="dreams.localhost")
+	frappe.init(site=site_name)
 	frappe.connect()
 
 	try:
@@ -305,8 +308,8 @@ if __name__ == "__main__":
 		print("\n🎉 Setup completed successfully!")
 		print("You can now:")
 		print("1. Start your Frappe server: bench start")
-		print("2. Access your frontend at: http://dreams.localhost:8002/draped_dreams")
-		print("3. Access Frappe desk at: http://dreams.localhost:8002")
+		print(f"2. Access your frontend at: http://{site_name}:8002/draped_dreams")
+		print(f"3. Access Frappe desk at: http://{site_name}:8002")
 	except Exception as e:
 		print(f"\n❌ Setup failed: {e}")
 		sys.exit(1)
