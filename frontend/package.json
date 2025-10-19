@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --base=/files/ && yarn copy-assets",
-    "copy-assets": "mkdir -p ../../sites/dreams.localhost/public/files/assets && cp -r dist/assets/* ../../sites/dreams.localhost/public/files/assets/"
+    "copy-assets": "mkdir -p ../../sites/dreams.localhost/public/files/assets && cp -r dist/assets/* ../../sites/dreams.localhost/public/files/assets/ && echo 'All assets copied successfully'"
   },
   "dependencies": {
     "@vueuse/core": "^10.3.0",
