@@ -1,0 +1,76 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include draped_dreams *.css
+recursive-include draped_dreams *.csv
+recursive-include draped_dreams *.html
+recursive-include draped_dreams *.ico
+recursive-include draped_dreams *.js
+recursive-include draped_dreams *.json
+recursive-include draped_dreams *.md
+recursive-include draped_dreams *.png
+recursive-include draped_dreams *.py
+recursive-include draped_dreams *.svg
+recursive-include draped_dreams *.txt
+recursive-include draped_dreams *.xml
+recursive-include draped_dreams *.yml
+recursive-include draped_dreams *.yaml
+recursive-include draped_dreams public *.css
+recursive-include draped_dreams public *.js
+recursive-include draped_dreams public *.html
+recursive-include draped_dreams public *.png
+recursive-include draped_dreams public *.svg
+recursive-include draped_dreams public *.ico
+recursive-include draped_dreams public *.json
+recursive-include draped_dreams public *.xml
+recursive-include draped_dreams public *.txt
+recursive-include draped_dreams public *.md
+recursive-include draped_dreams public *.csv
+recursive-include draped_dreams public *.yml
+recursive-include draped_dreams public *.yaml
+recursive-include draped_dreams public *.py
+recursive-include draped_dreams www *.css
+recursive-include draped_dreams www *.js
+recursive-include draped_dreams www *.html
+recursive-include draped_dreams www *.png
+recursive-include draped_dreams www *.svg
+recursive-include draped_dreams www *.ico
+recursive-include draped_dreams www *.json
+recursive-include draped_dreams www *.xml
+recursive-include draped_dreams www *.txt
+recursive-include draped_dreams www *.md
+recursive-include draped_dreams www *.csv
+recursive-include draped_dreams www *.yml
+recursive-include draped_dreams www *.yaml
+recursive-include draped_dreams www *.py
+recursive-include draped_dreams templates *.css
+recursive-include draped_dreams templates *.js
+recursive-include draped_dreams templates *.html
+recursive-include draped_dreams templates *.png
+recursive-include draped_dreams templates *.svg
+recursive-include draped_dreams templates *.ico
+recursive-include draped_dreams templates *.json
+recursive-include draped_dreams templates *.xml
+recursive-include draped_dreams templates *.txt
+recursive-include draped_dreams templates *.md
+recursive-include draped_dreams templates *.csv
+recursive-include draped_dreams templates *.yml
+recursive-include draped_dreams templates *.yaml
+recursive-include draped_dreams templates *.py
+recursive-include draped_dreams *.json
+recursive-include draped_dreams *.py
+recursive-include draped_dreams *.js
+recursive-include draped_dreams *.css
+recursive-include draped_dreams *.html
+recursive-include draped_dreams *.md
+recursive-include draped_dreams *.txt
+recursive-include draped_dreams *.yml
+recursive-include draped_dreams *.yaml
+recursive-include draped_dreams *.xml
+recursive-include draped_dreams *.csv
+recursive-include draped_dreams *.png
+recursive-include draped_dreams *.svg
+recursive-include draped_dreams *.ico
