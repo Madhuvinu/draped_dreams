@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { API_CONFIG } from "@/constants.js";
 
 const routes = [
 	{
@@ -95,7 +96,11 @@ router.beforeEach(async (to, from, next) => {
 	// Admin routes require authentication
 	if (to.path.startsWith("/admin")) {
 		try {
-			const response = await fetch("/api/method/frappe.auth.get_logged_user", {
+			// Use dynamic base URL for authentication check
+			const baseUrl = API_CONFIG.getDashboardBaseUrl();
+			const authUrl = `${baseUrl}/api/method/frappe.auth.get_logged_user`;
+			
+			const response = await fetch(authUrl, {
 				method: "GET",
 				credentials: "include",
 				headers: {
@@ -111,18 +116,19 @@ router.beforeEach(async (to, from, next) => {
 				} else {
 					// User is not authenticated, redirect to Frappe login
 					window.location.href =
-						"/login?redirect-to=" + encodeURIComponent(window.location.pathname);
+						`${baseUrl}/login?redirect-to=` + encodeURIComponent(window.location.pathname);
 				}
 			} else {
 				// Request failed, redirect to Frappe login
 				window.location.href =
-					"/login?redirect-to=" + encodeURIComponent(window.location.pathname);
+					`${baseUrl}/login?redirect-to=` + encodeURIComponent(window.location.pathname);
 			}
 		} catch (error) {
 			console.error("Authentication check failed:", error);
 			// On error, redirect to Frappe login
+			const baseUrl = API_CONFIG.getDashboardBaseUrl();
 			window.location.href =
-				"/login?redirect-to=" + encodeURIComponent(window.location.pathname);
+				`${baseUrl}/login?redirect-to=` + encodeURIComponent(window.location.pathname);
 		}
 	} else {
 		// Public routes, no authentication required

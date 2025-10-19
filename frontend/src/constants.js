@@ -93,11 +93,18 @@ export const API_CONFIG = {
     AUTH: {
       REGISTER: '.register_user',
       LOGIN: '.login_user',
+      CSRF_TOKEN: '.get_csrf_token',
     },
     PRODUCTS: {
       LIST: '.get_products',
       DETAILS: '.get_product_details',
       CATEGORIES: '.get_categories',
+    },
+    ORDERS: {
+      PLACE: '/api/method/draped_dreams.api.orders.place_order',
+      GET_USER_ORDERS: '/api/method/draped_dreams.api.orders.get_user_orders',
+      GET_DETAILS: '/api/method/draped_dreams.api.orders.get_order_details',
+      UPDATE_STATUS: '/api/method/draped_dreams.api.orders.update_order_status',
     },
     DASHBOARD: {
       STATS: '/api/method/draped_dreams.api.dashboard.get_dashboard_stats',

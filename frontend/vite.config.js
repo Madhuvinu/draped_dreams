@@ -25,6 +25,10 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				manualChunks: undefined,
+				// Ensure dynamic imports work with relative paths
+				chunkFileNames: 'assets/[name]-[hash].js',
+				entryFileNames: 'assets/[name]-[hash].js',
+				assetFileNames: 'assets/[name]-[hash].[ext]'
 			},
 		},
 	},
