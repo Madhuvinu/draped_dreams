@@ -80,7 +80,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { api } from "../utils/api";
+import authAPI from "../api/auth.js";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import FeatherIcon from "../components/FeatherIcon.vue";
@@ -104,15 +104,15 @@ const handleLogin = async () => {
 		}
 
 		// Call backend API
-		const result = await api.login(email.value, password.value);
+		const result = await authAPI.login(email.value, password.value);
 
 		if (result.success) {
 			// Store user session
 			localStorage.setItem("user", JSON.stringify(result.data));
 			localStorage.setItem("isLoggedIn", "true");
 
-			// Redirect to dashboard
-			router.push("/dashboard");
+			// Redirect to products page
+			router.push("/products");
 		} else {
 			error.value = result.message;
 		}

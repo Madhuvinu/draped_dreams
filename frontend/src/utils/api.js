@@ -8,8 +8,8 @@ const getApiBaseUrl = () => {
 		return import.meta.env.VITE_API_BASE_URL;
 	}
 
-	// Default to production URL
-	return "https://http://dreams.localhost:8002/api/method/draped_dreams.api.auth";
+	// Default to local development URL
+	return "http://localhost:8000/api/method/draped_dreams.api.auth";
 };
 
 const API_BASE_URL = getApiBaseUrl();

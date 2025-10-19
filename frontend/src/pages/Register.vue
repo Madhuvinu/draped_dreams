@@ -179,7 +179,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { api } from "../utils/api";
+import authAPI from "../api/auth.js";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import FeatherIcon from "../components/FeatherIcon.vue";
@@ -224,7 +224,7 @@ const handleRegister = async () => {
 		}
 
 		// Call backend API
-		const result = await api.register({
+		const result = await authAPI.register({
 			first_name: formData.value.firstName,
 			last_name: formData.value.lastName,
 			email: formData.value.email,

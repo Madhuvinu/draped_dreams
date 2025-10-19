@@ -1,0 +1,359 @@
+import {
+	u as b,
+	r as m,
+	g as i,
+	a as c,
+	c as x,
+	b as t,
+	h as a,
+	l as V,
+	t as v,
+	e as h,
+	w as g,
+	k as p,
+} from "./index-b62629a2.js";
+const N = {
+		class: "min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8",
+	},
+	P = { class: "max-w-md w-full space-y-8" },
+	k = { class: "mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-purple-100" },
+	C = { class: "space-y-4" },
+	_ = { class: "grid grid-cols-2 gap-4" },
+	q = { key: 0, class: "rounded-md bg-red-50 p-4" },
+	A = { class: "flex" },
+	U = { class: "flex-shrink-0" },
+	B = { class: "ml-3" },
+	D = { class: "text-sm font-medium text-red-800" },
+	F = { class: "absolute left-0 inset-y-0 flex items-center pl-3" },
+	I = { class: "text-center" },
+	R = { class: "text-sm text-gray-600" },
+	E = {
+		__name: "Register",
+		setup(T) {
+			const w = b(),
+				s = m({
+					firstName: "",
+					lastName: "",
+					email: "",
+					phone: "",
+					password: "",
+					confirmPassword: "",
+				}),
+				n = m(!1),
+				r = m(""),
+				y = async () => {
+					(n.value = !0), (r.value = "");
+					try {
+						if (s.value.password !== s.value.confirmPassword) {
+							r.value = "Passwords do not match";
+							return;
+						}
+						await new Promise((d) => setTimeout(d, 1e3)),
+							alert("Account created successfully! Please login."),
+							w.push("/login");
+					} catch {
+						r.value = "Registration failed. Please try again.";
+					} finally {
+						n.value = !1;
+					}
+				};
+			return (d, e) => {
+				const u = i("FeatherIcon"),
+					o = i("TextInput"),
+					f = i("Button");
+				return (
+					c(),
+					x("div", N, [
+						t("div", P, [
+							t("div", null, [
+								t("div", k, [
+									a(u, { name: "user-plus", class: "h-6 w-6 text-purple-600" }),
+								]),
+								e[7] ||
+									(e[7] = t(
+										"h2",
+										{
+											class: "mt-6 text-center text-3xl font-extrabold text-gray-900",
+										},
+										" Create Account ",
+										-1
+									)),
+								e[8] ||
+									(e[8] = t(
+										"p",
+										{ class: "mt-2 text-center text-sm text-gray-600" },
+										" Join Draped Dreams today ",
+										-1
+									)),
+							]),
+							t(
+								"form",
+								{ class: "mt-8 space-y-6", onSubmit: V(y, ["prevent"]) },
+								[
+									t("div", C, [
+										t("div", _, [
+											t("div", null, [
+												e[9] ||
+													(e[9] = t(
+														"label",
+														{
+															for: "first-name",
+															class: "block text-sm font-medium text-gray-700",
+														},
+														"First Name",
+														-1
+													)),
+												a(
+													o,
+													{
+														id: "first-name",
+														name: "firstName",
+														type: "text",
+														required: "",
+														class: "mt-1",
+														placeholder: "First name",
+														modelValue: s.value.firstName,
+														"onUpdate:modelValue":
+															e[0] ||
+															(e[0] = (l) =>
+																(s.value.firstName = l)),
+													},
+													null,
+													8,
+													["modelValue"]
+												),
+											]),
+											t("div", null, [
+												e[10] ||
+													(e[10] = t(
+														"label",
+														{
+															for: "last-name",
+															class: "block text-sm font-medium text-gray-700",
+														},
+														"Last Name",
+														-1
+													)),
+												a(
+													o,
+													{
+														id: "last-name",
+														name: "lastName",
+														type: "text",
+														required: "",
+														class: "mt-1",
+														placeholder: "Last name",
+														modelValue: s.value.lastName,
+														"onUpdate:modelValue":
+															e[1] ||
+															(e[1] = (l) => (s.value.lastName = l)),
+													},
+													null,
+													8,
+													["modelValue"]
+												),
+											]),
+										]),
+										t("div", null, [
+											e[11] ||
+												(e[11] = t(
+													"label",
+													{
+														for: "email",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Email Address",
+													-1
+												)),
+											a(
+												o,
+												{
+													id: "email",
+													name: "email",
+													type: "email",
+													autocomplete: "email",
+													required: "",
+													class: "mt-1",
+													placeholder: "Email address",
+													modelValue: s.value.email,
+													"onUpdate:modelValue":
+														e[2] ||
+														(e[2] = (l) => (s.value.email = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										t("div", null, [
+											e[12] ||
+												(e[12] = t(
+													"label",
+													{
+														for: "phone",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Phone Number",
+													-1
+												)),
+											a(
+												o,
+												{
+													id: "phone",
+													name: "phone",
+													type: "tel",
+													required: "",
+													class: "mt-1",
+													placeholder: "Phone number",
+													modelValue: s.value.phone,
+													"onUpdate:modelValue":
+														e[3] ||
+														(e[3] = (l) => (s.value.phone = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										t("div", null, [
+											e[13] ||
+												(e[13] = t(
+													"label",
+													{
+														for: "password",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Password",
+													-1
+												)),
+											a(
+												o,
+												{
+													id: "password",
+													name: "password",
+													type: "password",
+													autocomplete: "new-password",
+													required: "",
+													class: "mt-1",
+													placeholder: "Password",
+													modelValue: s.value.password,
+													"onUpdate:modelValue":
+														e[4] ||
+														(e[4] = (l) => (s.value.password = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										t("div", null, [
+											e[14] ||
+												(e[14] = t(
+													"label",
+													{
+														for: "confirm-password",
+														class: "block text-sm font-medium text-gray-700",
+													},
+													"Confirm Password",
+													-1
+												)),
+											a(
+												o,
+												{
+													id: "confirm-password",
+													name: "confirmPassword",
+													type: "password",
+													required: "",
+													class: "mt-1",
+													placeholder: "Confirm password",
+													modelValue: s.value.confirmPassword,
+													"onUpdate:modelValue":
+														e[5] ||
+														(e[5] = (l) =>
+															(s.value.confirmPassword = l)),
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+									]),
+									r.value
+										? (c(),
+										  x("div", q, [
+												t("div", A, [
+													t("div", U, [
+														a(u, {
+															name: "alert-circle",
+															class: "h-5 w-5 text-red-400",
+														}),
+													]),
+													t("div", B, [t("h3", D, v(r.value), 1)]),
+												]),
+										  ]))
+										: h("", !0),
+									t("div", null, [
+										a(
+											f,
+											{
+												type: "submit",
+												class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",
+												loading: n.value,
+											},
+											{
+												default: g(() => [
+													t("span", F, [
+														a(u, {
+															name: "user-plus",
+															class: "h-5 w-5 text-purple-500 group-hover:text-purple-400",
+														}),
+													]),
+													p(
+														" " +
+															v(
+																n.value
+																	? "Creating Account..."
+																	: "Create Account"
+															),
+														1
+													),
+												]),
+												_: 1,
+											},
+											8,
+											["loading"]
+										),
+									]),
+									t("div", I, [
+										t("p", R, [
+											e[16] || (e[16] = p(" Already have an account? ", -1)),
+											a(
+												f,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														e[6] ||
+														(e[6] = (l) => d.$router.push("/login")),
+													class: "text-purple-600 hover:text-purple-500",
+												},
+												{
+													default: g(() => [
+														...(e[15] ||
+															(e[15] = [p(" Sign in here ", -1)])),
+													]),
+													_: 1,
+												}
+											),
+										]),
+									]),
+								],
+								32
+							),
+						]),
+					])
+				);
+			};
+		},
+	};
+export { E as default };

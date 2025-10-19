@@ -23,6 +23,25 @@ app_license = "MIT"
 # web_include_css = "/assets/draped_dreams/css/draped_dreams.css"
 # web_include_js = "/assets/draped_dreams/js/draped_dreams.js"
 
+# Static files
+# ------------
+# Serve static files from the app's public directory
+website_route_rules = [
+	{"from_route": "/assets/draped_dreams/<path:file_path>", "to_route": "draped_dreams.public.<file_path>"}
+]
+
+# Static files configuration
+app_include_css = "/assets/draped_dreams/frontend/assets/index-052b211c.css"
+app_include_js = "/assets/draped_dreams/frontend/assets/index-c95f719d.js"
+
+# Website pages
+# ------------
+website_route_rules.extend([
+	{"from_route": "/dashboard", "to_route": "dashboard"},
+	{"from_route": "/admin", "to_route": "dashboard"},
+	{"from_route": "/store", "to_route": "draped_dreams"},
+])
+
 # include custom scss in every website theme (without file extension ".scss")
 # website_theme_scss = "draped_dreams/public/scss/website"
 

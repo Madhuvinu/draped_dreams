@@ -9,6 +9,25 @@ from frappe.utils import cint, today
 
 
 @frappe.whitelist(allow_guest=True)
+def get_csrf_token():
+	"""
+	Get CSRF token for API requests
+	"""
+	try:
+		# Generate a new CSRF token
+		csrf_token = frappe.generate_hash()
+		return {
+			"success": True,
+			"csrf_token": csrf_token
+		}
+	except Exception as e:
+		frappe.log_error(f"Error getting CSRF token: {str(e)}")
+		return {
+			"success": False,
+			"message": f"Error getting CSRF token: {str(e)}"
+		}
+
+@frappe.whitelist(allow_guest=True)
 def register_user(first_name, last_name, email, phone, password, confirm_password):
 	"""Register a new user"""
 	try:
@@ -40,24 +59,12 @@ def register_user(first_name, last_name, email, phone, password, confirm_passwor
 		# Hash password manually to ensure consistency
 		hashed_password = hashlib.sha256(password.encode()).hexdigest()
 		
-		# Check which password column exists in the database
-		try:
-			# Try with 'password' column first (server schema)
-			frappe.db.sql("""
-				INSERT INTO `tabRegister` 
-				(name, first_name, last_name, email, phone, password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
-			""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
-		except Exception as e:
-			if "Unknown column 'password'" in str(e):
-				# Fallback to 'user_password' column (local schema)
-				frappe.db.sql("""
-					INSERT INTO `tabRegister` 
-					(name, first_name, last_name, email, phone, user_password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
-					VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
-				""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
-			else:
-				raise e
+		# Insert using the correct schema (user_password column)
+		frappe.db.sql("""
+			INSERT INTO `tabRegister` 
+			(name, first_name, last_name, email, phone, user_password, confirm_password, status, registration_date, creation, modified, owner, modified_by)
+			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW(), 'Administrator', 'Administrator')
+		""", (email, first_name, last_name, email, phone, hashed_password, hashed_password, "Active", today()))
 
 		frappe.db.commit()
 
@@ -86,22 +93,11 @@ def login_user(email, password):
 		if len(password) < 8:
 			return {"success": False, "message": "Password must be at least 8 characters"}
 
-		# Find user by email - try both password column names
-		try:
-			# Try with 'password' column first (server schema)
-			user = frappe.db.get_value(
-				"Register", {"email": email}, ["name", "password", "status"], as_dict=True
-			)
-			password_field = "password"
-		except Exception as e:
-			if "Unknown column 'password'" in str(e):
-				# Fallback to 'user_password' column (local schema)
-				user = frappe.db.get_value(
-					"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
-				)
-				password_field = "user_password"
-			else:
-				raise e
+		# Find user by email using the correct schema (user_password column)
+		user = frappe.db.get_value(
+			"Register", {"email": email}, ["name", "user_password", "status"], as_dict=True
+		)
+		password_field = "user_password"
 
 		if not user:
 			return {"success": False, "message": "Invalid email or password"}

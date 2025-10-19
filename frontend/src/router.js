@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
 	{
 		path: "/",
-		redirect: "/home",
+		redirect: "/products",
 		name: "Home",
 	},
 	// E-commerce Pages
@@ -36,6 +36,11 @@ const routes = [
 		path: "/register",
 		name: "Register",
 		component: () => import("@/pages/Register.vue"),
+	},
+	{
+		path: "/orders",
+		name: "OrderHistory",
+		component: () => import("@/pages/OrderHistory.vue"),
 	},
 	// Admin Pages
 	{
