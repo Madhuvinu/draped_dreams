@@ -6,12 +6,145 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Draped Dreams - Saree Store Admin</title>
-    <script type="module" crossorigin src="/files/assets/index-93b07c37.js?v=20251019"></script>
-    <link rel="stylesheet" href="/files/assets/index-e36060c2.css?v=20251019">
+    <title>Draped Dreams - Saree Store</title>
+    <script>
+      // Universal Dynamic Asset Loading - Works Everywhere
+      (function() {
+        console.log('🚀 Draped Dreams - Universal Asset Loader Starting...');
+        
+        const protocol = window.location.protocol;
+        const hostname = window.location.hostname;
+        const port = window.location.port;
+        
+        console.log('📍 Environment Detection:', { protocol, hostname, port });
+        
+        // Universal environment detection
+        const isDevelopment = hostname === 'localhost' || 
+                             hostname === '127.0.0.1' || 
+                             hostname.includes('localhost') ||
+                             hostname.includes('.local') ||
+                             hostname.includes('127.0.0.1');
+        
+        // Build base URL dynamically - works everywhere
+        let baseUrl;
+        if (isDevelopment) {
+          baseUrl = `${protocol}//${hostname}:8000`;
+        } else {
+          // Production: Use current hostname with existing port or default
+          const productionPort = port ? `:${port}` : '';
+          baseUrl = `${protocol}//${hostname}${productionPort}`;
+        }
+        
+        console.log('🌐 Base URL:', baseUrl);
+        console.log('🔧 Environment:', isDevelopment ? 'Development' : 'Production');
+        
+        // Dynamic asset discovery and loading
+        const loadAssets = async () => {
+          try {
+            // Try to discover the latest assets
+            const assetsResponse = await fetch(`${baseUrl}/files/assets/`, {
+              method: 'GET',
+              credentials: 'include'
+            });
+            
+            if (assetsResponse.ok) {
+              // If we can access the assets directory, try to find the latest files
+              const assetsText = await assetsResponse.text();
+              
+              // Extract asset filenames from the directory listing
+              const jsMatch = assetsText.match(/index-[a-f0-9-]+\.js/g);
+              const cssMatch = assetsText.match(/index-[a-f0-9-]+\.css/g);
+              
+              if (jsMatch && cssMatch) {
+                // Use the latest files found
+                const jsFile = jsMatch[jsMatch.length - 1];
+                const cssFile = cssMatch[cssMatch.length - 1];
+                
+                console.log('📦 Discovered assets:', { jsFile, cssFile });
+                loadAssetFiles(jsFile, cssFile);
+                return;
+              }
+            }
+          } catch (error) {
+            console.log('⚠️ Asset discovery failed, using fallback:', error.message);
+          }
+          
+          // Fallback to known assets
+          console.log('🔄 Using fallback assets');
+          loadAssetFiles('index-c7d485ac.js', 'index-e36060c2.css');
+        };
+        
+        const loadAssetFiles = (jsFile, cssFile) => {
+          const timestamp = new Date().getTime();
+          const jsUrl = `${baseUrl}/files/assets/${jsFile}?v=${timestamp}`;
+          const cssUrl = `${baseUrl}/files/assets/${cssFile}?v=${timestamp}`;
+          
+          console.log('📥 Loading assets:', { jsUrl, cssUrl });
+          
+          // Load CSS
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = cssUrl;
+          link.onerror = () => {
+            console.error('❌ Failed to load CSS:', cssUrl);
+            // Try alternative CSS path
+            const altCssUrl = `${baseUrl}/assets/frappe/dist/css/website.bundle.css?v=${timestamp}`;
+            const altLink = document.createElement('link');
+            altLink.rel = 'stylesheet';
+            altLink.href = altCssUrl;
+            document.head.appendChild(altLink);
+          };
+          document.head.appendChild(link);
+          
+          // Load JS
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = jsUrl;
+          script.onerror = () => {
+            console.error('❌ Failed to load JS:', jsUrl);
+            // Try alternative JS path
+            const altJsUrl = `${baseUrl}/assets/frappe/dist/js/frappe-web.bundle.js?v=${timestamp}`;
+            const altScript = document.createElement('script');
+            altScript.type = 'module';
+            altScript.crossOrigin = 'anonymous';
+            altScript.src = altJsUrl;
+            document.head.appendChild(altScript);
+          };
+          script.onload = () => {
+            console.log('✅ JavaScript loaded successfully');
+          };
+          document.head.appendChild(script);
+        };
+        
+        // Start loading assets
+        loadAssets();
+        
+        // Global error handler for asset loading
+        window.addEventListener('error', (event) => {
+          if (event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK') {
+            console.error('🚨 Asset loading error:', event.target.src || event.target.href);
+          }
+        });
+        
+        console.log('🎯 Draped Dreams - Universal Asset Loader Ready!');
+      })();
+    </script>
   </head>
   <body>
-    <div id="app"></div>
-    
+    <div id="app">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+          <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+          <p style="color: #666; font-size: 16px;">Loading Draped Dreams...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
   </body>
 </html>
