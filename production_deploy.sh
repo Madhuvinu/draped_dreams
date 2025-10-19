@@ -22,8 +22,10 @@ print_error() {
 }
 
 # Check if we're in the right directory
-if [ ! -f "package.json" ] || [ ! -d "frontend" ]; then
+if [ ! -d "frontend" ]; then
     print_error "Please run this script from the draped_dreams app root directory"
+    print_error "Current directory: $(pwd)"
+    print_error "Expected to find 'frontend' directory here"
     exit 1
 fi
 
