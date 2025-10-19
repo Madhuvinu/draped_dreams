@@ -1,14 +1,14 @@
 <template>
 	<div class="min-h-screen bg-gray-50">
 		<!-- Header -->
-		<header class="bg-white shadow-sm border-b">
+		<header class="bg-white shadow-sm border-b sticky top-0 z-50">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="flex justify-between items-center py-4">
 					<div class="flex items-center">
 						<div
 							class="h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3"
 						>
-							<FeatherIcon name="shopping-bag" class="text-white" />
+							<span class="text-white text-lg">🛍️</span>
 						</div>
 						<h1 class="text-2xl font-bold text-gray-900">Draped Dreams</h1>
 					</div>
@@ -17,14 +17,61 @@
 							<FeatherIcon name="shopping-cart" class="w-5 h-5 mr-2" />
 							Cart ({{ cartItems.length }})
 						</Button>
-						<Button variant="ghost" size="sm" @click="$router.push('/login')">
-							<FeatherIcon name="user" class="w-5 h-5 mr-2" />
-							Login
+						<Button v-if="isLoggedIn" variant="ghost" size="sm" @click="$router.push('/orders')">
+							<FeatherIcon name="package" class="w-5 h-5 mr-2" />
+							Orders
 						</Button>
+						
+						<!-- Show different options based on login status -->
+						<template v-if="isLoggedIn">
+							<div class="flex items-center space-x-2">
+								<span class="text-sm text-gray-600">Welcome, {{ userData.first_name || userData.email }}!</span>
+								<Button 
+									variant="ghost" 
+									size="sm" 
+									@click="handleLogout"
+									class="text-gray-700 hover:bg-gray-100"
+								>
+									<FeatherIcon name="user" class="w-4 h-4 mr-2" />
+									Logout
+								</Button>
+							</div>
+						</template>
+						
+						<template v-else>
+							<Button 
+								variant="outline" 
+								size="sm" 
+								@click="$router.push('/register')"
+								class="border-purple-600 text-purple-600 hover:bg-purple-50"
+							>
+								<FeatherIcon name="user-plus" class="w-4 h-4 mr-2" />
+								Register
+							</Button>
+							<Button 
+								variant="ghost" 
+								size="sm" 
+								@click="$router.push('/login')"
+								class="text-gray-700 hover:bg-gray-100"
+							>
+								<FeatherIcon name="user" class="w-4 h-4 mr-2" />
+								Login
+							</Button>
+						</template>
 					</div>
 				</div>
 			</div>
 		</header>
+
+		<!-- Hero Section -->
+		<section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+				<h2 class="text-4xl font-bold mb-4">Elegant Sarees for Every Occasion</h2>
+				<p class="text-xl mb-8">
+					Discover our exquisite collection of traditional and contemporary sarees
+				</p>
+			</div>
+		</section>
 
 		<!-- Main Content -->
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -222,12 +269,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { api } from "../utils/api";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import productsAPI from "../api/products.js";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import FeatherIcon from "../components/FeatherIcon.vue";
 import Badge from "../components/Badge.vue";
+
+const router = useRouter();
 
 const cartItems = ref([]);
 const wishlistItems = ref([]);
@@ -237,6 +287,10 @@ const priceRange = ref("");
 const sortBy = ref("featured");
 const loading = ref(false);
 const error = ref("");
+
+// User session state
+const isLoggedIn = ref(false);
+const userData = ref(null);
 
 const categories = ref(["Silk", "Cotton", "Designer", "Wedding", "Casual", "Party"]);
 const allSarees = ref([]);
@@ -310,9 +364,60 @@ const getStockVariant = (stock) => {
 };
 
 const addToCart = (saree) => {
-	cartItems.value.push(saree);
+	console.log('addToCart called with saree:', saree);
+	console.log('saree.stock:', saree.stock, 'type:', typeof saree.stock);
+	
+	// Check if user is logged in
+	if (!isLoggedIn.value) {
+		alert('Please login to add items to cart');
+		router.push('/login');
+		return;
+	}
+
+	// Check if item already exists in cart
+	const existingItem = cartItems.value.find(item => item.product_id === saree.name);
+	
+	if (existingItem) {
+		// Update quantity if item exists
+		const currentQuantity = parseInt(existingItem.quantity) || 0;
+		const stockQuantity = parseInt(saree.stock) || 0;
+		
+		console.log('Existing item - currentQuantity:', currentQuantity, 'stockQuantity:', stockQuantity);
+		
+		if (currentQuantity < stockQuantity) {
+			existingItem.quantity = currentQuantity + 1;
+		} else {
+			alert(`Only ${stockQuantity} items available in stock`);
+			return;
+		}
+	} else {
+		// Add new item to cart
+		console.log('New item - saree.stock > 0?', saree.stock > 0);
+		
+		if (saree.stock > 0) {
+			cartItems.value.push({
+				product_id: saree.name,
+				product_name: saree.product_name,
+				category: saree.category,
+				price: parseFloat(saree.price) || 0,
+				quantity: 1,
+				stock_quantity: parseInt(saree.stock) || 0,
+				image: saree.image
+			});
+			console.log('Item added to cart successfully');
+		} else {
+			console.log('Item out of stock, showing alert');
+			alert('This item is out of stock');
+			return;
+		}
+	}
+	
+	// Save to localStorage
 	localStorage.setItem("cart", JSON.stringify(cartItems.value));
 	console.log("Added to cart:", saree.product_name);
+	
+	// Show success message
+	alert(`${saree.product_name} added to cart!`);
 };
 
 const toggleWishlist = (saree) => {
@@ -336,6 +441,30 @@ const clearFilters = () => {
 	sortBy.value = "featured";
 };
 
+// Check login status on component mount
+const checkLoginStatus = () => {
+	const user = localStorage.getItem("user");
+	const loggedIn = localStorage.getItem("isLoggedIn");
+	
+	if (user && loggedIn === "true") {
+		userData.value = JSON.parse(user);
+		isLoggedIn.value = true;
+	} else {
+		userData.value = null;
+		isLoggedIn.value = false;
+	}
+};
+
+// Handle logout
+const handleLogout = () => {
+	localStorage.removeItem("user");
+	localStorage.removeItem("isLoggedIn");
+	userData.value = null;
+	isLoggedIn.value = false;
+	// Optionally redirect to home or show a message
+	router.push("/products");
+};
+
 const filterProducts = () => {
 	// This will trigger the computed property
 };
@@ -353,7 +482,7 @@ const loadProducts = async () => {
 			limit: 50,
 		});
 
-		const result = await api.getProducts({
+		const result = await productsAPI.getProducts({
 			category: selectedCategory.value,
 			search: searchQuery.value,
 			price_range: priceRange.value,
@@ -395,7 +524,7 @@ const loadProducts = async () => {
 const loadCategories = async () => {
 	try {
 		console.log("Loading categories...");
-		const result = await api.getCategories();
+		const result = await productsAPI.getCategories();
 		console.log("Categories API result:", result);
 		if (result.success) {
 			categories.value = result.data;
@@ -406,8 +535,26 @@ const loadCategories = async () => {
 	}
 };
 
+// Function to refresh products data
+const refreshProducts = async () => {
+	console.log("Refreshing products data...");
+	await loadProducts();
+	console.log("Products refreshed. Current count:", allSarees.value.length);
+};
+
+// Refresh products when page becomes visible (user navigates back)
+const handleVisibilityChange = () => {
+	if (!document.hidden) {
+		console.log("Page became visible, refreshing products...");
+		refreshProducts();
+	}
+};
+
 onMounted(async () => {
 	console.log("Products page mounted, initializing...");
+
+	// Check login status
+	checkLoginStatus();
 
 	// Load cart and wishlist from localStorage
 	const savedCart = localStorage.getItem("cart");
@@ -431,5 +578,13 @@ onMounted(async () => {
 	await Promise.all([loadProducts(), loadCategories()]);
 
 	console.log("Initialization complete. Products loaded:", allSarees.value.length);
+
+	// Add event listener for visibility change
+	document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+// Clean up event listener
+onUnmounted(() => {
+	document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 </script>

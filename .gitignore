@@ -1,58 +1,30 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyc
-*.py~
+# Frontend build files (generated, should not be committed)
+draped_dreams/public/frontend/assets/
+draped_dreams/www/draped_dreams.html
 
-# Distribution / packaging
-.Python
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-tags
-MANIFEST
+# Environment files (contain sensitive/local URLs)
+frontend/.env.development
+frontend/.env.production
+frontend/.env.local
 
-# Environments
-.env
-.env.*
-!.env.example
-!.env.*.example
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+# Node modules
+frontend/node_modules/
+frontend/dist/
 
-# Dependency directories
-node_modules/
-jspm_packages/
+# Logs
+*.log
+npm-debug.log*
 
-# IDEs and editors
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
 .vscode/
-.vs/
 .idea/
-.kdev4/
-*.kdev4
-*.DS_Store
 *.swp
-*.comp.js
-.wnf-lang-status
-*debug.log
+*.swo
 
-# Helix Editor
-.helix/
-
-# Aider AI Chat
-.aider*
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,381 @@
+import {
+	r as g,
+	i as v,
+	o as C,
+	a as y,
+	b as r,
+	c as l,
+	d as t,
+	e as i,
+	w as c,
+	F as m,
+	f as _,
+	t as o,
+	g as d,
+} from "./index-86bbcb6e.js";
+const I = { class: "space-y-6" },
+	P = { class: "flex justify-between items-center" },
+	B = { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
+	j = { class: "bg-white rounded-lg shadow p-6" },
+	A = { class: "flex items-center justify-between mb-4" },
+	D = { class: "space-y-2" },
+	F = { class: "text-sm font-medium" },
+	L = { class: "text-sm text-yellow-600" },
+	T = { class: "bg-white rounded-lg shadow p-6" },
+	N = { class: "flex items-center justify-between mb-4" },
+	O = { class: "space-y-2" },
+	W = { class: "text-sm font-medium" },
+	U = { class: "bg-white rounded-lg shadow p-6" },
+	E = { class: "flex items-center justify-between mb-4" },
+	M = { class: "text-2xl font-bold text-gray-900 mb-2" },
+	q = { class: "text-sm text-gray-600" },
+	z = { class: "bg-white rounded-lg shadow" },
+	G = { class: "overflow-x-auto" },
+	H = { class: "min-w-full divide-y divide-gray-200" },
+	J = { class: "bg-white divide-y divide-gray-200" },
+	K = { class: "px-6 py-4 whitespace-nowrap" },
+	Q = { class: "text-sm font-medium text-gray-900" },
+	R = { class: "text-sm text-gray-500" },
+	X = { class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900" },
+	Y = { class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900" },
+	Z = { class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900" },
+	$ = { class: "px-6 py-4 whitespace-nowrap text-sm text-gray-900" },
+	tt = { class: "px-6 py-4 whitespace-nowrap" },
+	at = {
+		__name: "Inventory",
+		setup(et) {
+			const n = g([]),
+				p = g([]),
+				x = g([]),
+				f = g([]),
+				h = v(() => n.value.length),
+				w = v(() =>
+					n.value
+						.reduce((a, e) => a + parseInt(e.totalValue.replace(/,/g, "")), 0)
+						.toLocaleString()
+				),
+				k = (a) => (a === 0 ? "Out of Stock" : a <= 10 ? "Low Stock" : "In Stock"),
+				b = (a) => (a === 0 ? "danger" : a <= 10 ? "warning" : "success");
+			return (
+				C(() => {
+					setTimeout(() => {
+						(n.value = [
+							{
+								id: 1,
+								name: "Silk Sari Collection",
+								sku: "SS-001",
+								category: "Silk",
+								stock: 25,
+								unitPrice: "15,000",
+								totalValue: "3,75,000",
+							},
+							{
+								id: 2,
+								name: "Cotton Sari Set",
+								sku: "CS-002",
+								category: "Cotton",
+								stock: 45,
+								unitPrice: "3,500",
+								totalValue: "1,57,500",
+							},
+							{
+								id: 3,
+								name: "Designer Sari",
+								sku: "DS-003",
+								category: "Designer",
+								stock: 8,
+								unitPrice: "25,000",
+								totalValue: "2,00,000",
+							},
+							{
+								id: 4,
+								name: "Wedding Sari",
+								sku: "WS-004",
+								category: "Wedding",
+								stock: 0,
+								unitPrice: "35,000",
+								totalValue: "0",
+							},
+							{
+								id: 5,
+								name: "Casual Sari",
+								sku: "CAS-005",
+								category: "Casual",
+								stock: 5,
+								unitPrice: "2,500",
+								totalValue: "12,500",
+							},
+						]),
+							(p.value = n.value.filter((a) => a.stock > 0 && a.stock <= 10)),
+							(x.value = n.value.filter((a) => a.stock === 0)),
+							(f.value = [...new Set(n.value.map((a) => a.category))]);
+					}, 1e3);
+				}),
+				(a, e) => {
+					const S = y("FeatherIcon"),
+						V = y("Button"),
+						u = y("Badge");
+					return (
+						r(),
+						l("div", I, [
+							t("div", P, [
+								e[1] ||
+									(e[1] = t(
+										"h1",
+										{ class: "text-2xl font-bold text-gray-900" },
+										"Inventory",
+										-1
+									)),
+								i(
+									V,
+									{ class: "draped-dreams-primary" },
+									{
+										default: c(() => [
+											i(S, { name: "plus", class: "w-4 h-4 mr-2" }),
+											e[0] || (e[0] = d(" Update Inventory ", -1)),
+										]),
+										_: 1,
+									}
+								),
+							]),
+							t("div", B, [
+								t("div", j, [
+									t("div", A, [
+										e[2] ||
+											(e[2] = t(
+												"h3",
+												{ class: "text-lg font-semibold text-gray-900" },
+												"Low Stock Alert",
+												-1
+											)),
+										i(
+											u,
+											{ variant: "warning" },
+											{
+												default: c(() => [
+													d(o(p.value.length) + " items", 1),
+												]),
+												_: 1,
+											}
+										),
+									]),
+									t("div", D, [
+										(r(!0),
+										l(
+											m,
+											null,
+											_(
+												p.value,
+												(s) => (
+													r(),
+													l(
+														"div",
+														{
+															key: s.id,
+															class: "flex justify-between items-center p-2 bg-yellow-50 rounded",
+														},
+														[
+															t("span", F, o(s.name), 1),
+															t("span", L, o(s.stock) + " left", 1),
+														]
+													)
+												)
+											),
+											128
+										)),
+									]),
+								]),
+								t("div", T, [
+									t("div", N, [
+										e[3] ||
+											(e[3] = t(
+												"h3",
+												{ class: "text-lg font-semibold text-gray-900" },
+												"Out of Stock",
+												-1
+											)),
+										i(
+											u,
+											{ variant: "danger" },
+											{
+												default: c(() => [
+													d(o(x.value.length) + " items", 1),
+												]),
+												_: 1,
+											}
+										),
+									]),
+									t("div", O, [
+										(r(!0),
+										l(
+											m,
+											null,
+											_(
+												x.value,
+												(s) => (
+													r(),
+													l(
+														"div",
+														{
+															key: s.id,
+															class: "flex justify-between items-center p-2 bg-red-50 rounded",
+														},
+														[
+															t("span", W, o(s.name), 1),
+															e[4] ||
+																(e[4] = t(
+																	"span",
+																	{
+																		class: "text-sm text-red-600",
+																	},
+																	"0 left",
+																	-1
+																)),
+														]
+													)
+												)
+											),
+											128
+										)),
+									]),
+								]),
+								t("div", U, [
+									t("div", E, [
+										e[5] ||
+											(e[5] = t(
+												"h3",
+												{ class: "text-lg font-semibold text-gray-900" },
+												"Total Value",
+												-1
+											)),
+										i(
+											u,
+											{ variant: "success" },
+											{ default: c(() => [d("₹" + o(w.value), 1)]), _: 1 }
+										),
+									]),
+									t("div", M, o(h.value) + " items ", 1),
+									t(
+										"div",
+										q,
+										" Across " + o(f.value.length) + " categories ",
+										1
+									),
+								]),
+							]),
+							t("div", z, [
+								e[7] ||
+									(e[7] = t(
+										"div",
+										{ class: "px-6 py-4 border-b border-gray-200" },
+										[
+											t(
+												"h2",
+												{ class: "text-lg font-semibold text-gray-900" },
+												"All Products"
+											),
+										],
+										-1
+									)),
+								t("div", G, [
+									t("table", H, [
+										e[6] ||
+											(e[6] = t(
+												"thead",
+												{ class: "bg-gray-50" },
+												[
+													t("tr", null, [
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Product "
+														),
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Category "
+														),
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Current Stock "
+														),
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Unit Price "
+														),
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Total Value "
+														),
+														t(
+															"th",
+															{
+																class: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+															},
+															" Status "
+														),
+													]),
+												],
+												-1
+											)),
+										t("tbody", J, [
+											(r(!0),
+											l(
+												m,
+												null,
+												_(
+													n.value,
+													(s) => (
+														r(),
+														l("tr", { key: s.id }, [
+															t("td", K, [
+																t("div", Q, o(s.name), 1),
+																t("div", R, o(s.sku), 1),
+															]),
+															t("td", X, o(s.category), 1),
+															t("td", Y, o(s.stock), 1),
+															t("td", Z, " ₹" + o(s.unitPrice), 1),
+															t("td", $, " ₹" + o(s.totalValue), 1),
+															t("td", tt, [
+																i(
+																	u,
+																	{ variant: b(s.stock) },
+																	{
+																		default: c(() => [
+																			d(o(k(s.stock)), 1),
+																		]),
+																		_: 2,
+																	},
+																	1032,
+																	["variant"]
+																),
+															]),
+														])
+													)
+												),
+												128
+											)),
+										]),
+									]),
+								]),
+							]),
+						])
+					);
+				}
+			);
+		},
+	};
+export { at as default };

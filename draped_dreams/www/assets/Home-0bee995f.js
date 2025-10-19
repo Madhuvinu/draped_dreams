@@ -1,0 +1,444 @@
+import {
+	r as g,
+	o as _,
+	a as x,
+	b as a,
+	c as n,
+	d as e,
+	e as i,
+	w as c,
+	F as h,
+	f,
+	g as k,
+	h as p,
+	t as l,
+	i as C,
+	j as S,
+} from "./index-8a0f47ce.js";
+const D = { class: "min-h-screen bg-gray-50" },
+	$ = { class: "bg-white shadow-sm border-b" },
+	j = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	N = { class: "flex justify-between items-center py-4" },
+	B = { class: "flex items-center" },
+	F = { class: "h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3" },
+	P = { class: "flex items-center space-x-4" },
+	I = { class: "bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16" },
+	L = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" },
+	V = { class: "py-12" },
+	z = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	A = { class: "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6" },
+	E = ["onClick"],
+	H = {
+		class: "w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3",
+	},
+	M = { class: "text-sm font-medium text-gray-900" },
+	W = { class: "py-12 bg-white" },
+	O = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	T = { class: "flex justify-between items-center mb-8" },
+	q = { class: "flex items-center space-x-4" },
+	J = { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" },
+	Q = ["onClick"],
+	R = {
+		class: "aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center",
+	},
+	U = { class: "p-4" },
+	Y = { class: "font-semibold text-gray-900 mb-2" },
+	G = { class: "text-sm text-gray-600 mb-3" },
+	K = { class: "flex items-center justify-between" },
+	X = { class: "text-lg font-bold text-purple-600" },
+	Z = { key: 0, class: "text-sm text-gray-500 line-through ml-2" },
+	ee = { class: "bg-gray-900 text-white py-12" },
+	te = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	se = { class: "grid grid-cols-1 md:grid-cols-4 gap-8" },
+	oe = { class: "flex items-center mb-4" },
+	ie = { class: "h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3" },
+	ne = {
+		__name: "Home",
+		setup(re) {
+			const m = g([]),
+				v = g([
+					{ id: 1, name: "Silk", icon: "star" },
+					{ id: 2, name: "Cotton", icon: "sun" },
+					{ id: 3, name: "Designer", icon: "sparkles" },
+					{ id: 4, name: "Wedding", icon: "heart" },
+					{ id: 5, name: "Casual", icon: "smile" },
+					{ id: 6, name: "Party", icon: "zap" },
+				]),
+				b = g([
+					{
+						id: 1,
+						name: "Elegant Silk Saree",
+						description: "Beautiful silk saree with intricate work",
+						price: "15,000",
+						originalPrice: "18,000",
+						category: "Silk",
+					},
+					{
+						id: 2,
+						name: "Comfortable Cotton Saree",
+						description: "Light and breathable cotton saree",
+						price: "3,500",
+						category: "Cotton",
+					},
+					{
+						id: 3,
+						name: "Modern Designer Saree",
+						description: "Contemporary designer saree",
+						price: "8,000",
+						originalPrice: "10,000",
+						category: "Designer",
+					},
+					{
+						id: 4,
+						name: "Wedding Silk Saree",
+						description: "Heavy silk saree for special occasions",
+						price: "25,000",
+						category: "Wedding",
+					},
+				]),
+				y = (o) => {
+					console.log("Filter by:", o);
+				},
+				w = (o) => {
+					m.value.push(o), console.log("Added to cart:", o.name);
+				};
+			return (
+				_(() => {
+					const o = localStorage.getItem("cart");
+					o && (m.value = JSON.parse(o));
+				}),
+				(o, t) => {
+					const r = x("FeatherIcon"),
+						d = x("Button");
+					return (
+						a(),
+						n("div", D, [
+							e("header", $, [
+								e("div", j, [
+									e("div", N, [
+										e("div", B, [
+											e("div", F, [
+												i(r, {
+													name: "shopping-bag",
+													class: "text-white",
+												}),
+											]),
+											t[3] ||
+												(t[3] = e(
+													"h1",
+													{ class: "text-2xl font-bold text-gray-900" },
+													"Draped Dreams",
+													-1
+												)),
+										]),
+										e("div", P, [
+											i(
+												d,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														t[0] ||
+														(t[0] = (s) => o.$router.push("/cart")),
+												},
+												{
+													default: c(() => [
+														i(r, {
+															name: "shopping-cart",
+															class: "w-5 h-5 mr-2",
+														}),
+														p(" Cart (" + l(m.value.length) + ") ", 1),
+													]),
+													_: 1,
+												}
+											),
+											i(
+												d,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														t[1] ||
+														(t[1] = (s) => o.$router.push("/login")),
+												},
+												{
+													default: c(() => [
+														i(r, {
+															name: "user",
+															class: "w-5 h-5 mr-2",
+														}),
+														t[4] || (t[4] = p(" Login ", -1)),
+													]),
+													_: 1,
+												}
+											),
+										]),
+									]),
+								]),
+							]),
+							e("section", I, [
+								e("div", L, [
+									t[6] ||
+										(t[6] = e(
+											"h2",
+											{ class: "text-4xl font-bold mb-4" },
+											"Elegant Sarees for Every Occasion",
+											-1
+										)),
+									t[7] ||
+										(t[7] = e(
+											"p",
+											{ class: "text-xl mb-8" },
+											"Discover our exquisite collection of traditional and contemporary sarees",
+											-1
+										)),
+									i(
+										d,
+										{
+											variant: "outline",
+											class: "bg-white text-purple-600 hover:bg-gray-100",
+										},
+										{
+											default: c(() => [
+												...(t[5] || (t[5] = [p(" Shop Now ", -1)])),
+											]),
+											_: 1,
+										}
+									),
+								]),
+							]),
+							e("section", V, [
+								e("div", z, [
+									t[8] ||
+										(t[8] = e(
+											"h3",
+											{
+												class: "text-2xl font-bold text-gray-900 mb-8 text-center",
+											},
+											"Shop by Category",
+											-1
+										)),
+									e("div", A, [
+										(a(!0),
+										n(
+											h,
+											null,
+											f(
+												v.value,
+												(s) => (
+													a(),
+													n(
+														"div",
+														{
+															key: s.id,
+															class: "text-center cursor-pointer hover:scale-105 transition-transform",
+															onClick: (u) => y(s.name),
+														},
+														[
+															e("div", H, [
+																i(
+																	r,
+																	{
+																		name: s.icon,
+																		class: "w-8 h-8 text-purple-600",
+																	},
+																	null,
+																	8,
+																	["name"]
+																),
+															]),
+															e("p", M, l(s.name), 1),
+														],
+														8,
+														E
+													)
+												)
+											),
+											128
+										)),
+									]),
+								]),
+							]),
+							e("section", W, [
+								e("div", O, [
+									e("div", T, [
+										t[11] ||
+											(t[11] = e(
+												"h3",
+												{ class: "text-2xl font-bold text-gray-900" },
+												"Featured Sarees",
+												-1
+											)),
+										e("div", q, [
+											t[10] ||
+												(t[10] = e(
+													"select",
+													{
+														class: "px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+													},
+													[
+														e("option", null, "Sort by: Featured"),
+														e("option", null, "Price: Low to High"),
+														e("option", null, "Price: High to Low"),
+														e("option", null, "Newest"),
+													],
+													-1
+												)),
+											i(
+												d,
+												{
+													variant: "outline",
+													onClick:
+														t[2] ||
+														(t[2] = (s) =>
+															o.$router.push("/products")),
+												},
+												{
+													default: c(() => [
+														...(t[9] ||
+															(t[9] = [p(" View All ", -1)])),
+													]),
+													_: 1,
+												}
+											),
+										]),
+									]),
+									e("div", J, [
+										(a(!0),
+										n(
+											h,
+											null,
+											f(
+												b.value,
+												(s) => (
+													a(),
+													n(
+														"div",
+														{
+															key: s.id,
+															class: "bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer",
+															onClick: (u) =>
+																o.$router.push(`/product/${s.id}`),
+														},
+														[
+															e("div", R, [
+																i(r, {
+																	name: "image",
+																	class: "w-16 h-16 text-purple-400",
+																}),
+															]),
+															e("div", U, [
+																e("h4", Y, l(s.name), 1),
+																e("p", G, l(s.description), 1),
+																e("div", K, [
+																	e("div", null, [
+																		e(
+																			"span",
+																			X,
+																			"₹" + l(s.price),
+																			1
+																		),
+																		s.originalPrice
+																			? (a(),
+																			  n(
+																					"span",
+																					Z,
+																					" ₹" +
+																						l(
+																							s.originalPrice
+																						),
+																					1
+																			  ))
+																			: C("", !0),
+																	]),
+																	i(
+																		d,
+																		{
+																			size: "sm",
+																			onClick: S(
+																				(u) => w(s),
+																				["stop"]
+																			),
+																		},
+																		{
+																			default: c(() => [
+																				i(r, {
+																					name: "plus",
+																					class: "w-4 h-4",
+																				}),
+																			]),
+																			_: 1,
+																		},
+																		8,
+																		["onClick"]
+																	),
+																]),
+															]),
+														],
+														8,
+														Q
+													)
+												)
+											),
+											128
+										)),
+									]),
+								]),
+							]),
+							e("footer", ee, [
+								e("div", te, [
+									e("div", se, [
+										e("div", null, [
+											e("div", oe, [
+												e("div", ie, [
+													i(r, {
+														name: "shopping-bag",
+														class: "text-white",
+													}),
+												]),
+												t[12] ||
+													(t[12] = e(
+														"h3",
+														{ class: "text-xl font-bold" },
+														"Draped Dreams",
+														-1
+													)),
+											]),
+											t[13] ||
+												(t[13] = e(
+													"p",
+													{ class: "text-gray-400" },
+													"Your trusted destination for elegant sarees",
+													-1
+												)),
+										]),
+										t[14] ||
+											(t[14] = k(
+												'<div><h4 class="font-semibold mb-4">Quick Links</h4><ul class="space-y-2"><li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li><li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li><li><a href="#" class="text-gray-400 hover:text-white">Shipping</a></li><li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li></ul></div><div><h4 class="font-semibold mb-4">Categories</h4><ul class="space-y-2"><li><a href="#" class="text-gray-400 hover:text-white">Silk Sarees</a></li><li><a href="#" class="text-gray-400 hover:text-white">Cotton Sarees</a></li><li><a href="#" class="text-gray-400 hover:text-white">Designer Sarees</a></li><li><a href="#" class="text-gray-400 hover:text-white">Wedding Sarees</a></li></ul></div><div><h4 class="font-semibold mb-4">Contact Info</h4><p class="text-gray-400 mb-2">📧 info@drapeddreams.com</p><p class="text-gray-400 mb-2">📞 +91 9876543210</p><p class="text-gray-400">📍 Mumbai, India</p></div>',
+												3
+											)),
+									]),
+									t[15] ||
+										(t[15] = e(
+											"div",
+											{
+												class: "border-t border-gray-800 mt-8 pt-8 text-center text-gray-400",
+											},
+											[
+												e(
+													"p",
+													null,
+													"© 2024 Draped Dreams. All rights reserved."
+												),
+											],
+											-1
+										)),
+								]),
+							]),
+						])
+					);
+				}
+			);
+		},
+	};
+export { ne as default };

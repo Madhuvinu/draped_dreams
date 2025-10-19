@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/draped_dreams/frontend/ && yarn copy-html-entry && yarn copy-assets",
+    "build": "vite build --base=/files/ && yarn copy-html-entry && yarn copy-assets",
     "copy-html-entry": "cp dist/index.html ../draped_dreams/www/draped_dreams.html",
     "copy-assets": "mkdir -p ../draped_dreams/public/frontend/assets && cp -r dist/assets/* ../draped_dreams/public/frontend/assets/"
   },

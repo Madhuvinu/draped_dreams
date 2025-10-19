@@ -1,0 +1,35 @@
+import { o as e, c as a, a as s } from "./index-096ef497.js";
+const o = { class: "min-h-screen bg-gray-50 p-8" },
+	d = {
+		__name: "Products",
+		setup(r) {
+			return (c, t) => (
+				e(),
+				a("div", o, [
+					...(t[0] ||
+						(t[0] = [
+							s(
+								"div",
+								{ class: "max-w-7xl mx-auto" },
+								[
+									s(
+										"h1",
+										{ class: "text-3xl font-bold text-gray-900 mb-8" },
+										"Products"
+									),
+									s("div", { class: "bg-white rounded-lg shadow p-6" }, [
+										s(
+											"p",
+											{ class: "text-gray-600" },
+											"Products management page - Coming soon!"
+										),
+									]),
+								],
+								-1
+							),
+						])),
+				])
+			);
+		},
+	};
+export { d as default };

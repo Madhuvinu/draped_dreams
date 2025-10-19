@@ -192,7 +192,8 @@
    "read": 1,
    "report": 1,
    "role": "Guest",
-   "share": 1
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",

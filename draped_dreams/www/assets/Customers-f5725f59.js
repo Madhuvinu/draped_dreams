@@ -1,0 +1,35 @@
+import { o as t, c as a, a as s } from "./index-096ef497.js";
+const o = { class: "min-h-screen bg-gray-50 p-8" },
+	c = {
+		__name: "Customers",
+		setup(r) {
+			return (n, e) => (
+				t(),
+				a("div", o, [
+					...(e[0] ||
+						(e[0] = [
+							s(
+								"div",
+								{ class: "max-w-7xl mx-auto" },
+								[
+									s(
+										"h1",
+										{ class: "text-3xl font-bold text-gray-900 mb-8" },
+										"Customers"
+									),
+									s("div", { class: "bg-white rounded-lg shadow p-6" }, [
+										s(
+											"p",
+											{ class: "text-gray-600" },
+											"Customers management page - Coming soon!"
+										),
+									]),
+								],
+								-1
+							),
+						])),
+				])
+			);
+		},
+	};
+export { c as default };

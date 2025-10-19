@@ -1,0 +1,668 @@
+import {
+	r as n,
+	k as H,
+	o as M,
+	a as w,
+	b as l,
+	c as d,
+	d as t,
+	e as a,
+	w as u,
+	l as k,
+	v as C,
+	F as _,
+	f as S,
+	g as V,
+	i as N,
+	h as c,
+	t as i,
+	j as $,
+	n as T,
+} from "./index-8a0f47ce.js";
+const U = { class: "min-h-screen bg-gray-50" },
+	J = { class: "bg-white shadow-sm border-b" },
+	O = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+	E = { class: "flex justify-between items-center py-4" },
+	R = { class: "flex items-center" },
+	q = { class: "h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3" },
+	Q = { class: "flex items-center space-x-4" },
+	G = { class: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" },
+	K = { class: "flex mb-8" },
+	X = { class: "bg-white rounded-lg shadow p-6 mb-8" },
+	Y = { class: "grid grid-cols-1 md:grid-cols-4 gap-4" },
+	Z = ["value"],
+	ee = { class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" },
+	te = ["onClick"],
+	se = {
+		class: "aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center relative",
+	},
+	oe = { class: "absolute top-2 right-2" },
+	re = { class: "absolute top-2 left-2" },
+	ae = { class: "p-4" },
+	ie = { class: "font-semibold text-gray-900 mb-2" },
+	ne = { class: "text-sm text-gray-600 mb-3 line-clamp-2" },
+	le = { class: "flex items-center justify-between mb-3" },
+	de = { class: "text-lg font-bold text-purple-600" },
+	ue = { key: 0, class: "text-sm text-gray-500 line-through ml-2" },
+	ce = { class: "flex items-center" },
+	pe = { class: "flex text-yellow-400" },
+	ge = { class: "text-xs text-gray-500 ml-1" },
+	me = { class: "flex justify-between items-center" },
+	ve = { key: 0, class: "text-center py-12" },
+	he = {
+		__name: "Products",
+		setup(fe) {
+			const x = n([]),
+				p = n([]),
+				g = n(""),
+				v = n(""),
+				f = n(""),
+				h = n("featured"),
+				L = n(["Silk", "Cotton", "Designer", "Wedding", "Casual", "Party"]),
+				F = n([
+					{
+						id: 1,
+						name: "Elegant Silk Banarasi Saree",
+						description:
+							"Beautiful silk saree with intricate Banarasi work and golden zari borders",
+						price: "25,000",
+						originalPrice: "30,000",
+						category: "Silk",
+						stock: 8,
+						rating: 4.8,
+					},
+					{
+						id: 2,
+						name: "Comfortable Cotton Handloom Saree",
+						description: "Light and breathable cotton saree perfect for daily wear",
+						price: "3,500",
+						category: "Cotton",
+						stock: 25,
+						rating: 4.5,
+					},
+					{
+						id: 3,
+						name: "Modern Designer Party Saree",
+						description: "Contemporary designer saree with unique patterns",
+						price: "18,000",
+						originalPrice: "22,000",
+						category: "Designer",
+						stock: 4,
+						rating: 4.9,
+					},
+					{
+						id: 4,
+						name: "Wedding Silk Saree",
+						description:
+							"Heavy silk saree with extensive embroidery perfect for weddings",
+						price: "45,000",
+						category: "Wedding",
+						stock: 3,
+						rating: 4.7,
+					},
+					{
+						id: 5,
+						name: "Casual Cotton Saree",
+						description: "Light and comfortable cotton saree for casual occasions",
+						price: "2,500",
+						category: "Casual",
+						stock: 60,
+						rating: 4.3,
+					},
+					{
+						id: 6,
+						name: "Printed Silk Saree",
+						description: "Beautiful printed silk saree with floral patterns",
+						price: "12,000",
+						category: "Silk",
+						stock: 0,
+						rating: 4.6,
+					},
+				]),
+				I = H(() => {
+					let o = [...F.value];
+					switch (
+						(g.value &&
+							(o = o.filter(
+								(e) =>
+									e.name.toLowerCase().includes(g.value.toLowerCase()) ||
+									e.description.toLowerCase().includes(g.value.toLowerCase())
+							)),
+						v.value && (o = o.filter((e) => e.category === v.value)),
+						f.value &&
+							(o = o.filter((e) => {
+								const r = parseInt(e.price.replace(/,/g, ""));
+								switch (f.value) {
+									case "0-5000":
+										return r < 5e3;
+									case "5000-15000":
+										return r >= 5e3 && r <= 15e3;
+									case "15000-30000":
+										return r >= 15e3 && r <= 3e4;
+									case "30000+":
+										return r > 3e4;
+									default:
+										return !0;
+								}
+							})),
+						h.value)
+					) {
+						case "price-low":
+							o.sort(
+								(e, r) =>
+									parseInt(e.price.replace(/,/g, "")) -
+									parseInt(r.price.replace(/,/g, ""))
+							);
+							break;
+						case "price-high":
+							o.sort(
+								(e, r) =>
+									parseInt(r.price.replace(/,/g, "")) -
+									parseInt(e.price.replace(/,/g, ""))
+							);
+							break;
+						case "newest":
+							o.sort((e, r) => r.id - e.id);
+							break;
+						case "popular":
+							o.sort((e, r) => r.rating - e.rating);
+							break;
+					}
+					return o;
+				}),
+				j = (o) => (o === 0 ? "danger" : o <= 5 ? "warning" : "success"),
+				z = (o) => {
+					x.value.push(o),
+						localStorage.setItem("cart", JSON.stringify(x.value)),
+						console.log("Added to cart:", o.name);
+				},
+				D = (o) => {
+					const e = p.value.findIndex((r) => r.id === o.id);
+					e > -1 ? p.value.splice(e, 1) : p.value.push(o),
+						localStorage.setItem("wishlist", JSON.stringify(p.value));
+				},
+				P = (o) => p.value.some((e) => e.id === o),
+				W = () => {
+					(g.value = ""), (v.value = ""), (f.value = ""), (h.value = "featured");
+				},
+				b = () => {};
+			return (
+				M(() => {
+					const o = localStorage.getItem("cart");
+					o && (x.value = JSON.parse(o));
+					const e = localStorage.getItem("wishlist");
+					e && (p.value = JSON.parse(e));
+				}),
+				(o, e) => {
+					const r = w("FeatherIcon"),
+						m = w("Button"),
+						A = w("TextInput"),
+						B = w("Badge");
+					return (
+						l(),
+						d("div", U, [
+							t("header", J, [
+								t("div", O, [
+									t("div", E, [
+										t("div", R, [
+											t("div", q, [
+												a(r, {
+													name: "shopping-bag",
+													class: "text-white",
+												}),
+											]),
+											e[7] ||
+												(e[7] = t(
+													"h1",
+													{ class: "text-2xl font-bold text-gray-900" },
+													"Draped Dreams",
+													-1
+												)),
+										]),
+										t("div", Q, [
+											a(
+												m,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														e[0] ||
+														(e[0] = (s) => o.$router.push("/cart")),
+												},
+												{
+													default: u(() => [
+														a(r, {
+															name: "shopping-cart",
+															class: "w-5 h-5 mr-2",
+														}),
+														c(" Cart (" + i(x.value.length) + ") ", 1),
+													]),
+													_: 1,
+												}
+											),
+											a(
+												m,
+												{
+													variant: "ghost",
+													size: "sm",
+													onClick:
+														e[1] ||
+														(e[1] = (s) => o.$router.push("/login")),
+												},
+												{
+													default: u(() => [
+														a(r, {
+															name: "user",
+															class: "w-5 h-5 mr-2",
+														}),
+														e[8] || (e[8] = c(" Login ", -1)),
+													]),
+													_: 1,
+												}
+											),
+										]),
+									]),
+								]),
+							]),
+							t("main", G, [
+								t("nav", K, [
+									a(
+										m,
+										{
+											variant: "ghost",
+											size: "sm",
+											onClick: e[2] || (e[2] = (s) => o.$router.push("/")),
+										},
+										{
+											default: u(() => [
+												a(r, { name: "home", class: "w-4 h-4 mr-2" }),
+												e[9] || (e[9] = c(" Home ", -1)),
+											]),
+											_: 1,
+										}
+									),
+									e[10] ||
+										(e[10] = t(
+											"span",
+											{ class: "mx-2 text-gray-400" },
+											"/",
+											-1
+										)),
+									e[11] ||
+										(e[11] = t(
+											"span",
+											{ class: "text-gray-600" },
+											"Products",
+											-1
+										)),
+								]),
+								t("div", X, [
+									t("div", Y, [
+										t("div", null, [
+											e[12] ||
+												(e[12] = t(
+													"label",
+													{
+														class: "block text-sm font-medium text-gray-700 mb-2",
+													},
+													"Search",
+													-1
+												)),
+											a(
+												A,
+												{
+													modelValue: g.value,
+													"onUpdate:modelValue":
+														e[3] || (e[3] = (s) => (g.value = s)),
+													placeholder: "Search sarees...",
+													onInput: b,
+												},
+												null,
+												8,
+												["modelValue"]
+											),
+										]),
+										t("div", null, [
+											e[14] ||
+												(e[14] = t(
+													"label",
+													{
+														class: "block text-sm font-medium text-gray-700 mb-2",
+													},
+													"Category",
+													-1
+												)),
+											k(
+												t(
+													"select",
+													{
+														"onUpdate:modelValue":
+															e[4] || (e[4] = (s) => (v.value = s)),
+														onChange: b,
+														class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+													},
+													[
+														e[13] ||
+															(e[13] = t(
+																"option",
+																{ value: "" },
+																"All Categories",
+																-1
+															)),
+														(l(!0),
+														d(
+															_,
+															null,
+															S(
+																L.value,
+																(s) => (
+																	l(),
+																	d(
+																		"option",
+																		{ key: s, value: s },
+																		i(s),
+																		9,
+																		Z
+																	)
+																)
+															),
+															128
+														)),
+													],
+													544
+												),
+												[[C, v.value]]
+											),
+										]),
+										t("div", null, [
+											e[16] ||
+												(e[16] = t(
+													"label",
+													{
+														class: "block text-sm font-medium text-gray-700 mb-2",
+													},
+													"Price Range",
+													-1
+												)),
+											k(
+												t(
+													"select",
+													{
+														"onUpdate:modelValue":
+															e[5] || (e[5] = (s) => (f.value = s)),
+														onChange: b,
+														class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+													},
+													[
+														...(e[15] ||
+															(e[15] = [
+																V(
+																	'<option value="">All Prices</option><option value="0-5000">Under ₹5,000</option><option value="5000-15000">₹5,000 - ₹15,000</option><option value="15000-30000">₹15,000 - ₹30,000</option><option value="30000+">Above ₹30,000</option>',
+																	5
+																),
+															])),
+													],
+													544
+												),
+												[[C, f.value]]
+											),
+										]),
+										t("div", null, [
+											e[18] ||
+												(e[18] = t(
+													"label",
+													{
+														class: "block text-sm font-medium text-gray-700 mb-2",
+													},
+													"Sort By",
+													-1
+												)),
+											k(
+												t(
+													"select",
+													{
+														"onUpdate:modelValue":
+															e[6] || (e[6] = (s) => (h.value = s)),
+														onChange: b,
+														class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500",
+													},
+													[
+														...(e[17] ||
+															(e[17] = [
+																V(
+																	'<option value="featured">Featured</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="newest">Newest First</option><option value="popular">Most Popular</option>',
+																	5
+																),
+															])),
+													],
+													544
+												),
+												[[C, h.value]]
+											),
+										]),
+									]),
+								]),
+								t("div", ee, [
+									(l(!0),
+									d(
+										_,
+										null,
+										S(
+											I.value,
+											(s) => (
+												l(),
+												d(
+													"div",
+													{
+														key: s.id,
+														class: "bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer",
+														onClick: (y) =>
+															o.$router.push(`/product/${s.id}`),
+													},
+													[
+														t("div", se, [
+															a(r, {
+																name: "image",
+																class: "w-16 h-16 text-purple-400",
+															}),
+															t("div", oe, [
+																a(
+																	B,
+																	{ variant: j(s.stock) },
+																	{
+																		default: u(() => [
+																			c(
+																				i(s.stock) +
+																					" left ",
+																				1
+																			),
+																		]),
+																		_: 2,
+																	},
+																	1032,
+																	["variant"]
+																),
+															]),
+															t("div", re, [
+																a(
+																	B,
+																	{
+																		variant: "secondary",
+																		class: "text-xs",
+																	},
+																	{
+																		default: u(() => [
+																			c(i(s.category), 1),
+																		]),
+																		_: 2,
+																	},
+																	1024
+																),
+															]),
+														]),
+														t("div", ae, [
+															t("h3", ie, i(s.name), 1),
+															t("p", ne, i(s.description), 1),
+															t("div", le, [
+																t("div", null, [
+																	t(
+																		"span",
+																		de,
+																		"₹" + i(s.price),
+																		1
+																	),
+																	s.originalPrice
+																		? (l(),
+																		  d(
+																				"span",
+																				ue,
+																				" ₹" +
+																					i(
+																						s.originalPrice
+																					),
+																				1
+																		  ))
+																		: N("", !0),
+																]),
+																t("div", ce, [
+																	t("div", pe, [
+																		(l(),
+																		d(
+																			_,
+																			null,
+																			S(5, (y) =>
+																				a(r, {
+																					key: y,
+																					name: "star",
+																					class: "w-3 h-3 fill-current",
+																				})
+																			),
+																			64
+																		)),
+																	]),
+																	t(
+																		"span",
+																		ge,
+																		"(" + i(s.rating) + ")",
+																		1
+																	),
+																]),
+															]),
+															t("div", me, [
+																a(
+																	m,
+																	{
+																		variant: "outline",
+																		size: "sm",
+																		onClick: $(
+																			(y) => z(s),
+																			["stop"]
+																		),
+																		disabled: s.stock === 0,
+																	},
+																	{
+																		default: u(() => [
+																			a(r, {
+																				name: "plus",
+																				class: "w-4 h-4 mr-1",
+																			}),
+																			e[19] ||
+																				(e[19] = c(
+																					" Add to Cart ",
+																					-1
+																				)),
+																		]),
+																		_: 1,
+																	},
+																	8,
+																	["onClick", "disabled"]
+																),
+																a(
+																	m,
+																	{
+																		variant: "ghost",
+																		size: "sm",
+																		onClick: $(
+																			(y) => D(s),
+																			["stop"]
+																		),
+																	},
+																	{
+																		default: u(() => [
+																			a(
+																				r,
+																				{
+																					name:
+																						(P(s.id),
+																						"heart"),
+																					class: T(
+																						P(s.id)
+																							? "text-red-500 fill-current"
+																							: "text-gray-400"
+																					),
+																				},
+																				null,
+																				8,
+																				["name", "class"]
+																			),
+																		]),
+																		_: 2,
+																	},
+																	1032,
+																	["onClick"]
+																),
+															]),
+														]),
+													],
+													8,
+													te
+												)
+											)
+										),
+										128
+									)),
+								]),
+								I.value.length === 0
+									? (l(),
+									  d("div", ve, [
+											a(r, {
+												name: "search",
+												class: "w-16 h-16 text-gray-400 mx-auto mb-4",
+											}),
+											e[21] ||
+												(e[21] = t(
+													"h3",
+													{
+														class: "text-lg font-medium text-gray-900 mb-2",
+													},
+													"No sarees found",
+													-1
+												)),
+											e[22] ||
+												(e[22] = t(
+													"p",
+													{ class: "text-gray-600 mb-4" },
+													"Try adjusting your search or filter criteria",
+													-1
+												)),
+											a(
+												m,
+												{ onClick: W },
+												{
+													default: u(() => [
+														...(e[20] ||
+															(e[20] = [c("Clear Filters", -1)])),
+													]),
+													_: 1,
+												}
+											),
+									  ]))
+									: N("", !0),
+							]),
+						])
+					);
+				}
+			);
+		},
+	};
+export { he as default };

@@ -21,6 +21,7 @@ export default defineConfig({
 	build: {
 		outDir: "dist",
 		assetsDir: "assets",
+		base: "/files/",
 		rollupOptions: {
 			output: {
 				manualChunks: undefined,
@@ -29,9 +30,10 @@ export default defineConfig({
 	},
 	server: {
 		port: 3001,
+		host: true,
 		proxy: {
 			"/api": {
-				target: "http://localhost:8002",
+				target: "http://localhost:8000",
 				changeOrigin: true,
 			},
 		},

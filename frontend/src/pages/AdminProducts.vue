@@ -95,6 +95,18 @@
 				</div>
 			</div>
 
+			<!-- Error Message -->
+			<div v-if="error" class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+				<div class="flex">
+					<div class="flex-shrink-0">
+						<FeatherIcon name="alert-circle" class="h-5 w-5 text-red-400" />
+					</div>
+					<div class="ml-3">
+						<h3 class="text-sm font-medium text-red-800">{{ error }}</h3>
+					</div>
+				</div>
+			</div>
+
 			<!-- Products Table -->
 			<div class="bg-white rounded-lg shadow">
 				<div class="p-6">
@@ -105,9 +117,11 @@
 								v-model="searchQuery"
 								placeholder="Search products..."
 								class="w-64"
+								@input="loadProducts"
 							/>
 							<select
 								v-model="selectedCategory"
+								@change="loadProducts"
 								class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
 							>
 								<option value="">All Categories</option>
@@ -122,7 +136,14 @@
 						</div>
 					</div>
 
-					<div class="overflow-x-auto">
+					<!-- Loading State -->
+					<div v-if="loading" class="flex justify-center items-center py-12">
+						<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+						<span class="ml-2 text-gray-600">Loading products...</span>
+					</div>
+
+					<!-- Products Table -->
+					<div v-else class="overflow-x-auto">
 						<table class="min-w-full divide-y divide-gray-200">
 							<thead class="bg-gray-50">
 								<tr>
@@ -159,7 +180,7 @@
 								</tr>
 							</thead>
 							<tbody class="bg-white divide-y divide-gray-200">
-								<tr v-for="product in filteredProducts" :key="product.id">
+								<tr v-for="product in filteredProducts" :key="product.name">
 									<td class="px-6 py-4 whitespace-nowrap">
 										<div class="flex items-center">
 											<div
@@ -172,7 +193,7 @@
 											</div>
 											<div class="ml-4">
 												<div class="text-sm font-medium text-gray-900">
-													{{ product.name }}
+													{{ product.product_name }}
 												</div>
 												<div class="text-sm text-gray-500">
 													{{ product.description }}
@@ -195,11 +216,11 @@
 										</div>
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-										{{ product.stock }}
+										{{ product.stock_quantity }}
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap">
-										<Badge :variant="getStockVariant(product.stock)">
-											{{ getStockStatus(product.stock) }}
+										<Badge :variant="getStockVariant(product.stock_quantity)">
+											{{ getStockStatus(product.stock_quantity) }}
 										</Badge>
 									</td>
 									<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -214,7 +235,7 @@
 											<Button
 												variant="ghost"
 												size="sm"
-												@click="deleteProduct(product.id)"
+												@click="deleteProduct(product.name)"
 											>
 												<FeatherIcon
 													name="trash-2"
@@ -333,11 +354,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import dashboardAPI from "../api/dashboard.js";
+import productsAPI from "../api/products.js";
 
 const products = ref([]);
 const searchQuery = ref("");
 const selectedCategory = ref("");
 const showAddProductModal = ref(false);
+const loading = ref(false);
+const error = ref("");
 
 const categories = ref(["Silk", "Cotton", "Designer", "Wedding", "Casual", "Party"]);
 
@@ -356,7 +381,7 @@ const filteredProducts = computed(() => {
 	if (searchQuery.value) {
 		filtered = filtered.filter(
 			(product) =>
-				product.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+				product.product_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
 				product.description.toLowerCase().includes(searchQuery.value.toLowerCase())
 		);
 	}
@@ -369,15 +394,15 @@ const filteredProducts = computed(() => {
 });
 
 const inStockCount = computed(() => {
-	return products.value.filter((p) => p.stock > 10).length;
+	return products.value.filter((p) => p.stock_quantity > 10).length;
 });
 
 const lowStockCount = computed(() => {
-	return products.value.filter((p) => p.stock > 0 && p.stock <= 10).length;
+	return products.value.filter((p) => p.stock_quantity > 0 && p.stock_quantity <= 10).length;
 });
 
 const outOfStockCount = computed(() => {
-	return products.value.filter((p) => p.stock === 0).length;
+	return products.value.filter((p) => p.stock_quantity === 0).length;
 });
 
 const getStockVariant = (stock) => {
@@ -392,31 +417,45 @@ const getStockStatus = (stock) => {
 	return "In Stock";
 };
 
-const addProduct = () => {
-	const product = {
-		id: Date.now(),
-		name: newProduct.value.name,
-		description: newProduct.value.description,
-		price: newProduct.value.price,
-		originalPrice: newProduct.value.originalPrice,
-		category: newProduct.value.category,
-		stock: parseInt(newProduct.value.stock),
-		rating: 4.5,
-	};
+const addProduct = async () => {
+	loading.value = true;
+	error.value = "";
 
-	products.value.push(product);
+	try {
+		const result = await dashboardAPI.createProduct({
+			product_name: newProduct.value.name,
+			description: newProduct.value.description,
+			category: newProduct.value.category,
+			price: parseFloat(newProduct.value.price),
+			original_price: newProduct.value.originalPrice ? parseFloat(newProduct.value.originalPrice) : null,
+			stock_quantity: parseInt(newProduct.value.stock),
+			featured: false,
+		});
 
-	// Reset form
-	newProduct.value = {
-		name: "",
-		description: "",
-		price: "",
-		originalPrice: "",
-		category: "",
-		stock: "",
-	};
+		if (result.success) {
+			// Reset form
+			newProduct.value = {
+				name: "",
+				description: "",
+				price: "",
+				originalPrice: "",
+				category: "",
+				stock: "",
+			};
 
-	showAddProductModal.value = false;
+			showAddProductModal.value = false;
+			
+			// Reload products
+			await loadProducts();
+		} else {
+			error.value = result.message;
+		}
+	} catch (err) {
+		error.value = "Failed to create product. Please try again.";
+		console.error("Add product error:", err);
+	} finally {
+		loading.value = false;
+	}
 };
 
 const editProduct = (product) => {
@@ -424,56 +463,66 @@ const editProduct = (product) => {
 	// TODO: Implement edit functionality
 };
 
-const deleteProduct = (productId) => {
+const deleteProduct = async (productId) => {
 	if (confirm("Are you sure you want to delete this product?")) {
-		const index = products.value.findIndex((p) => p.id === productId);
-		if (index > -1) {
-			products.value.splice(index, 1);
+		loading.value = true;
+		error.value = "";
+
+		try {
+			const result = await dashboardAPI.deleteProduct(productId);
+			
+			if (result.success) {
+				// Reload products
+				await loadProducts();
+			} else {
+				error.value = result.message;
+			}
+		} catch (err) {
+			error.value = "Failed to delete product. Please try again.";
+			console.error("Delete product error:", err);
+		} finally {
+			loading.value = false;
 		}
 	}
 };
 
-onMounted(() => {
-	// Load sample products
-	products.value = [
-		{
-			id: 1,
-			name: "Elegant Silk Banarasi Saree",
-			description: "Beautiful silk saree with intricate Banarasi work",
-			price: "25,000",
-			originalPrice: "30,000",
-			category: "Silk",
-			stock: 8,
-			rating: 4.8,
-		},
-		{
-			id: 2,
-			name: "Comfortable Cotton Handloom Saree",
-			description: "Light and breathable cotton saree",
-			price: "3,500",
-			category: "Cotton",
-			stock: 25,
-			rating: 4.5,
-		},
-		{
-			id: 3,
-			name: "Modern Designer Party Saree",
-			description: "Contemporary designer saree",
-			price: "18,000",
-			originalPrice: "22,000",
-			category: "Designer",
-			stock: 4,
-			rating: 4.9,
-		},
-		{
-			id: 4,
-			name: "Wedding Silk Saree",
-			description: "Heavy silk saree for weddings",
-			price: "45,000",
-			category: "Wedding",
-			stock: 0,
-			rating: 4.7,
-		},
-	];
+const loadProducts = async () => {
+	loading.value = true;
+	error.value = "";
+
+	try {
+		const result = await productsAPI.getProducts({
+			category: selectedCategory.value,
+			search: searchQuery.value,
+			limit: 100,
+		});
+
+		if (result.success) {
+			products.value = result.data || [];
+		} else {
+			error.value = result.message;
+		}
+	} catch (err) {
+		error.value = "Failed to load products. Please try again.";
+		console.error("Load products error:", err);
+	} finally {
+		loading.value = false;
+	}
+};
+
+const loadCategories = async () => {
+	try {
+		const result = await productsAPI.getCategories();
+		if (result.success) {
+			categories.value = result.data || [];
+		}
+	} catch (err) {
+		console.error("Load categories error:", err);
+	}
+};
+
+onMounted(async () => {
+	await loadCategories();
+	await loadProducts();
 });
 </script>
