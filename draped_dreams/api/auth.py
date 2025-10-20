@@ -27,7 +27,7 @@ def get_csrf_token():
 			"message": f"Error getting CSRF token: {str(e)}"
 		}
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(allow_guest=True, methods=['POST'])
 def register_user(first_name, last_name, email, phone, password, confirm_password):
 	"""Register a new user"""
 	try:
