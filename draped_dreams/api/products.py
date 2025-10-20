@@ -12,7 +12,7 @@ def get_products():
 	try:
 		products = frappe.get_all(
 			"Product",
-			fields=["name", "product_name", "description", "category", "price"],
+			fields=["name", "product_name", "description", "category", "price", "product_image"],
 			order_by="creation desc"
 		)
 		
@@ -30,7 +30,7 @@ def get_products():
 				"original_price": None,
 				"stock_quantity": 0,
 				"featured": False,
-				"image": ""
+				"image": product.product_image or ""
 			})
 		
 		return {
