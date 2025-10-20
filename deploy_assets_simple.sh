@@ -92,3 +92,5 @@ echo "🆘 If you encounter issues:"
 echo "   - Check browser console for error messages"
 echo "   - Verify assets are in the correct location"
 echo "   - Restart your Frappe server: bench restart"
+
+

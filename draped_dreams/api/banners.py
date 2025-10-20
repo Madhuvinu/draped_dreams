@@ -8,8 +8,17 @@ def get_banners():
 		banners = frappe.get_all(
 			"Banner",
 			filters={"is_active": 1},
-			fields=["name", "title", "image", "display_order"],
-			order_by="display_order asc"
+			fields=[
+				"name",
+				"title",
+				"subtitle",
+				"image",
+				"button_text",
+				"link",
+				"sort_order",
+				"is_active",
+			],
+			order_by="sort_order asc"
 		)
 		
 		return {
@@ -40,8 +49,11 @@ def get_banner(banner_id):
 			"data": {
 				"id": banner.name,
 				"title": banner.title,
+				"subtitle": banner.subtitle,
 				"image": banner.image,
-				"display_order": banner.display_order
+				"button_text": banner.button_text,
+				"link": banner.link,
+				"sort_order": banner.sort_order
 			}
 		}
 	except frappe.DoesNotExistError:

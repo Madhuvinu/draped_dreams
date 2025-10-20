@@ -5,81 +5,7 @@
 			<Banner />
 		</div>
 
-		<!-- Hero Section -->
-		<section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-8 md:py-16 rounded-lg mb-8">
-			<div class="text-center px-4">
-				<h2 class="text-2xl md:text-4xl font-bold mb-4">Our Collection</h2>
-			</div>
-		</section>
-		
-		<!-- Breadcrumb -->
-		<nav class="flex mb-8">
-			<Button variant="ghost" size="sm" @click="$router.push('/')">
-				<FeatherIcon name="home" class="w-4 h-4 mr-2" />
-				Home
-			</Button>
-			<span class="mx-2 text-gray-400">/</span>
-			<span class="text-gray-600">Products</span>
-		</nav>
 
-		<!-- Filters and Search -->
-		<div class="bg-white rounded-lg shadow p-6 mb-8">
-			<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-					<TextInput
-						v-model="searchQuery"
-						placeholder="Search sarees..."
-						@input="filterProducts"
-					/>
-				</div>
-				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-					<select
-						v-model="selectedCategory"
-						@change="filterProducts"
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-					>
-						<option value="">All Categories</option>
-						<option
-							v-for="category in categories"
-							:key="category"
-							:value="category"
-						>
-							{{ category }}
-						</option>
-					</select>
-				</div>
-				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
-					<select
-						v-model="priceRange"
-						@change="filterProducts"
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-					>
-						<option value="">All Prices</option>
-						<option value="0-5000">Under ₹5,000</option>
-						<option value="5000-15000">₹5,000 - ₹15,000</option>
-						<option value="15000-30000">₹15,000 - ₹30,000</option>
-						<option value="30000+">Above ₹30,000</option>
-					</select>
-				</div>
-				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
-					<select
-						v-model="sortBy"
-						@change="filterProducts"
-						class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-					>
-						<option value="featured">Featured</option>
-						<option value="price-low">Price: Low to High</option>
-						<option value="price-high">Price: High to Low</option>
-						<option value="newest">Newest First</option>
-						<option value="popular">Most Popular</option>
-					</select>
-				</div>
-			</div>
-		</div>
 
 		<!-- Loading State -->
 		<div v-if="loading" class="text-center py-12">
@@ -286,8 +212,15 @@ const loadProducts = async () => {
 	error.value = null;
 	try {
 		const response = await productsAPI.getProducts();
-		allSarees.value = response.data || [];
-		console.log("Products loaded:", allSarees.value.length);
+		// Fix: Check for message property in response which contains the actual data
+		if (response.message && response.message.products) {
+			allSarees.value = response.message.products;
+		} else if (response.data) {
+			allSarees.value = response.data;
+		} else {
+			allSarees.value = [];
+		}
+		console.log("Products loaded:", allSarees.value.length, allSarees.value);
 	} catch (err) {
 		console.error("Error loading products:", err);
 		error.value = "Failed to load products. Please try again.";
@@ -347,6 +280,16 @@ const getStockVariant = (stock) => {
 	return "success";
 };
 
+const handleSidebarFiltersChanged = (event) => {
+	const filterData = event.detail;
+	searchQuery.value = filterData.searchQuery;
+	selectedCategory.value = filterData.selectedCategory;
+	priceRange.value = filterData.priceRange;
+	sortBy.value = filterData.sortBy;
+	
+	console.log("Filters updated from sidebar:", filterData);
+};
+
 const refreshProducts = async () => {
 	console.log("Refreshing products data...");
 	await loadProducts();
@@ -383,9 +326,13 @@ onMounted(async () => {
 
 	// Add event listener for visibility change
 	document.addEventListener('visibilitychange', handleVisibilityChange);
+	
+	// Listen for filter changes from sidebar
+	window.addEventListener('sidebar-filters-changed', handleSidebarFiltersChanged);
 });
 
 onUnmounted(() => {
 	document.removeEventListener('visibilitychange', handleVisibilityChange);
+	window.removeEventListener('sidebar-filters-changed', handleSidebarFiltersChanged);
 });
 </script>

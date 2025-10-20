@@ -111,12 +111,49 @@ const loadBanners = async () => {
 		if (result.success) {
 			banners.value = result.data.filter(banner => banner.is_active);
 			console.log('Loaded banners:', banners.value);
+			
+			// If no banners returned from API, add default banners
+			if (banners.value.length === 0) {
+				banners.value = [
+					{
+						id: 'default-1',
+						title: 'Elegant Saree Collection',
+						subtitle: 'Discover our premium handcrafted sarees',
+						image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+						button_text: 'Shop Now',
+						link: '/products',
+						is_active: true
+					},
+					{
+						id: 'default-2',
+						title: 'Festival Season Sale',
+						subtitle: 'Up to 30% off on selected items',
+						image: 'https://images.unsplash.com/photo-1583309219338-a582f1f9ca6d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+						button_text: 'View Offers',
+						link: '/products',
+						is_active: true
+					}
+				];
+			}
 		} else {
 			error.value = result.message || 'Failed to load banners';
 		}
 	} catch (err) {
 		error.value = 'Failed to load banners';
 		console.error('Load banners error:', err);
+		
+		// Add default banners on error
+		banners.value = [
+			{
+				id: 'default-1',
+				title: 'Elegant Saree Collection',
+				subtitle: 'Discover our premium handcrafted sarees',
+				image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+				button_text: 'Shop Now',
+				link: '/products',
+				is_active: true
+			}
+		];
 	} finally {
 		loading.value = false;
 	}
