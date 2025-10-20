@@ -7,6 +7,69 @@ from frappe.utils import today, now
 
 
 @frappe.whitelist(allow_guest=True)
+def get_products():
+	"""Get all products"""
+	try:
+		products = frappe.get_all(
+			"Product",
+			fields=["name", "product_name", "description", "category", "price"],
+			order_by="creation desc"
+		)
+		
+		# Transform the data to match frontend expectations
+		transformed_products = []
+		for product in products:
+			transformed_products.append({
+				"id": product.name,  # Use name as id for frontend compatibility
+				"product_id": product.name,  # Also include product_id for orders API
+				"name": product.name,
+				"product_name": product.product_name,
+				"description": product.description or "",
+				"category": product.category or "General",
+				"price": product.price or 0,
+				"original_price": None,
+				"stock_quantity": 0,
+				"featured": False,
+				"image": ""
+			})
+		
+		return {
+			"success": True,
+			"data": transformed_products
+		}
+	except Exception as e:
+		frappe.log_error(f"Error getting products: {str(e)}")
+		return {
+			"success": False,
+			"message": "Failed to fetch products"
+		}
+
+@frappe.whitelist(allow_guest=True)
+def get_categories():
+	"""Get all product categories"""
+	try:
+		categories = frappe.get_all(
+			"Product",
+			fields=["category"],
+			distinct=True,
+			order_by="category asc"
+		)
+		
+		# Extract category names
+		category_list = [item.category for item in categories if item.category]
+		
+		return {
+			"success": True,
+			"data": category_list
+		}
+	except Exception as e:
+		frappe.log_error(f"Error getting categories: {str(e)}")
+		return {
+			"success": False,
+			"message": "Failed to fetch categories"
+		}
+
+@frappe.whitelist(allow_guest=True)
 def create_product(product_name, description, category, price, original_price=None, stock_quantity=0, featured=False):
 	"""Create a new product"""
 	try:
@@ -92,6 +155,64 @@ def update_product(product_id, product_name=None, description=None, category=Non
 	except Exception as e:
 		frappe.log_error(frappe.get_traceback(), "Update Product Error")
 		return {"success": False, "message": str(e)}
+
+
+@frappe.whitelist(allow_guest=True)
+def create_sample_items():
+	"""Create sample items for testing"""
+	try:
+		sample_items = [
+			{
+				"product_name": "Elegant Silk Saree",
+				"description": "Beautiful traditional silk saree with intricate work",
+				"category": "Silk",
+				"price": 15000,
+				"original_price": 18000,
+				"stock_quantity": 10,
+				"featured": True
+			},
+			{
+				"product_name": "Cotton Designer Saree",
+				"description": "Comfortable cotton saree perfect for daily wear",
+				"category": "Cotton",
+				"price": 2500,
+				"original_price": 3000,
+				"stock_quantity": 15,
+				"featured": False
+			},
+			{
+				"product_name": "Premium Designer Saree",
+				"description": "Exclusive designer saree with modern patterns",
+				"category": "Designer",
+				"price": 25000,
+				"original_price": 30000,
+				"stock_quantity": 5,
+				"featured": True
+			}
+		]
+		
+		created_items = []
+		for item_data in sample_items:
+			# Check if product already exists
+			if not frappe.db.exists("Product", {"product_name": item_data["product_name"]}):
+				product = frappe.get_doc({
+					"doctype": "Product",
+					**item_data
+				})
+				product.insert(ignore_permissions=True)
+				created_items.append(product.product_name)
+		
+		return {
+			"success": True,
+			"message": f"Created {len(created_items)} sample items",
+			"data": created_items
+		}
+	except Exception as e:
+		frappe.log_error(f"Error creating sample items: {str(e)}")
+		return {
+			"success": False,
+			"message": "Failed to create sample items"
+		}
 
 
 @frappe.whitelist(allow_guest=True)

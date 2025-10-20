@@ -305,6 +305,9 @@ const checkLoginStatus = () => {
   } else {
     isLoggedIn.value = false
     userData.value = {}
+    // Redirect to register page if user is not logged in
+    console.log("User not logged in, redirecting to register");
+    router.push("/register");
   }
 }
 
@@ -376,8 +379,8 @@ const placeOrder = async () => {
     const orderData = {
       customer_email: userData.value.email,
       order_items: cartItems.value.map(item => ({
-        product_id: item.product_id,
-        product_name: item.product_name,
+        product_id: item.id || item.product_id, // Use id as product_id if product_id doesn't exist
+        product_name: item.product_name || item.name,
         quantity: item.quantity,
         price: item.price
       })),
@@ -387,6 +390,9 @@ const placeOrder = async () => {
       payment_method: paymentMethod.value,
       notes: notes.value
     }
+
+    console.log('Order data being sent:', orderData)
+    console.log('Cart items:', cartItems.value)
 
     const result = await orderAPI.placeOrder(orderData)
     

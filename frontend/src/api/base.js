@@ -23,20 +23,32 @@ const getCSRFToken = () => {
 // Base API class with common functionality
 class BaseAPI {
   constructor() {
-    this.baseUrl = API_CONFIG.getBaseUrl();
+    // Get the clean base URL without any API paths
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+    const port = window.location.port;
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      this.baseUrl = `${protocol}//${hostname}:8000`;
+    } else {
+      this.baseUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
+    }
+    
     this.csrfToken = null;
   }
 
   // Fetch CSRF token from server
   async fetchCSRFToken() {
     try {
-      const response = await fetch(`${API_CONFIG.getDashboardBaseUrl()}/api/method/draped_dreams.api.auth.get_csrf_token`, {
+      const response = await fetch(`${this.baseUrl}/api/method/draped_dreams.api.auth.get_csrf_token`, {
         method: 'GET',
         credentials: 'include'
       });
       const result = await response.json();
-      if (result.message && result.message.success) {
+      console.log('CSRF token response:', result);
+      if (result.message && result.message.success && result.message.csrf_token) {
         this.csrfToken = result.message.csrf_token;
+        console.log('CSRF token set:', this.csrfToken);
         return this.csrfToken;
       }
     } catch (error) {
@@ -65,7 +77,24 @@ class BaseAPI {
         headers['X-Frappe-CSRF-Token'] = csrfToken;
       }
 
-      const response = await fetch(url, {
+      // Construct the full URL properly
+      let fullUrl;
+      if (url.startsWith('/api/method/')) {
+        // If URL already starts with /api/method/, use it as is
+        fullUrl = `${this.baseUrl}${url}`;
+      } else {
+        // If URL doesn't start with /api/method/, add it
+        fullUrl = `${this.baseUrl}/api/method/${url}`;
+      }
+
+      console.log('Making API request to:', fullUrl);
+      console.log('Request options:', {
+        method: options.method || 'GET',
+        headers,
+        body: options.body,
+        credentials: 'include'
+      });
+      const response = await fetch(fullUrl, {
         ...options,
         headers,
         credentials: 'include',
@@ -79,7 +108,7 @@ class BaseAPI {
         
         if (csrfToken) {
           headers['X-Frappe-CSRF-Token'] = csrfToken;
-          const retryResponse = await fetch(url, {
+          const retryResponse = await fetch(fullUrl, {
             ...options,
             headers,
             credentials: 'include',

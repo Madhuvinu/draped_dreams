@@ -1,103 +1,85 @@
 <template>
-	<div class="min-h-screen bg-gray-50">
-		<!-- Debug Info -->
-		<div class="bg-yellow-100 p-4 text-center">
-			<p class="text-yellow-800">Vue.js is working! Cart items: {{ cartItems.length }}</p>
-		</div>
-
-		<!-- Header -->
-		<header class="bg-white shadow-sm border-b">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div class="flex justify-between items-center py-4">
-					<div class="flex items-center">
-						<div
-							class="h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3"
-						>
-							<span class="text-white text-lg">🛍️</span>
-						</div>
-						<h1 class="text-2xl font-bold text-gray-900">Draped Dreams</h1>
-					</div>
-					<div class="flex items-center space-x-4">
-						<button
-							@click="goToCart"
-							class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-						>
-							🛒 Cart ({{ cartItems.length }})
-						</button>
-						<button
-							@click="goToRegister"
-							class="px-4 py-2 text-sm font-medium text-purple-600 bg-white border border-purple-600 rounded-md hover:bg-purple-50"
-						>
-							👤 Register
-						</button>
-						<button
-							@click="goToLogin"
-							class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
-						>
-							🔑 Login
-						</button>
-					</div>
-				</div>
-			</div>
-		</header>
-
-		<!-- Hero Section -->
-		<section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-				<h2 class="text-4xl font-bold mb-4">Elegant Sarees for Every Occasion</h2>
-				<p class="text-xl mb-8">
-					Discover our exquisite collection of traditional and contemporary sarees
+	<div class="p-4 md:p-6">
+		<!-- Welcome Section -->
+		<section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-8 md:py-16 rounded-lg mb-8">
+			<div class="text-center px-4">
+				<h1 class="text-3xl md:text-5xl font-bold mb-4">Welcome to Draped Dreams</h1>
+				<p class="text-lg md:text-xl mb-8">
+					Elegant Sarees for Every Occasion
 				</p>
-				<button
-					@click="goToProducts"
-					class="px-6 py-3 bg-white text-purple-600 rounded-md font-medium hover:bg-gray-100"
-				>
+				<Button @click="goToProducts" size="lg">
+					<FeatherIcon name="shopping-bag" class="w-5 h-5 mr-2" />
 					Shop Now
-				</button>
+				</Button>
 			</div>
 		</section>
 
 		<!-- Featured Products -->
-		<section class="py-12 bg-white">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<h3 class="text-2xl font-bold text-gray-900 mb-8">Featured Sarees</h3>
+		<section class="bg-white rounded-lg shadow p-6 mb-8">
+			<h3 class="text-2xl font-bold text-gray-900 mb-8">Featured Sarees</h3>
 
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<div
+					v-for="saree in featuredSarees"
+					:key="saree.id"
+					class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+				>
 					<div
-						v-for="saree in featuredSarees"
-						:key="saree.id"
-						class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+						class="aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center"
 					>
-						<div
-							class="aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center"
-						>
-							<span class="text-6xl">👗</span>
-						</div>
-						<div class="p-4">
-							<h4 class="font-semibold text-gray-900 mb-2">{{ saree.name }}</h4>
-							<p class="text-sm text-gray-600 mb-3">{{ saree.description }}</p>
-							<div class="flex items-center justify-between">
-								<div>
-									<span class="text-lg font-bold text-purple-600"
-										>₹{{ saree.price }}</span
-									>
-									<span
-										v-if="saree.originalPrice"
-										class="text-sm text-gray-500 line-through ml-2"
-									>
-										₹{{ saree.originalPrice }}
-									</span>
-								</div>
-								<button
-									@click="addToCart(saree)"
-									class="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700"
+						<span class="text-6xl">👗</span>
+					</div>
+					<div class="p-4">
+						<h4 class="font-semibold text-gray-900 mb-2">{{ saree.name }}</h4>
+						<p class="text-sm text-gray-600 mb-3">{{ saree.description }}</p>
+						<div class="flex items-center justify-between">
+							<div>
+								<span class="text-lg font-bold text-purple-600"
+									>₹{{ saree.price }}</span
 								>
-									Add to Cart
-								</button>
+								<span
+									v-if="saree.originalPrice"
+									class="text-sm text-gray-500 line-through ml-2"
+								>
+									₹{{ saree.originalPrice }}
+								</span>
 							</div>
+							<Button @click="addToCart(saree)" size="sm">
+								Add to Cart
+							</Button>
 						</div>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<!-- Quick Actions -->
+		<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<div class="bg-white rounded-lg shadow p-6 text-center">
+				<FeatherIcon name="star" class="w-12 h-12 text-purple-600 mx-auto mb-4" />
+				<h3 class="text-lg font-semibold text-gray-900 mb-2">Browse Products</h3>
+				<p class="text-gray-600 mb-4">Explore our complete collection</p>
+				<Button @click="goToProducts" variant="outline">
+					View All Products
+				</Button>
+			</div>
+			
+			<div class="bg-white rounded-lg shadow p-6 text-center">
+				<FeatherIcon name="shopping-cart" class="w-12 h-12 text-purple-600 mx-auto mb-4" />
+				<h3 class="text-lg font-semibold text-gray-900 mb-2">Your Cart</h3>
+				<p class="text-gray-600 mb-4">{{ cartStore.itemCount }} items in cart</p>
+				<Button @click="goToCart" variant="outline">
+					View Cart
+				</Button>
+			</div>
+			
+			<div class="bg-white rounded-lg shadow p-6 text-center">
+				<FeatherIcon name="star" class="w-12 h-12 text-purple-600 mx-auto mb-4" />
+				<h3 class="text-lg font-semibold text-gray-900 mb-2">Order History</h3>
+				<p class="text-gray-600 mb-4">Track your previous orders</p>
+				<Button @click="goToOrders" variant="outline">
+					View Orders
+				</Button>
 			</div>
 		</section>
 	</div>
@@ -106,9 +88,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useCartStore } from '@/stores/cart';
+import Button from '@/components/Button.vue';
+import FeatherIcon from '@/components/FeatherIcon.vue';
 
 const router = useRouter();
-const cartItems = ref([]);
+const cartStore = useCartStore();
 
 const featuredSarees = ref([
 	{
@@ -144,8 +129,7 @@ const featuredSarees = ref([
 ]);
 
 const addToCart = (saree) => {
-	cartItems.value.push(saree);
-	localStorage.setItem("cart", JSON.stringify(cartItems.value));
+	cartStore.addItem(saree);
 	alert(`Added "${saree.name}" to cart!`);
 };
 
@@ -153,23 +137,15 @@ const goToCart = () => {
 	router.push("/cart");
 };
 
-const goToRegister = () => {
-	router.push("/register");
-};
-
-const goToLogin = () => {
-	router.push("/login");
-};
-
 const goToProducts = () => {
 	router.push("/products");
 };
 
+const goToOrders = () => {
+	router.push("/orders");
+};
+
 onMounted(() => {
-	// Load cart from localStorage
-	const savedCart = localStorage.getItem("cart");
-	if (savedCart) {
-		cartItems.value = JSON.parse(savedCart);
-	}
+	// Cart store will handle loading from localStorage
 });
 </script>
