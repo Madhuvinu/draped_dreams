@@ -29,3 +29,4 @@ def get_context(context):
         frappe.log_error(frappe.get_traceback(), "Dashboard Context Error")
         context.product_count = 0
         context.recent_products = []
+

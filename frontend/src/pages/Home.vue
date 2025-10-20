@@ -1,10 +1,5 @@
 <template>
 	<div class="min-h-screen bg-gray-50">
-		<!-- Debug Info -->
-		<div class="bg-yellow-100 p-4 text-center">
-			<p class="text-yellow-800">Vue.js is working! Cart items: {{ cartItems.length }}</p>
-		</div>
-
 		<!-- Header -->
 		<header class="bg-white shadow-sm border-b">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

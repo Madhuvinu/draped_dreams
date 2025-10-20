@@ -99,7 +99,7 @@
           
           // Fallback to known assets
           console.log('🔄 Using fallback assets');
-          loadAssetFiles('index-c7d485ac.js', 'index-e36060c2.css');
+          loadAssetFiles('index-cab0e9b3.js', 'index-e36060c2.css');
         };
         
         const loadAssetFiles = (jsFile, cssFile) => {
@@ -108,65 +108,31 @@
           const cssUrl = `${baseUrl}/files/assets/${cssFile}?v=${timestamp}`;
           
           console.log('📥 Loading assets:', { jsUrl, cssUrl });
-          console.log('🔍 Testing asset accessibility...');
           
-          // Test if assets are accessible before loading
-          const testAsset = async (url, name) => {
-            try {
-              const response = await fetch(url, { method: 'HEAD' });
-              console.log(`✅ ${name} accessible: ${response.status}`);
-              return response.ok;
-            } catch (error) {
-              console.log(`❌ ${name} not accessible: ${error.message}`);
-              return false;
-            }
+          // Load CSS
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = cssUrl;
+          link.onload = () => {
+            console.log('✅ CSS loaded successfully');
           };
+          link.onerror = () => {
+            console.error('❌ Failed to load CSS:', cssUrl);
+          };
+          document.head.appendChild(link);
           
-          // Test and load assets
-          Promise.all([
-            testAsset(cssUrl, 'CSS'),
-            testAsset(jsUrl, 'JavaScript')
-          ]).then(([cssOk, jsOk]) => {
-            console.log('📊 Asset test results:', { cssOk, jsOk });
-            
-            // Load CSS
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = cssUrl;
-            link.onerror = () => {
-              console.error('❌ Failed to load CSS:', cssUrl);
-              // Try alternative CSS path
-              const altCssUrl = `${baseUrl}/assets/frappe/dist/css/website.bundle.css?v=${timestamp}`;
-              const altLink = document.createElement('link');
-              altLink.rel = 'stylesheet';
-              altLink.href = altCssUrl;
-              document.head.appendChild(altLink);
-            };
-            link.onload = () => {
-              console.log('✅ CSS loaded successfully');
-            };
-            document.head.appendChild(link);
-            
-            // Load JS
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.crossOrigin = 'anonymous';
-            script.src = jsUrl;
-            script.onerror = () => {
-              console.error('❌ Failed to load JS:', jsUrl);
-              // Try alternative JS path
-              const altJsUrl = `${baseUrl}/assets/frappe/dist/js/frappe-web.bundle.js?v=${timestamp}`;
-              const altScript = document.createElement('script');
-              altScript.type = 'module';
-              altScript.crossOrigin = 'anonymous';
-              altScript.src = altJsUrl;
-              document.head.appendChild(altScript);
-            };
-            script.onload = () => {
-              console.log('✅ JavaScript loaded successfully');
-            };
-            document.head.appendChild(script);
-          });
+          // Load JS
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.crossOrigin = 'anonymous';
+          script.src = jsUrl;
+          script.onload = () => {
+            console.log('✅ JavaScript loaded successfully');
+          };
+          script.onerror = () => {
+            console.error('❌ Failed to load JS:', jsUrl);
+          };
+          document.head.appendChild(script);
         };
         
         // Start loading assets

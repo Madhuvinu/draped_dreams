@@ -172,8 +172,7 @@
 				<div
 					v-for="saree in filteredSarees"
 					:key="saree.id"
-					class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-					@click="$router.push(`/product/${saree.id}`)"
+					class="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
 				>
 					<div
 						class="aspect-w-16 aspect-h-12 bg-gradient-to-br from-purple-100 to-pink-100 h-64 flex items-center justify-center relative"
