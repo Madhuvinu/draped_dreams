@@ -121,9 +121,13 @@ class BaseAPI {
         }
       }
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.log('❌ Server Error Response:', errorText);
+            console.log('❌ Response Status:', response.status);
+            console.log('❌ Response Headers:', response.headers);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
 
       const result = await response.json();
       return result;
