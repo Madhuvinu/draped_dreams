@@ -70,8 +70,23 @@
         const loadAssets = async () => {
           // Skip asset discovery to avoid 500 errors
           // Frappe doesn't serve directory listings for /files/assets/
+          
+          // Use environment-specific asset names
+          const isProduction = window.location.hostname !== 'localhost' && 
+                               window.location.hostname !== '127.0.0.1' && 
+                               !window.location.hostname.includes('localhost');
+          
           console.log('🔄 Using fallback assets (asset discovery disabled)');
-          loadAssetFiles('index-440ba6ab.js', 'index-18b3d283.css');
+          console.log('🌍 Environment detected:', isProduction ? 'Production' : 'Development');
+          console.log('📦 Loading assets for:', isProduction ? 'Production (65.1.189.119)' : 'Development (dreams.localhost)');
+          
+          if (isProduction) {
+            // Production assets (from latest build)
+            loadAssetFiles('index-ac6ebee6.js', 'index-18b3d283.css');
+          } else {
+            // Development assets (from local build)
+            loadAssetFiles('index-440ba6ab.js', 'index-18b3d283.css');
+          }
         };
         
         const loadAssetFiles = (jsFile, cssFile) => {

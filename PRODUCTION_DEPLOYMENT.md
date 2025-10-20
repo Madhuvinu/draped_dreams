@@ -1,66 +1,68 @@
-# 🚀 Production Deployment Guide
+# 🚀 Deployment Guide - Development & Production
 
-## Quick Fix for Asset Loading Issues
+## Environment-Specific Asset Loading
 
-### **Problem:**
-Every time you deploy, frontend assets (CSS/JS) return 500 errors because they're not copied to the production server.
+The system now automatically detects the environment and loads the correct assets:
 
-### **Solution:**
+### **Development (localhost):**
+- **URL**: `http://dreams.localhost:8000/draped_dreams`
+- **Assets**: `index-440ba6ab.js` (development build)
+- **Command**: `yarn build:dev`
 
-#### **Method 1: Automated Script (Recommended)**
+### **Production (65.1.189.119):**
+- **URL**: `https://65.1.189.119/draped_dreams`
+- **Assets**: `index-ac6ebee6.js` (production build)
+- **Command**: `yarn build:production`
+
+## Quick Deployment Commands
+
+### **For Development:**
 ```bash
-# On your production server, run:
-cd /path/to/your/app
-./deploy_assets.sh
-```
-
-#### **Method 2: Manual Copy**
-```bash
-# Build frontend
 cd frontend
-yarn build
-
-# Copy assets to Frappe sites
-cp -r dist/assets/* /path/to/frappe/sites/your-site/public/files/assets/
-
-# Set permissions
-chmod 644 /path/to/frappe/sites/your-site/public/files/assets/*
-chown frappe:frappe /path/to/frappe/sites/your-site/public/files/assets/*
+yarn build:dev
 ```
 
-#### **Method 3: Using Package Script**
+### **For Production:**
 ```bash
-# Build and deploy in one command
 cd frontend
 yarn build:production
 ```
 
-### **Prevention:**
+## Manual Asset Management
 
-#### **Add to your deployment workflow:**
-1. **Build frontend**: `yarn build`
-2. **Deploy assets**: `./deploy_assets.sh`
-3. **Restart Frappe**: `bench restart`
-
-#### **For CI/CD pipelines:**
-```yaml
-# Add this step to your deployment pipeline
-- name: Deploy Frontend Assets
-  run: |
-    cd frontend
-    yarn build
-    ./deploy_assets.sh
-    bench restart
+### **Development Assets:**
+```bash
+# Build and copy to local site
+yarn build:dev
+# Assets go to: ../../sites/dreams.localhost/public/files/assets/
 ```
 
-### **Common Frappe Sites Paths:**
-- `/home/frappe/frappe-bench/sites/`
-- `/opt/frappe/sites/`
-- `/var/www/frappe/sites/`
+### **Production Assets:**
+```bash
+# Build and deploy to production
+yarn build:production
+# Assets go to: /home/harsha/frappe-bench/frappe-bench/sites/dreams.localhost/public/files/assets/
+```
 
-### **Troubleshooting:**
-- **500 errors**: Assets not copied or wrong permissions
-- **404 errors**: Wrong path or missing files
-- **Permission denied**: Run with correct user (frappe or www-data)
+## Troubleshooting
 
-## ✅ **This will fix the issue permanently!**
+### **500 Errors:**
+- **Development**: Run `yarn build:dev`
+- **Production**: Run `yarn build:production`
+
+### **Wrong Assets Loading:**
+- Check if you're on the correct environment
+- Rebuild with the correct command
+- Clear browser cache
+
+### **Permission Issues:**
+```bash
+# Development
+chmod 644 ../../sites/dreams.localhost/public/files/assets/*
+
+# Production
+chmod 644 /path/to/sites/dreams.localhost/public/files/assets/*
+chown harsha:harsha /path/to/sites/dreams.localhost/public/files/assets/*
+```
+
+## ✅ **This works for both environments automatically!**
