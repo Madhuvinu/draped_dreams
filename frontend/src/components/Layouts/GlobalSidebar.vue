@@ -13,11 +13,11 @@
       <!-- Sidebar Header -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200">
         <div v-if="isOpen" class="flex items-center space-x-2">
-          <img src="/pwa-192x192.png" alt="Logo" class="w-8 h-8 rounded" />
+          <img src="/pwa-icon.svg" alt="Draped Dreamss" class="w-8 h-8 rounded" />
           <span class="text-lg font-semibold text-gray-900">Draped Dreams</span>
         </div>
         <div v-else class="flex justify-center w-full">
-          <img src="/pwa-192x192.png" alt="Logo" class="w-8 h-8 rounded" />
+          <img src="/pwa-icon.svg" alt="Draped Dreamss" class="w-8 h-8 rounded" />
         </div>
         
         <!-- Toggle Button -->
@@ -137,11 +137,36 @@
               {{ user?.email || 'guest@example.com' }}
             </p>
           </div>
+          <div v-if="isLoggedIn">
+            <Button size="sm" variant="ghost" class="text-gray-700 hover:bg-gray-100" @click="logout">
+              <FeatherIcon name="log-out" class="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+        <div v-if="isOpen && isLoggedIn" class="mt-3">
+          <button
+            @click="logout"
+            class="w-full flex items-center justify-center px-3 py-2 text-sm text-white bg-purple-600 rounded hover:bg-purple-700 transition-colors"
+          >
+            <FeatherIcon name="log-out" class="w-4 h-4 mr-2 text-white" />
+            Logout
+          </button>
         </div>
         <div v-else class="flex justify-center">
           <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
             <FeatherIcon name="user" class="w-4 h-4 text-purple-600" />
           </div>
+        </div>
+        <!-- Always show a logout control under user info on Products page when collapsed -->
+        <div v-if="!isOpen && isProductsPage && isLoggedIn" class="mt-3 flex justify-center">
+          <button
+            @click="logout"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+            aria-label="Logout"
+          >
+            <FeatherIcon name="log-out" class="w-5 h-5 text-gray-700" />
+          </button>
         </div>
       </div>
     </div>
@@ -181,9 +206,32 @@
               </span>
             </router-link>
             
-            <!-- User Menu -->
-            <div class="relative hidden sm:block">
+            <!-- Auth: show login/register if not logged in -->
+            <template v-if="!isLoggedIn">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                @click="router.push('/register')"
+                class="border-purple-600 text-purple-600 hover:bg-purple-50"
+              >
+                <FeatherIcon name="user-plus" class="w-4 h-4 mr-2" />
+                Register
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                @click="router.push('/login')"
+                class="text-gray-700 hover:bg-gray-100"
+              >
+                <FeatherIcon name="user" class="w-4 h-4 mr-2" />
+                Login
+              </Button>
+            </template>
+
+            <!-- User Menu when logged in -->
+            <div v-else class="relative">
               <button
+                id="user-menu-toggle"
                 @click="toggleUserMenu"
                 class="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-100 transition-colors"
               >
@@ -195,6 +243,7 @@
               
               <!-- User Dropdown -->
               <div
+                id="user-menu-dropdown"
                 v-if="showUserMenu"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50"
               >
@@ -241,6 +290,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useCartStore } from '@/stores/cart';
 import { sessionStore } from '@/stores/session';
 import FeatherIcon from '@/components/FeatherIcon.vue';
+import Button from '@/components/Button.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -264,6 +314,7 @@ const filters = ref({
 // Computed
 const cartItems = computed(() => cartStore.items);
 const user = computed(() => session.user);
+const isLoggedIn = computed(() => session.isLoggedIn);
 const isProductsPage = computed(() => route.path === '/products');
 
 const currentPageTitle = computed(() => {
@@ -288,11 +339,11 @@ const currentPageTitle = computed(() => {
 // Menu items
 const menuItems = [
   { name: 'Dashboard', path: '/', icon: 'home' },
-  { name: 'Products', path: '/products', icon: 'star' },
+  { name: 'Products', path: '/products', icon: 'shopping-bag' },
   { name: 'Cart', path: '/cart', icon: 'shopping-cart' },
-  { name: 'Orders', path: '/orders', icon: 'star' },
+  { name: 'Orders', path: '/orders', icon: 'package' },
   { name: 'Profile', path: '/profile', icon: 'user' },
-  { name: 'Admin', path: '/admin/products', icon: 'star' }
+  { name: 'Admin', path: '/admin/products', icon: 'settings' }
 ];
 
 // Methods
@@ -305,8 +356,8 @@ const toggleUserMenu = () => {
   showUserMenu.value = !showUserMenu.value;
 };
 
-const logout = () => {
-  session.logout();
+const logout = async () => {
+  await session.logout();
   router.push('/login');
   showUserMenu.value = false;
 };
@@ -352,7 +403,9 @@ const loadCategories = async () => {
 
 // Close user menu when clicking outside
 const handleClickOutside = (event) => {
-  if (!event.target.closest('.relative')) {
+  const dropdown = document.getElementById('user-menu-dropdown');
+  const toggleBtn = document.getElementById('user-menu-toggle');
+  if (dropdown && toggleBtn && !dropdown.contains(event.target) && !toggleBtn.contains(event.target)) {
     showUserMenu.value = false;
   }
 };

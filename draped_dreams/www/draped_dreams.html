@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/assets/draped_dreams/frontend/vite.svg" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -35,23 +36,10 @@
         
         console.log('🔍 Development check result:', isDevelopment);
         
-        // Build base URL dynamically - works everywhere
-        let baseUrl;
-        if (isDevelopment) {
-          baseUrl = `${protocol}//${hostname}:8001`;
-          console.log('🏠 Using development URL with port 8001');
-        } else {
-          // Production: Use current hostname with existing port or default
-          const productionPort = port ? `:${port}` : '';
-          baseUrl = `${protocol}//${hostname}${productionPort}`;
-          console.log('🌍 Using production URL');
-        }
-        
-        // Force development mode if we detect local patterns but missed them
-        if (!isDevelopment && (hostname.includes('dreams') || hostname.includes('local'))) {
-          console.log('🔄 Forcing development mode based on hostname patterns');
-          baseUrl = `${protocol}//${hostname}:8000`;
-        }
+        // Build base URL dynamically from current origin (no hardcoded ports)
+        const portSuffix = port ? `:${port}` : '';
+        const baseUrl = `${protocol}//${hostname}${portSuffix}`;
+        console.log('🌐 Base URL (from current origin):', baseUrl);
         
         console.log('🌐 Base URL:', baseUrl);
         console.log('🔧 Environment:', isDevelopment ? 'Development' : 'Production');

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { API_CONFIG } from "@/constants.js";
 
 export const sessionStore = defineStore("session", {
 	state: () => ({
@@ -34,11 +35,17 @@ export const sessionStore = defineStore("session", {
 
 		async logout() {
 			try {
-				// Mock logout for now
+				// Invoke Frappe logout to clear server session (works on any port/origin)
+				const baseUrl = API_CONFIG.getDashboardBaseUrl();
+				await fetch(`${baseUrl}/api/method/logout`, {
+					method: "POST",
+					credentials: "include",
+					headers: { "Content-Type": "application/json" },
+				}).catch(() => {});
+
+				// Clear client session state
 				this.user = null;
 				this.isLoggedIn = false;
-				
-				// Clear localStorage
 				localStorage.removeItem("user");
 				localStorage.removeItem("isLoggedIn");
 			} catch (error) {
