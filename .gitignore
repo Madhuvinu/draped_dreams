@@ -1,3 +1,25 @@
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Generated source maps
+**/*.map
+
+# Local and served assets copied for Frappe
+draped_dreams/www/assets/
+sites/*/public/files/assets/
+
+# Python bytecode and cache
+**/__pycache__/
+**/*.pyc
+
+# Logs
+*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
 # Frontend build files (generated, should not be committed)
 draped_dreams/public/frontend/assets/
 draped_dreams/www/draped_dreams.html

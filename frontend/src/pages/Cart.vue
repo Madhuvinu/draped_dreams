@@ -1,64 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center">
-            <div class="h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center mr-3">
-              <span class="text-white text-lg">🛍️</span>
-            </div>
-            <h1 class="text-2xl font-bold text-gray-900">Draped Dreams</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" @click="$router.push('/products')">
-              <FeatherIcon name="shopping-bag" class="w-5 h-5 mr-2" />
-              Continue Shopping
-            </Button>
-            
-            <!-- Show different options based on login status -->
-            <template v-if="isLoggedIn">
-              <div class="flex items-center space-x-2">
-                <span class="text-sm text-gray-600">Welcome, {{ userData.first_name || userData.email }}!</span>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  @click="handleLogout"
-                  class="text-gray-700 hover:bg-gray-100"
-                >
-                  <FeatherIcon name="log-out" class="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
-            </template>
-            
-            <template v-else>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                @click="$router.push('/register')"
-                class="border-purple-600 text-purple-600 hover:bg-purple-50"
-              >
-                <FeatherIcon name="user-plus" class="w-4 h-4 mr-2" />
-                Register
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                @click="$router.push('/login')"
-                class="text-gray-700 hover:bg-gray-100"
-              >
-                <FeatherIcon name="user" class="w-4 h-4 mr-2" />
-                Login
-              </Button>
-            </template>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="p-4 md:p-6 max-w-5xl mx-auto">
       <!-- Page Title -->
       <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900">Shopping Cart</h2>
@@ -254,7 +195,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
