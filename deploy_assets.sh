@@ -25,9 +25,15 @@ if [ -d "/home/frappe/frappe-bench/sites" ]; then
     FRAPPE_SITES_DIR="/home/frappe/frappe-bench/sites"
 elif [ -d "/home/harsha/frappe-bench/frappe-bench/sites" ]; then
     FRAPPE_SITES_DIR="/home/harsha/frappe-bench/frappe-bench/sites"
+elif [ -d "/Users/harshakm/erp_project/sites" ]; then
+    FRAPPE_SITES_DIR="/Users/harshakm/erp_project/sites"
 else
     echo "❌ Frappe sites directory not found!"
     echo "Please update the script with the correct path"
+    echo "Current paths checked:"
+    echo "  - /home/frappe/frappe-bench/sites"
+    echo "  - /home/harsha/frappe-bench/frappe-bench/sites"
+    echo "  - /Users/harshakm/erp_project/sites"
     exit 1
 fi
 
