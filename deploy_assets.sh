@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Automated Asset Deployment Script for Production
-# This script will automatically copy frontend assets to the correct location
-
-echo "🚀 Starting automated asset deployment..."
+# Production Asset Deployment Script
+echo "🚀 Deploying assets to production..."
 
 # Get the current directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -25,10 +23,8 @@ fi
 FRAPPE_SITES_DIR=""
 if [ -d "/home/frappe/frappe-bench/sites" ]; then
     FRAPPE_SITES_DIR="/home/frappe/frappe-bench/sites"
-elif [ -d "/opt/frappe/sites" ]; then
-    FRAPPE_SITES_DIR="/opt/frappe/sites"
-elif [ -d "/var/www/frappe/sites" ]; then
-    FRAPPE_SITES_DIR="/var/www/frappe/sites"
+elif [ -d "/home/harsha/frappe-bench/frappe-bench/sites" ]; then
+    FRAPPE_SITES_DIR="/home/harsha/frappe-bench/frappe-bench/sites"
 else
     echo "❌ Frappe sites directory not found!"
     echo "Please update the script with the correct path"
@@ -53,7 +49,7 @@ for site_dir in "$FRAPPE_SITES_DIR"/*/; do
         
         # Set proper permissions
         chmod 644 "$assets_dir"/*
-        chown -R frappe:frappe "$assets_dir" 2>/dev/null || chown -R www-data:www-data "$assets_dir" 2>/dev/null
+        chown -R harsha:harsha "$assets_dir" 2>/dev/null || chown -R www-data:www-data "$assets_dir" 2>/dev/null
         
         echo "✅ Assets deployed to $site_name"
     fi
