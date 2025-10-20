@@ -38,8 +38,8 @@
         // Build base URL dynamically - works everywhere
         let baseUrl;
         if (isDevelopment) {
-          baseUrl = `${protocol}//${hostname}:8000`;
-          console.log('🏠 Using development URL with port 8000');
+          baseUrl = `${protocol}//${hostname}:8001`;
+          console.log('🏠 Using development URL with port 8001');
         } else {
           // Production: Use current hostname with existing port or default
           const productionPort = port ? `:${port}` : '';
@@ -80,12 +80,12 @@
           console.log('🌍 Environment detected:', isProduction ? 'Production' : 'Development');
           console.log('📦 Loading assets for:', isProduction ? 'Production (65.1.189.119)' : 'Development (dreams.localhost)');
           
-             if (isProduction) {
-               // Production assets (use existing until new ones are deployed)
-               loadAssetFiles('index-ac6ebee6.js', 'index-18b3d283.css');
-             } else {
+            if (isProduction) {
+              // Production assets - use stable aliases generated at build time
+              loadAssetFiles('index-app.js', 'index-app.css');
+            } else {
                // Development assets (from local build)
-               loadAssetFiles('index-2fdbbbb7.js', 'index-18b3d283.css');
+               loadAssetFiles('index-app.js', 'index-app.css');
              }
         };
         
