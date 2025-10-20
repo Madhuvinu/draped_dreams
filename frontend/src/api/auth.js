@@ -1,6 +1,6 @@
 // Authentication API - Direct approach for reliability
 import DirectAPI from './direct.js';
-import { VALIDATION, ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants.js';
+import { VALIDATION, ERROR_MESSAGES, SUCCESS_MESSAGES, API_CONFIG } from '../constants.js';
 
 class AuthAPI extends DirectAPI {
   // Register a new user
@@ -18,7 +18,7 @@ class AuthAPI extends DirectAPI {
         formData.append(key, userData[key]);
       });
 
-      const url = `${API_CONFIG.ENDPOINTS.AUTH.REGISTER}`;
+      const url = `${this.baseUrl}/api/method/${API_CONFIG.ENDPOINTS.AUTH.REGISTER}`;
       
       console.log('Base URL:', this.baseUrl);
       console.log('Register URL:', url);
@@ -53,7 +53,7 @@ class AuthAPI extends DirectAPI {
       formData.append('email', email);
       formData.append('password', password);
 
-      const url = `${API_CONFIG.ENDPOINTS.AUTH.LOGIN}`;
+      const url = `${this.baseUrl}/api/method/${API_CONFIG.ENDPOINTS.AUTH.LOGIN}`;
       
       console.log('Base URL:', this.baseUrl);
       console.log('Login URL:', url);
