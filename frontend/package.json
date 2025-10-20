@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vite build --base=/files/ && yarn copy-assets",
     "build:production": "vite build --base=/files/ && yarn deploy:production",
+    "build:dev": "vite build --base=/files/ && yarn copy-assets",
     "copy-assets": "mkdir -p ../../sites/dreams.localhost/public/files/assets && cp -r dist/assets/* ../../sites/dreams.localhost/public/files/assets/ && echo 'All assets copied successfully'",
     "deploy:production": "echo '🚀 Deploying to production...' && ../deploy_assets.sh"
   },
