@@ -80,13 +80,13 @@
           console.log('🌍 Environment detected:', isProduction ? 'Production' : 'Development');
           console.log('📦 Loading assets for:', isProduction ? 'Production (65.1.189.119)' : 'Development (dreams.localhost)');
           
-          if (isProduction) {
-            // Production assets (from latest build)
-            loadAssetFiles('index-ac6ebee6.js', 'index-18b3d283.css');
-          } else {
-            // Development assets (from local build)
-            loadAssetFiles('index-440ba6ab.js', 'index-18b3d283.css');
-          }
+             if (isProduction) {
+               // Production assets (from latest build with direct API)
+               loadAssetFiles('index-7c8e1384.js', 'index-18b3d283.css');
+             } else {
+               // Development assets (from local build)
+               loadAssetFiles('index-7c8e1384.js', 'index-18b3d283.css');
+             }
         };
         
         const loadAssetFiles = (jsFile, cssFile) => {

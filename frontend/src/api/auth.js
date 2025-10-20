@@ -1,8 +1,8 @@
-// Authentication API
-import BaseAPI from './base.js';
-import { API_CONFIG, VALIDATION, ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants.js';
+// Authentication API - Direct approach for reliability
+import DirectAPI from './direct.js';
+import { VALIDATION, ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants.js';
 
-class AuthAPI extends BaseAPI {
+class AuthAPI extends DirectAPI {
   // Register a new user
   async register(userData) {
     try {

@@ -73,8 +73,16 @@ class BaseAPI {
         ...options.headers,
       };
 
-      if (csrfToken) {
+      // Only add CSRF token if we have one and we're not in production
+      const isProduction = window.location.hostname !== 'localhost' && 
+                           window.location.hostname !== '127.0.0.1' && 
+                           !window.location.hostname.includes('localhost');
+      
+      if (csrfToken && !isProduction) {
         headers['X-Frappe-CSRF-Token'] = csrfToken;
+        console.log('🔐 CSRF token added for development');
+      } else if (isProduction) {
+        console.log('🌐 Production mode - CSRF token disabled for testing');
       }
 
       // Construct the full URL properly
