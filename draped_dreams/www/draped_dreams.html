@@ -68,46 +68,19 @@
         
         // Dynamic asset discovery and loading
         const loadAssets = async () => {
-          try {
-            // Try to discover the latest assets
-            const assetsResponse = await fetch(`${baseUrl}/files/assets/`, {
-              method: 'GET',
-              credentials: 'include'
-            });
-            
-            if (assetsResponse.ok) {
-              // If we can access the assets directory, try to find the latest files
-              const assetsText = await assetsResponse.text();
-              
-              // Extract asset filenames from the directory listing
-              const jsMatch = assetsText.match(/index-[a-f0-9-]+\.js/g);
-              const cssMatch = assetsText.match(/index-[a-f0-9-]+\.css/g);
-              
-              if (jsMatch && cssMatch) {
-                // Use the latest files found
-                const jsFile = jsMatch[jsMatch.length - 1];
-                const cssFile = cssMatch[cssMatch.length - 1];
-                
-                console.log('📦 Discovered assets:', { jsFile, cssFile });
-                loadAssetFiles(jsFile, cssFile);
-                return;
-              }
-            }
-          } catch (error) {
-            console.log('⚠️ Asset discovery failed, using fallback:', error.message);
-          }
-          
-          // Fallback to known assets
-          console.log('🔄 Using fallback assets');
-          loadAssetFiles('index-cab0e9b3.js', 'index-e36060c2.css');
+          // Skip asset discovery to avoid 500 errors
+          // Frappe doesn't serve directory listings for /files/assets/
+          console.log('🔄 Using fallback assets (asset discovery disabled)');
+          loadAssetFiles('index-440ba6ab.js', 'index-18b3d283.css');
         };
         
         const loadAssetFiles = (jsFile, cssFile) => {
           const timestamp = new Date().getTime();
-          const jsUrl = `${baseUrl}/files/assets/${jsFile}?v=${timestamp}`;
-          const cssUrl = `${baseUrl}/files/assets/${cssFile}?v=${timestamp}`;
+          const jsUrl = `${baseUrl}/files/assets/${jsFile}?v=${timestamp}&cb=${Math.random()}`;
+          const cssUrl = `${baseUrl}/files/assets/${cssFile}?v=${timestamp}&cb=${Math.random()}`;
           
           console.log('📥 Loading assets:', { jsUrl, cssUrl });
+          console.log('🔍 Expected auth file: auth-27376b17.js');
           
           // Load CSS
           const link = document.createElement('link');

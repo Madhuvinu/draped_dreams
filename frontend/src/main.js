@@ -5,6 +5,31 @@ import router from "./router";
 import App from "./App.vue";
 import { createPinia } from "pinia";
 
+// PWA functionality
+import { registerSW } from 'virtual:pwa-register';
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  registerSW({
+    onNeedRefresh() {
+      console.log('New content available, refresh needed');
+      // Show update notification to user
+      if (confirm('New version available! Refresh to update?')) {
+        window.location.reload();
+      }
+    },
+    onOfflineReady() {
+      console.log('App ready to work offline');
+    },
+    onRegistered(registration) {
+      console.log('Service worker registered:', registration);
+    },
+    onRegisterError(error) {
+      console.log('Service worker registration failed:', error);
+    }
+  });
+}
+
 // Simple components for basic functionality
 const Button = {
 	name: "Button",

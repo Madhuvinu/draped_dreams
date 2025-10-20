@@ -91,14 +91,14 @@ export const API_CONFIG = {
   // API Endpoints
   ENDPOINTS: {
     AUTH: {
-      REGISTER: '.register_user',
-      LOGIN: '.login_user',
-      CSRF_TOKEN: '.get_csrf_token',
+      REGISTER: 'draped_dreams.api.auth.register_user',
+      LOGIN: 'draped_dreams.api.auth.login_user',
+      CSRF_TOKEN: 'draped_dreams.api.auth.get_csrf_token',
     },
     PRODUCTS: {
-      LIST: '.get_products',
-      DETAILS: '.get_product_details',
-      CATEGORIES: '.get_categories',
+      LIST: 'draped_dreams.api.products.get_products',
+      DETAILS: 'draped_dreams.api.products.get_product_details',
+      CATEGORIES: 'draped_dreams.api.products.get_categories',
     },
     ORDERS: {
       PLACE: '/api/method/draped_dreams.api.orders.place_order',
@@ -112,6 +112,10 @@ export const API_CONFIG = {
       CUSTOMERS: '/api/method/draped_dreams.api.dashboard.get_customers',
       ORDERS: '/api/method/draped_dreams.api.dashboard.get_orders',
       INVENTORY: '/api/method/draped_dreams.api.dashboard.get_inventory',
+    },
+    BANNERS: {
+      LIST: 'draped_dreams.api.banners.get_banners',
+      DETAIL: 'draped_dreams.api.banners.get_banner',
     }
   },
   
@@ -235,6 +239,10 @@ export const ERROR_MESSAGES = {
   PRODUCTS: {
     FETCH_FAILED: 'Failed to fetch products',
     NOT_FOUND: 'Product not found',
+  },
+  BANNERS: {
+    FETCH_FAILED: 'Failed to fetch banners',
+    NOT_FOUND: 'Banner not found',
   }
 };
 

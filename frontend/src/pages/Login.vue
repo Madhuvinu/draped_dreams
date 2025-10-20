@@ -72,6 +72,18 @@
 						{{ loading ? "Signing in..." : "Sign in" }}
 					</Button>
 				</div>
+
+				<div class="text-center">
+					<p class="text-sm text-gray-600">
+						Don't have an account?
+						<router-link
+							to="/register"
+							class="font-medium text-purple-600 hover:text-purple-500"
+						>
+							Register here
+						</router-link>
+					</p>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -81,11 +93,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import authAPI from "../api/auth.js";
+import { sessionStore } from "@/stores/session.js";
 import TextInput from "../components/TextInput.vue";
 import Button from "../components/Button.vue";
 import FeatherIcon from "../components/FeatherIcon.vue";
 
 const router = useRouter();
+const session = sessionStore();
 
 const email = ref("");
 const password = ref("");
@@ -107,9 +121,8 @@ const handleLogin = async () => {
 		const result = await authAPI.login(email.value, password.value);
 
 		if (result.success) {
-			// Store user session
-			localStorage.setItem("user", JSON.stringify(result.data));
-			localStorage.setItem("isLoggedIn", "true");
+			// Update session store
+			await session.login(email.value, password.value);
 
 			// Redirect to products page
 			router.push("/products");

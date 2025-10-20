@@ -10,8 +10,19 @@ export const sessionStore = defineStore("session", {
 			try {
 				// Mock login for now - replace with actual API call
 				if (email && password) {
-					this.user = { name: email, full_name: email };
+					this.user = { 
+						name: email, 
+						full_name: email,
+						email: email,
+						first_name: email.split('@')[0],
+						last_name: ''
+					};
 					this.isLoggedIn = true;
+					
+					// Store in localStorage for persistence
+					localStorage.setItem("user", JSON.stringify(this.user));
+					localStorage.setItem("isLoggedIn", "true");
+					
 					return true;
 				}
 				return false;
@@ -26,6 +37,10 @@ export const sessionStore = defineStore("session", {
 				// Mock logout for now
 				this.user = null;
 				this.isLoggedIn = false;
+				
+				// Clear localStorage
+				localStorage.removeItem("user");
+				localStorage.removeItem("isLoggedIn");
 			} catch (error) {
 				console.error("Logout error:", error);
 			}
@@ -33,10 +48,20 @@ export const sessionStore = defineStore("session", {
 
 		async checkSession() {
 			try {
-				// Mock session check for now
-				this.isLoggedIn = false;
+				// Check localStorage for existing session
+				const user = localStorage.getItem("user");
+				const isLoggedIn = localStorage.getItem("isLoggedIn");
+				
+				if (user && isLoggedIn === "true") {
+					this.user = JSON.parse(user);
+					this.isLoggedIn = true;
+				} else {
+					this.isLoggedIn = false;
+					this.user = null;
+				}
 			} catch (error) {
 				this.isLoggedIn = false;
+				this.user = null;
 			}
 		},
 	},

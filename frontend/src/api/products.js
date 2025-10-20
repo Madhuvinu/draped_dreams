@@ -15,7 +15,7 @@ class ProductsAPI extends BaseAPI {
         }
       });
 
-      const url = `${this.baseUrl}${API_CONFIG.ENDPOINTS.PRODUCTS.LIST}?${params}`;
+      const url = `${API_CONFIG.ENDPOINTS.PRODUCTS.LIST}?${params}`;
       const result = await this.makeRequest(url);
       
       return this.handleResponse(result);
@@ -32,7 +32,7 @@ class ProductsAPI extends BaseAPI {
         return { success: false, message: 'Product name is required' };
       }
 
-      const url = `${this.baseUrl}${API_CONFIG.ENDPOINTS.PRODUCTS.DETAILS}`;
+      const url = `${API_CONFIG.ENDPOINTS.PRODUCTS.DETAILS}`;
       
       const result = await this.makeRequest(url, {
         method: 'POST',
@@ -49,7 +49,7 @@ class ProductsAPI extends BaseAPI {
   // Get product categories
   async getCategories() {
     try {
-      const url = `${this.baseUrl}${API_CONFIG.ENDPOINTS.PRODUCTS.CATEGORIES}`;
+      const url = `${API_CONFIG.ENDPOINTS.PRODUCTS.CATEGORIES}`;
       const result = await this.makeRequest(url);
       
       return this.handleResponse(result);

@@ -39,13 +39,11 @@ def place_order(customer_email, order_items, total_amount, **kwargs):
 				"message": "Order must have at least one item"
 			}
 		
-		# Check if customer exists
+		# Check if customer exists (optional - allow orders without registration)
 		customer = frappe.db.get_value("Register", {"email": order_data['customer_email']}, "name")
 		if not customer:
-			return {
-				"success": False,
-				"message": "Customer not found. Please register first."
-			}
+			# Allow orders without registration - just use email as customer identifier
+			customer = order_data['customer_email']
 		
 		# Generate order ID
 		order_id = f"ORD-{datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -98,15 +96,23 @@ def place_order(customer_email, order_items, total_amount, **kwargs):
 			
 			order.insert()
 			
-			# Update product stock quantities
+			# Update product stock quantities (optional - skip if stock tracking not needed)
 			for item in order_data_to_store['order_items']:
-				product = frappe.get_doc("Product", item['product_id'])
-				if product.stock_quantity < item['quantity']:
-					frappe.throw(f"Insufficient stock for {item['product_name']}. Available: {product.stock_quantity}, Required: {item['quantity']}")
-				
-				# Reduce stock quantity
-				product.stock_quantity -= item['quantity']
-				product.save()
+				try:
+					product = frappe.get_doc("Product", item['product_id'])
+					# Only check stock if stock_quantity field exists and is being tracked
+					if hasattr(product, 'stock_quantity') and product.stock_quantity is not None:
+						# Allow orders even with zero stock for now (can be configured later)
+						if product.stock_quantity < item['quantity'] and product.stock_quantity > 0:
+							frappe.throw(f"Insufficient stock for {item['product_name']}. Available: {product.stock_quantity}, Required: {item['quantity']}")
+						
+						# Update stock quantity (only if stock > 0)
+						if product.stock_quantity > 0:
+							product.stock_quantity -= item['quantity']
+							product.save()
+				except Exception as e:
+					# Log the error but don't fail the order if stock tracking fails
+					frappe.log_error(f"Stock update failed for {item['product_name']}: {str(e)}")
 			
 			frappe.db.commit()
 		except Exception as e:

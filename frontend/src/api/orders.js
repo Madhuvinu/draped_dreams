@@ -3,15 +3,10 @@ import { API_CONFIG } from '../constants.js'
 import BaseAPI from './base.js'
 
 class OrdersAPI extends BaseAPI {
-  constructor() {
-    super()
-    this.baseUrl = API_CONFIG.getBaseUrl()
-  }
-
   // Place a new order
   async placeOrder(orderData) {
     try {
-      const url = `${API_CONFIG.getDashboardBaseUrl()}/api/method/draped_dreams.api.orders.place_order`
+      const url = 'draped_dreams.api.orders.place_order'
       const result = await this.makeRequest(url, {
         method: 'POST',
         body: JSON.stringify(orderData)
@@ -29,8 +24,8 @@ class OrdersAPI extends BaseAPI {
   // Get user orders
   async getUserOrders(customerEmail) {
     try {
-      const url = `${API_CONFIG.getDashboardBaseUrl()}/api/method/draped_dreams.api.orders.get_user_orders`
-      const result = await this.makeRequest(`${url}?customer_email=${encodeURIComponent(customerEmail)}`)
+      const url = `draped_dreams.api.orders.get_user_orders?customer_email=${encodeURIComponent(customerEmail)}`
+      const result = await this.makeRequest(url)
       return result
     } catch (error) {
       console.error('Get user orders error:', error)
@@ -44,8 +39,8 @@ class OrdersAPI extends BaseAPI {
   // Get order details
   async getOrderDetails(orderId) {
     try {
-      const url = `${API_CONFIG.getDashboardBaseUrl()}/api/method/draped_dreams.api.orders.get_order_details`
-      const result = await this.makeRequest(`${url}?order_id=${encodeURIComponent(orderId)}`)
+      const url = `draped_dreams.api.orders.get_order_details?order_id=${encodeURIComponent(orderId)}`
+      const result = await this.makeRequest(url)
       return result
     } catch (error) {
       console.error('Get order details error:', error)
@@ -59,7 +54,7 @@ class OrdersAPI extends BaseAPI {
   // Update order status (admin only)
   async updateOrderStatus(orderId, status) {
     try {
-      const url = `${API_CONFIG.getDashboardBaseUrl()}/api/method/draped_dreams.api.orders.update_order_status`
+      const url = 'draped_dreams.api.orders.update_order_status'
       const result = await this.makeRequest(url, {
         method: 'POST',
         body: JSON.stringify({

@@ -18,23 +18,20 @@ class AuthAPI extends BaseAPI {
         formData.append(key, userData[key]);
       });
 
-      const url = `${this.baseUrl}${API_CONFIG.ENDPOINTS.AUTH.REGISTER}`;
+      const url = `${API_CONFIG.ENDPOINTS.AUTH.REGISTER}`;
       
-      const response = await fetch(url, {
+      console.log('Base URL:', this.baseUrl);
+      console.log('Register URL:', url);
+      console.log('Register data:', userData);
+      console.log('Form data:', formData.toString());
+      
+      const result = await this.makeRequest(url, {
         method: 'POST',
         headers: API_CONFIG.HEADERS.FORM_DATA,
         body: formData,
-        credentials: 'include',
       });
 
-      if (!response.ok) {
-        return {
-          success: false,
-          message: `HTTP ${response.status}: ${response.statusText}`,
-        };
-      }
-
-      const result = await response.json();
+      console.log('Response result:', result);
       return this.handleResponse(result, SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS);
     } catch (error) {
       console.error('Registration error:', error);
@@ -56,16 +53,20 @@ class AuthAPI extends BaseAPI {
       formData.append('email', email);
       formData.append('password', password);
 
-      const url = `${this.baseUrl}${API_CONFIG.ENDPOINTS.AUTH.LOGIN}`;
+      const url = `${API_CONFIG.ENDPOINTS.AUTH.LOGIN}`;
       
-      const response = await fetch(url, {
+      console.log('Base URL:', this.baseUrl);
+      console.log('Login URL:', url);
+      console.log('Login data:', { email, password });
+      console.log('Form data:', formData.toString());
+      
+      const result = await this.makeRequest(url, {
         method: 'POST',
         headers: API_CONFIG.HEADERS.FORM_DATA,
         body: formData,
-        credentials: 'include',
       });
 
-      const result = await response.json();
+      console.log('Response result:', result);
       return this.handleResponse(result, SUCCESS_MESSAGES.AUTH.LOGIN_SUCCESS);
     } catch (error) {
       console.error('Login error:', error);
